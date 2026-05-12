@@ -1,5 +1,7 @@
 from django.shortcuts import render
 
+from core.seo import absolute_static_url
+
 from .catalog import get_project_catalog
 
 
@@ -8,8 +10,10 @@ def projects_index(request):
         request,
         "portfolio/projects.html",
         {
-            "page_title": "Proyectos | MAX SERVICES SpA",
-            "page_description": "Portafolio de referencias y proyectos ejecutados por MAX SERVICES SpA en retail, salud, universidades, oficinas, edificios y recintos técnicos desde 2011.",
+            "page_title": "Proyectos HVAC y climatización | MAX SERVICES SPA",
+            "page_description": "Conoce la experiencia de MAX SERVICES SPA en climatización, ventilación, extracción, mantención y proyectos técnicos para distintos rubros.",
+            "canonical_path": "/proyectos/",
+            "og_image": absolute_static_url("assets/projects/climatizacion-oficinas-las-condes/cover.png"),
             "project_catalog": get_project_catalog(),
         },
     )

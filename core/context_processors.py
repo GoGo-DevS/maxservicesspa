@@ -1,5 +1,41 @@
+import json
+
+from django.conf import settings
+
+from core.seo import absolute_static_url
+
+
 def site_meta(request):
+    local_business_schema = {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "name": "MAX SERVICES SPA",
+        "description": "Empresa de climatización, ventilación y proyectos HVAC en Santiago, Región Metropolitana, Chile.",
+        "url": settings.SITE_URL,
+        "email": "contacto@maxservicesspa.cl",
+        "areaServed": {
+            "@type": "AdministrativeArea",
+            "name": "Santiago, Región Metropolitana, Chile",
+        },
+        "knowsAbout": [
+            "Climatización",
+            "Ventilación",
+            "Extracción de aire",
+            "Presurización",
+            "Inyección de aire",
+            "Mantención HVAC",
+            "Proyectos HVAC",
+        ],
+    }
+
     return {
+        "site_url": settings.SITE_URL,
+        "default_og_image": absolute_static_url("assets/home/hero-main.png"),
+        "favicon_image": "assets/brand/max-services-symbol-real-v2.png",
+        "local_business_schema_json": json.dumps(
+            local_business_schema,
+            ensure_ascii=False,
+        ),
         "company_name": "MAX SERVICES SpA",
         "company_short_name": "MAX SERVICES SPA",
         "company_tagline": "Climatización, ventilación y sistemas de aire",
