@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/projects.css' %}">
+{% endblock %}
+
+{% block page %}
+  {% url 'core:home' as home_url %}
+  {% url 'portfolio:projects_index' as projects_url %}
+  {% include "includes/site_header.html" with topbar_text="Proyectos, mantenciones y trabajos ejecutados por MAX SERVICES SPA" topbar_link_href=home_url topbar_link_section="contacto" topbar_link_text="Solicitar evaluación" current_page="projects" header_cta_text="Solicitar cotización" %}
+
+  <main>
+    <section class="projects-hero">
+      <div class="container section-shell">
+        <div class="row align-items-stretch site-grid-row site-grid-row-lg section-hero-row">
+          <div class="col-lg-7 site-col">
+            <div class="section-hero-copy projects-hero-copy">
+              <span class="section-kicker">Proyectos ejecutados</span>
+              <h1 class="section-title projects-page-title">Referencias y proyectos ejecutados en retail, salud, universidades, oficinas y edificios.</h1>
+              <p class="section-copy projects-page-copy">
+                Selección construida a partir del CV de MAX SERVICES SPA para mostrar experiencia técnica real en distintos rubros, tipos de cliente y exigencias operativas.
+              </p>
+            </div>
+          </div>
+          <div class="col-lg-5 site-col">
+            <div class="section-hero-visual projects-hero-visual">
+              <img class="section-hero-image" src="{% static 'assets/projects/climatizacion-oficinas-las-condes/cover.png' %}" alt="Proyecto de climatización corporativa ejecutado por MAX SERVICES SPA en oficinas modernas.">
+              <div class="section-hero-overlay">
+                <span>CV y experiencia aplicada</span>
+                <strong>Referencias en retail, salud, instituciones, oficinas y edificios con ejecución HVAC en terreno.</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row site-grid-row site-stat-row projects-overview-grid">
+          <div class="col-md-4 site-col">
+            <article class="overview-stat">
+              <span>Referencias visibles</span>
+              <strong id="projects-total-count">0</strong>
+            </article>
+          </div>
+          <div class="col-md-4 site-col">
+            <article class="overview-stat">
+              <span>Especialidades activas</span>
+              <strong id="projects-total-categories">0</strong>
+            </article>
+          </div>
+          <div class="col-md-4 site-col">
+            <article class="overview-stat">
+              <span>Cobertura</span>
+              <strong>Santiago y regiones</strong>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="site-section section-alt" id="explorar-proyectos">
+      <div class="container section-shell">
+        <div class="section-header section-header-inline">
+          <div>
+            <span class="section-kicker">Selección de proyectos</span>
+            <h2 class="section-title">Filtra por especialidad y revisa referencias relacionadas con tu necesidad.</h2>
+            <p class="section-copy">
+              Cada ficha resume rubro, tipo de proyecto, ubicación general y una descripción técnica breve, sin sobrecargar con información innecesaria.
+            </p>
+          </div>
+          <div class="projects-index-meta">
+            <span id="projects-result-copy">0 proyectos disponibles</span>
+            <a class="btn btn-brand-outline" href="{{ home_url }}" data-home-section="contacto">Consultar proyecto similar</a>
+          </div>
+        </div>
+
+        <div class="projects-filter-bar" id="projects-filter-bar" aria-label="Filtrar proyectos"></div>
+
+        <div class="row align-items-start site-grid-row projects-stage-row">
+          <div class="col-xl-8 site-col">
+            <section class="projects-feed">
+              <div class="projects-grid-view" id="projects-grid" aria-live="polite"></div>
+            </section>
+          </div>
+
+          <div class="col-xl-4 site-col">
+            <aside class="project-detail-card" id="project-detail" aria-live="polite"></aside>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  {% include "includes/site_footer.html" with footer_description="Selección de trabajos ejecutados por MAX SERVICES SPA en climatización, ventilación, extracción, presurización y mantenciones." footer_column_title="Especialidades" footer_column_items="Climatización|Ventilación|Extracción|Presurización|Mantenciones|Aire acondicionado" footer_bottom_copy="MAX SERVICES SPA | Proyectos y experiencia aplicada." footer_bottom_href=projects_url footer_bottom_section="explorar-proyectos" footer_bottom_label="Explorar proyectos" %}
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'js/projects-page.js' %}"></script>
+{% endblock %}

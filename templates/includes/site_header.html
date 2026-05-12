@@ -1,0 +1,67 @@
+{% load static %}
+{% url 'core:home' as home_url %}
+{% url 'portfolio:projects_index' as projects_url %}
+<header class="site-header sticky-top">
+  <div class="site-topbar">
+    <div class="container">
+      <div class="site-topbar-row d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 py-2 small">
+        <p class="mb-0 topbar-copy">{{ topbar_text }}</p>
+        <a
+          class="topbar-link"
+          href="{{ topbar_link_href|default:home_url }}"
+          {% if topbar_link_section %}data-home-section="{{ topbar_link_section }}"{% endif %}
+        >
+          {{ topbar_link_text }}
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="site-navbar-wrap">
+    <div class="container">
+      <nav class="navbar navbar-expand-xl navbar-light site-navbar">
+        <a class="navbar-brand site-brand" href="{{ home_url }}" aria-label="{{ company_name }}">
+          <span class="brand-mark-wrap">
+            <span class="brand-mark-shell">
+              <img class="brand-mark-image" src="{% static 'assets/brand/max-services-symbol-real-v2.png' %}" alt="" aria-hidden="true">
+            </span>
+            <span class="brand-wordmark">
+              <span class="brand-wordmark-title">
+                <span class="brand-wordmark-main">MAX SERVICES SPA</span>
+              </span>
+              <span class="brand-wordmark-subtitle">{{ company_tagline }}</span>
+            </span>
+          </span>
+        </a>
+
+        <button class="navbar-toggler site-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Abrir navegación">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="mainNav">
+          <ul class="navbar-nav mx-auto align-items-xl-center gap-xl-2">
+            <li class="nav-item">
+              <a class="nav-link site-nav-link" href="{{ home_url }}" data-home-section="inicio" data-nav-target="inicio">Inicio</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link site-nav-link" href="{{ home_url }}" data-home-section="servicios" data-nav-target="servicios">Servicios</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link site-nav-link{% if current_page == 'projects' %} active{% endif %}" href="{{ projects_url }}" data-nav-target="proyectos">Proyectos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link site-nav-link" href="{{ home_url }}" data-home-section="empresa" data-nav-target="empresa">Empresa</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link site-nav-link" href="{{ home_url }}" data-home-section="contacto" data-nav-target="contacto">Contacto</a>
+            </li>
+          </ul>
+
+          <div class="d-flex align-items-center gap-3 mt-3 mt-xl-0">
+            <a class="btn btn-brand-primary site-header-cta" href="{{ home_url }}" data-home-section="contacto">{{ header_cta_text }}</a>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>

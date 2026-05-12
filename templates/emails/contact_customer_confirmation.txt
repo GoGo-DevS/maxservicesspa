@@ -1,0 +1,17 @@
+Hola {{ contact_request.full_name }},
+
+Hemos recibido tu solicitud correctamente en MAX SERVICES SPA.
+
+Resumen del requerimiento:
+- Servicio: {{ service_label }}
+- Empresa o proyecto: {{ company_value }}
+- Ubicacion: {{ location_value }}
+- Telefono: {{ phone_value }}
+
+Mensaje enviado:
+{{ contact_request.message }}
+
+Nuestro equipo revisara los antecedentes y te respondera a la brevedad desde contacto@maxservicesspa.cl.
+
+MAX SERVICES SPA
+Climatizacion, ventilacion y sistemas de aire

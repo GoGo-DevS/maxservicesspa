@@ -1,0 +1,70 @@
+{% load core_tags %}
+{% load static %}
+{% url 'core:home' as home_url %}
+{% url 'portfolio:projects_index' as projects_url %}
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-main">
+      <div class="row g-4 g-lg-5 align-items-start">
+        <div class="col-lg-5">
+          <a class="footer-brand-link" href="{{ home_url }}" aria-label="{{ company_name }}">
+            <span class="footer-brand-wrap">
+              <span class="footer-brand-mark-shell">
+                <img class="footer-brand-mark-image" src="{% static 'assets/brand/max-services-symbol-real-v2.png' %}" alt="" aria-hidden="true">
+              </span>
+              <span class="footer-brand-wordmark">
+                <span class="footer-brand-title">
+                  <span class="footer-brand-main">MAX SERVICES SPA</span>
+                </span>
+                <span class="footer-brand-subtitle">{{ company_tagline }}</span>
+              </span>
+            </span>
+          </a>
+          <p class="footer-description">{{ footer_description }}</p>
+        </div>
+
+        <div class="col-sm-6 col-lg-2">
+          <h3 class="footer-title">Navegación</h3>
+          <ul class="footer-list">
+            <li><a href="{{ home_url }}">Inicio</a></li>
+            <li><a href="{{ home_url }}" data-home-section="servicios">Servicios</a></li>
+            <li><a href="{{ projects_url }}">Proyectos</a></li>
+            <li><a href="{{ home_url }}" data-home-section="empresa">Empresa</a></li>
+            <li><a href="{{ home_url }}" data-home-section="contacto">Contacto</a></li>
+          </ul>
+        </div>
+
+        <div class="col-sm-6 col-lg-2">
+          <h3 class="footer-title">{{ footer_column_title }}</h3>
+          <ul class="footer-list">
+            {% for item in footer_column_items|split_pipe %}
+              <li>{{ item }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <div class="col-lg-3">
+          <h3 class="footer-title">Contacto</h3>
+          <ul class="footer-list footer-contact-list">
+            <li>{{ company_address }}</li>
+            <li><a href="mailto:{{ company_contact_email }}">{{ company_contact_email }}</a></li>
+            <li><a href="{{ company_phone_href }}">{{ company_phone_display }}</a></li>
+            <li>{{ company_hours }}</li>
+            <li>{{ company_website }}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>{{ footer_bottom_copy }}</p>
+      <a
+        href="{{ footer_bottom_href|default:home_url }}"
+        {% if footer_bottom_section %}data-scroll-target="{{ footer_bottom_section }}"{% endif %}
+        {% if footer_bottom_home_section %}data-home-section="{{ footer_bottom_home_section }}"{% endif %}
+      >
+        {{ footer_bottom_label }}
+      </a>
+    </div>
+  </div>
+</footer>

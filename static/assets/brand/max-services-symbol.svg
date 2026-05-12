@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" role="img" aria-labelledby="title desc">
+  <title id="title">MAX SERVICES SpA</title>
+  <desc id="desc">Isotipo inspirado en el logo de MAX SERVICES SpA con trazos azules y rojos.</desc>
+  <defs>
+    <filter id="glow-blue" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="4" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+    <filter id="glow-red" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="4" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <g fill="none" stroke-linecap="round" stroke-width="16">
+    <path d="M26 88 C56 42 112 30 150 56" stroke="#12b8ff" filter="url(#glow-blue)" />
+    <path d="M42 100 C64 64 107 54 136 74" stroke="#12b8ff" filter="url(#glow-blue)" />
+    <path d="M58 112 C74 88 101 82 118 94" stroke="#12b8ff" filter="url(#glow-blue)" />
+
+    <path d="M42 98 C48 130 75 151 116 149" stroke="#ff3535" filter="url(#glow-red)" />
+    <path d="M56 90 C62 118 84 137 114 135" stroke="#ff3535" filter="url(#glow-red)" />
+    <path d="M71 82 C76 105 92 120 114 120" stroke="#ff3535" filter="url(#glow-red)" />
+  </g>
+</svg>

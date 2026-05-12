@@ -1,0 +1,15 @@
+Nueva consulta desde la web MAX SERVICES SPA
+
+Se registró un nuevo requerimiento desde el formulario del sitio.
+
+Nombre: {{ contact_request.full_name }}
+Correo: {{ contact_request.email }}
+Telefono: {{ phone_value }}
+Empresa o proyecto: {{ company_value }}
+Servicio requerido: {{ service_label }}
+Ubicacion: {{ location_value }}
+
+Mensaje del cliente:
+{{ contact_request.message }}
+
+Puedes responder directamente a este correo y el destinatario sera el cliente enviado en Reply-To.

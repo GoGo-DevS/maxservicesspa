@@ -1,0 +1,460 @@
+.projects-hero {
+  position: relative;
+  padding: 4.5rem 0 3rem;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.96) 0%, rgba(255, 255, 255, 0.92) 34%, rgba(255, 255, 255, 0.82) 60%, rgba(247, 250, 252, 0.76) 100%),
+    url("../assets/projects/climatizacion-oficinas-las-condes/cover.png") center center / cover no-repeat;
+}
+
+.projects-hero::before {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background:
+    radial-gradient(circle at top right, rgba(11, 132, 216, 0.08), transparent 24%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, rgba(244, 248, 251, 0.16) 100%);
+  pointer-events: none;
+}
+
+.projects-hero .section-shell {
+  position: relative;
+  z-index: 1;
+}
+
+.projects-page-title {
+  max-width: 15ch;
+}
+
+.projects-page-copy {
+  max-width: 58ch;
+}
+
+.projects-hero-copy {
+  max-width: 44rem;
+}
+
+.projects-hero-visual {
+  min-height: 23rem;
+}
+
+.projects-overview-card,
+.overview-stat,
+.projects-index-meta,
+.projects-support-card,
+.project-detail-card,
+.project-thumb,
+.projects-filter-bar {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-md);
+}
+
+.projects-overview-card {
+  padding: 1.6rem;
+}
+
+.projects-overview-card strong,
+.overview-stat strong {
+  display: block;
+  font-family: var(--font-display);
+  color: var(--color-primary-900);
+}
+
+.projects-overview-card strong {
+  font-size: 1.18rem;
+}
+
+.projects-overview-card p {
+  margin: 0.85rem 0 0;
+  color: var(--color-text-muted);
+  line-height: 1.72;
+}
+
+.projects-overview-grid {
+  margin-top: 1.85rem;
+}
+
+.overview-stat {
+  height: 100%;
+  padding: 1.3rem 1.4rem;
+}
+
+.overview-stat span {
+  display: block;
+  color: var(--color-text-muted);
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.overview-stat strong {
+  margin-top: 0.8rem;
+  font-size: 1.7rem;
+}
+
+.projects-index-meta {
+  display: grid;
+  gap: 0.85rem;
+  min-width: 280px;
+  padding: 1rem 1.15rem;
+  justify-items: start;
+  align-self: end;
+}
+
+.projects-index-meta span {
+  color: var(--color-text-muted);
+  font-weight: 700;
+}
+
+.projects-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-bottom: 2rem;
+  padding: 1rem;
+}
+
+.projects-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 44px;
+  padding: 0 1rem;
+  border: 1px solid rgba(21, 103, 179, 0.16);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface-soft);
+  color: var(--color-text);
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform var(--transition-base),
+    border-color var(--transition-base),
+    background-color var(--transition-base),
+    color var(--transition-base),
+    box-shadow var(--transition-base);
+}
+
+.projects-filter-chip:hover {
+  transform: translateY(-1px);
+  border-color: rgba(21, 103, 179, 0.26);
+  background: rgba(11, 132, 216, 0.06);
+}
+
+.projects-filter-chip.is-active {
+  border-color: transparent;
+  background: linear-gradient(135deg, var(--color-primary-600), var(--color-primary-500));
+  color: var(--color-white);
+  box-shadow: 0 14px 28px rgba(11, 132, 216, 0.16);
+}
+
+.projects-filter-chip-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  min-height: 28px;
+  padding: 0 0.4rem;
+  border-radius: var(--radius-pill);
+  background: rgba(11, 31, 51, 0.08);
+  font-size: 0.8rem;
+}
+
+.projects-feed {
+  min-width: 0;
+}
+
+.projects-stage-row {
+  --bs-gutter-x: 1.75rem;
+  --bs-gutter-y: 1.75rem;
+}
+
+.projects-grid-view {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.35rem;
+}
+
+.project-list-card {
+  height: 100%;
+}
+
+.project-list-button {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.project-meta-tags,
+.project-services,
+.project-thumb-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.project-meta-tags {
+  margin-top: auto;
+  padding-top: 1rem;
+}
+
+.project-chip {
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-soft);
+  color: var(--color-text-muted);
+}
+
+.project-detail-card {
+  position: relative;
+  padding: 1.35rem;
+  align-self: start;
+  height: fit-content;
+  width: 100%;
+}
+
+@media (min-width: 1200px) {
+  .project-detail-card {
+    position: sticky;
+    top: 132px;
+  }
+}
+
+.project-detail-figure {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #dfe8ef, #eef3f7);
+}
+
+.project-detail-image-button {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: zoom-in;
+}
+
+.project-detail-image-hint {
+  position: absolute;
+  right: 0.85rem;
+  bottom: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  background: rgba(11, 31, 51, 0.72);
+  color: var(--color-white);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  pointer-events: none;
+}
+
+.project-detail-head {
+  margin-top: 1.2rem;
+}
+
+.project-detail-head > :last-child {
+  margin-bottom: 0;
+}
+
+.project-detail-summary-line {
+  margin-top: 1rem;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.project-detail-metadata {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+  margin-top: 1.2rem;
+}
+
+.project-detail-metadata article {
+  padding: 0.95rem;
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  background: var(--color-surface-soft);
+}
+
+.project-detail-metadata span {
+  display: block;
+  color: var(--color-text-muted);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.project-detail-metadata strong {
+  display: block;
+  margin-top: 0.45rem;
+  color: var(--color-text);
+}
+
+.project-services {
+  margin-top: 1.2rem;
+}
+
+.project-thumb-row {
+  margin-top: 1.2rem;
+}
+
+.project-thumb {
+  width: 94px;
+  height: 72px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 14px;
+  background: transparent;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.project-thumb.is-active {
+  border-color: rgba(11, 132, 216, 0.38);
+}
+
+.project-image-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+}
+
+.project-image-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(11, 31, 51, 0.82);
+}
+
+.project-image-modal-dialog {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: min(92vw, 1040px);
+  height: min(88vh, 860px);
+  margin: 4vh auto;
+  padding: 3rem 1rem 1rem;
+}
+
+.project-image-modal-media {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 20px;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.35);
+  background: #fff;
+}
+
+.project-image-modal-close {
+  position: absolute;
+  top: 0;
+  right: 0.25rem;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+body.project-image-modal-open {
+  overflow: hidden;
+}
+
+.project-detail-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.35rem;
+  align-items: center;
+}
+
+.project-empty-state {
+  padding: 1.6rem;
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.88);
+}
+
+.project-empty-state h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  color: var(--color-primary-900);
+}
+
+.project-empty-state p {
+  margin: 0.9rem 0 0;
+  color: var(--color-text-muted);
+  line-height: 1.7;
+}
+
+
+@media (max-width: 1199px) {
+  .projects-stage-row {
+    --bs-gutter-y: 1.5rem;
+  }
+
+  .project-detail-card {
+    position: static;
+  }
+}
+
+@media (max-width: 991px) {
+  .projects-grid-view {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 767px) {
+  .projects-hero {
+    padding: 3.75rem 0 2.5rem;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.97) 0%, rgba(255, 255, 255, 0.9) 36%, rgba(247, 250, 252, 0.84) 100%),
+      url("../assets/projects/climatizacion-oficinas-las-condes/cover.png") center center / cover no-repeat;
+  }
+
+  .projects-hero-visual {
+    min-height: 19.5rem;
+  }
+
+  .projects-grid-view,
+  .project-detail-metadata {
+    grid-template-columns: 1fr;
+  }
+
+  .projects-filter-bar,
+  .project-thumb-row {
+    overflow-x: auto;
+    padding-bottom: 0.35rem;
+  }
+
+  .project-detail-image-hint {
+    right: 0.65rem;
+    bottom: 0.65rem;
+    font-size: 0.7rem;
+  }
+
+  .project-image-modal-dialog {
+    width: 94vw;
+    height: 82vh;
+    margin: 6vh auto;
+    padding-top: 2.75rem;
+  }
+
+}

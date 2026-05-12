@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="es">
+  <body style="margin:0; padding:24px; background:#eef3f7; font-family:Arial, Helvetica, sans-serif; color:#163042;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="100%" style="max-width:680px; background:#f8fbfd; border:1px solid #cfdbe5; border-radius:22px; overflow:hidden; box-shadow:0 14px 34px rgba(11,31,51,.08);">
+            <tr>
+              <td style="padding:22px 32px 18px; background:#f8fbfd; border-bottom:1px solid #d6e0e8;">
+                <table role="presentation" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td style="padding:0 14px 0 0; vertical-align:middle; width:56px;">
+                      <img src="cid:{{ brand_lockup_cid }}" alt="MAX SERVICES SPA" width="48" style="display:block; width:48px; height:auto;">
+                    </td>
+                    <td style="vertical-align:middle;">
+                      <div style="color:#163042; font-size:18px; line-height:1.15; font-weight:800; letter-spacing:-0.02em;">MAX SERVICES SPA</div>
+                      <div style="margin-top:5px; color:#6a7681; font-size:12px; line-height:1.35; font-weight:700; letter-spacing:.03em;">CLIMATIZACION, VENTILACION Y SISTEMAS DE AIRE</div>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td style="background:linear-gradient(135deg, #1567b3, #0b84d8); padding:24px 32px 22px;">
+                <div style="display:inline-block; padding:8px 14px; border:1px solid rgba(255,255,255,.4); border-radius:999px; color:#ffffff; font-size:11px; font-weight:700; letter-spacing:.18em; text-transform:uppercase;">
+                  Solicitud registrada
+                </div>
+                <h1 style="margin:18px 0 10px; color:#ffffff; font-size:28px; line-height:1.15;">Hemos recibido tu solicitud</h1>
+                <p style="margin:0; color:#edf4fa; font-size:15px; line-height:1.6;">Gracias por escribirnos. Nuestro equipo revisará los antecedentes y responderá a la brevedad desde <a href="mailto:contacto@maxservicesspa.cl" style="color:#ffffff; text-decoration:underline;">contacto@maxservicesspa.cl</a>.</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:24px 24px 10px; background:#f8fbfd;">
+                <div style="padding:22px 24px; background:#ffffff; border:1px solid #d6e0e8; border-radius:18px;">
+                <p style="margin:0 0 18px; font-size:15px; line-height:1.7;">Hola {{ contact_request.full_name }}, este es el resumen de tu requerimiento registrado en MAX SERVICES SPA.</p>
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;">
+                  <tr>
+                    <td style="padding:12px 0; border-top:1px solid #d6e0e8; font-weight:700; width:34%;">Servicio</td>
+                    <td style="padding:12px 0; border-top:1px solid #d6e0e8;">{{ service_label }}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:12px 0; border-top:1px solid #d6e0e8; font-weight:700;">Empresa o proyecto</td>
+                    <td style="padding:12px 0; border-top:1px solid #d6e0e8;">{{ company_value }}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:12px 0; border-top:1px solid #d6e0e8; font-weight:700;">Ubicacion</td>
+                    <td style="padding:12px 0; border-top:1px solid #d6e0e8;">{{ location_value }}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:12px 0; border-top:1px solid #d6e0e8; font-weight:700;">Telefono</td>
+                    <td style="padding:12px 0; border-top:1px solid #d6e0e8;">{{ phone_value }}</td>
+                  </tr>
+                </table>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:8px 24px 24px; background:#f8fbfd;">
+                <div style="padding:22px 24px; background:#ffffff; border:1px solid #d6e0e8; border-radius:18px;">
+                <h2 style="margin:0 0 14px; color:#1567b3; font-size:12px; font-weight:700; letter-spacing:.18em; text-transform:uppercase;">Mensaje enviado</h2>
+                <div style="padding:18px 20px; background:#f1f6fa; border:1px solid #d6e0e8; border-radius:16px; color:#163042; line-height:1.7;">
+                  {{ contact_request.message|linebreaksbr }}
+                </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td style="background:#0b1f33; padding:16px 32px; color:#edf4fa; font-size:12px;">
+                MAX SERVICES SPA · Climatizacion, ventilacion y sistemas de aire
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

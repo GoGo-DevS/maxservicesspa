@@ -1,0 +1,20 @@
+def site_meta(request):
+    return {
+        "company_name": "MAX SERVICES SpA",
+        "company_short_name": "MAX SERVICES SPA",
+        "company_tagline": "Climatización, ventilación y sistemas de aire",
+        "company_location": "Santiago y Región Metropolitana",
+        "company_address": "Patricio Lynch 9619, El Bosque, Santiago",
+        "company_email": "fda@maxservicesspa.cl",
+        "company_contact_email": "contacto@maxservicesspa.cl",
+        "company_email_secondary": "maxservicesspa@maxservicesspa.cl",
+        "company_email_support": "mia@maxservicesspa.cl",
+        "company_phone_display": "22 559 01 08",
+        "company_phone_href": "tel:+56225690108",
+        "company_hours": "Lunes a viernes de 9:00 a 18:30 hrs",
+        "company_start_year": "2011",
+        "company_start_date": "11 de octubre de 2011",
+        "company_rut": "76.174.166-7",
+        "company_legal_representative": "Felipe Andrés Dinamarca Abarca",
+        "company_website": "www.maxservicesspa.cl",
+    }

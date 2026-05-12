@@ -1,0 +1,552 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page %}
+  {% url 'core:home' as home_url %}
+  {% include "includes/site_header.html" with topbar_text="Santiago y Región Metropolitana | HVAC y mantenciones" topbar_link_href=home_url topbar_link_section="contacto" topbar_link_text="Coordinar evaluación" current_page="home" header_cta_text="Solicitar cotización" %}
+
+  <main>
+    <section class="home-hero" id="inicio">
+      <div class="container section-shell">
+        <div class="row align-items-stretch site-grid-row hero-layout">
+          <div class="col-lg-7 site-col">
+            <div class="hero-copy-block">
+              <span class="section-kicker">MAX SERVICES SPA</span>
+              <h1 class="hero-title">Climatización, ventilación y proyectos HVAC con experiencia ejecutada desde 2011.</h1>
+              <p class="hero-summary">
+                Soluciones HVAC para retail, salud, universidades, oficinas, edificios e inmobiliarias.
+              </p>
+
+              <div class="hero-actions d-flex flex-wrap gap-3">
+                <a class="btn btn-brand-primary" href="{{ home_url }}" data-home-section="contacto">Solicitar evaluación técnica</a>
+                <a class="btn btn-brand-secondary" href="{{ home_url }}" data-home-section="proyectos">Ver experiencia aplicada</a>
+              </div>
+
+              <div class="hero-facts-grid">
+                <article class="hero-fact-card">
+                  <span>Inicio formal</span>
+                  <strong>Empresa iniciada el 11 de octubre de 2011.</strong>
+                </article>
+                <article class="hero-fact-card">
+                  <span>Tipo de trabajo</span>
+                  <strong>Diseño, suministro, montaje, mantención y reparación.</strong>
+                </article>
+                <article class="hero-fact-card">
+                  <span>Áreas atendidas</span>
+                  <strong>Retail, salud, universidades, oficinas, edificios y comunidades.</strong>
+                </article>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-5 site-col">
+            <div class="hero-visual-shell">
+              <div class="hero-photo-stage">
+                <div class="hero-photo-main">
+                  <img class="hero-photo-image" src="{% static 'assets/home/hero-main.png' %}" alt="Técnicos de climatización trabajando en una instalación HVAC corporativa.">
+                <div class="hero-photo-copy">
+                  <span>Ejecución en terreno</span>
+                  <strong>Climatización, mantención y soluciones técnicas para oficinas, comercio, salud y edificios</strong>
+                </div>
+              </div>
+              </div>
+
+              <div class="hero-side-grid">
+                <article class="hero-detail-card">
+                  <p class="hero-detail-kicker">Cobertura</p>
+                  <h2>Santiago y proyectos en regiones</h2>
+                  <p>Atención para instalaciones, mantenciones y proyectos según el tipo de recinto.</p>
+                </article>
+                <article class="hero-detail-card">
+                  <span>Especialidades</span>
+                  <strong>Climatización, ventilación, extracción, inyección de aire y presurización</strong>
+                  <p>Trabajo para constructoras, instituciones, comercio, oficinas y comunidades.</p>
+                </article>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="site-section experience-strip-section experience-stage-section" aria-labelledby="experience-strip-title">
+      <div class="container section-shell">
+        <div class="section-header section-header-inline section-header-panel">
+          <div class="section-intro-panel">
+            <span class="section-kicker">Experiencia</span>
+            <h2 class="section-title" id="experience-strip-title">Trayectoria técnica sostenida desde 2011 en climatización, aire y proyectos ejecutados.</h2>
+          </div>
+          <div class="experience-copy-panel experience-visual-panel" aria-label="Experiencia técnica aplicada de MAX SERVICES SPA">
+            <img class="experience-visual-image" src="{% static 'assets/home/experience-support.png' %}" alt="Instalación técnica HVAC con ductos, equipos y cielo falso en un recinto corporativo.">
+            <div class="experience-visual-overlay">
+              <span>Experiencia aplicada</span>
+              <strong>Retail, salud, universidades, oficinas, edificios y obras.</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="row site-grid-row site-card-row">
+          {% for highlight in experience_highlights %}
+            <div class="col-md-4 site-col">
+              <article class="experience-highlight-card">
+                <span>{{ highlight.label }}</span>
+                <strong>{{ highlight.value }}</strong>
+                <p>{{ highlight.description }}</p>
+              </article>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <section class="site-section experience-stage-section experience-sectors-section" id="diferenciales">
+      <div class="container section-shell">
+        <div class="row align-items-stretch site-grid-row site-grid-row-lg sectors-layout-row">
+          <div class="col-lg-4 site-col">
+            <div class="section-intro-panel section-intro-panel-tall sectors-intro-panel">
+              <span class="section-kicker">Rubros atendidos</span>
+              <h2 class="section-title section-title-balanced">Experiencia aplicada en proyectos de distinta escala y distintos rubros.</h2>
+              <p class="section-copy">
+                Proyectos de climatización, ventilación, presurización y mantención para empresas, instituciones y constructoras.
+              </p>
+            </div>
+          </div>
+
+          <div class="col-lg-8 site-col">
+            <div class="row site-grid-row site-card-row sectors-card-grid">
+              {% for sector in project_sectors %}
+                <div class="col-md-6 site-col">
+                  <article class="why-card">
+                    <h3>{{ sector.title }}</h3>
+                    <p>{{ sector.description }}</p>
+                    <p class="why-card-support">{{ sector.examples }}</p>
+                  </article>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="trust-logos-section" aria-labelledby="trusted-entities-title">
+      <div class="container section-shell trust-logos-shell">
+        <div class="section-header trust-logos-header">
+          <div class="trust-logos-intro">
+            <span class="section-kicker">Empresas y organizaciones</span>
+            <h2 class="section-title" id="trusted-entities-title">Empresas y organizaciones que han confiado en MAX SERVICES SPA.</h2>
+          </div>
+          <p class="section-copy trust-logos-copy">
+            Referencias de empresas e instituciones con las que MAX SERVICES SPA ha trabajado.
+          </p>
+        </div>
+
+        <div class="trust-names-grid">
+          {% for client in featured_clients %}
+            <article class="trust-name-card{% if not client.logo %} trust-name-card-fallback{% endif %}" aria-label="{{ client.name }}">
+              {% if client.logo %}
+                <div class="trust-name-logo-wrap">
+                  <img class="trust-name-logo{% if client.logo_class %} {{ client.logo_class }}{% endif %}" src="{% static client.logo %}" alt="{{ client.logo_alt|default:client.name }}">
+                </div>
+              {% else %}
+                <strong>{{ client.name }}</strong>
+              {% endif %}
+            </article>
+          {% endfor %}
+        </div>
+
+        <div class="trust-name-marquee" aria-label="Otras empresas y organizaciones atendidas">
+          <div class="trust-name-marquee-track">
+            {% for cycle in '123' %}
+              {% for client in additional_clients %}
+                <article class="trust-marquee-item{% if client.logo %} trust-marquee-item-logo{% endif %}" aria-label="{{ client.name }}">
+                  {% if client.logo %}
+                    <img class="trust-marquee-logo" src="{% static client.logo %}" alt="{{ client.logo_alt|default:client.name }}">
+                  {% else %}
+                    <span class="trust-name-chip">{{ client.name }}</span>
+                  {% endif %}
+                </article>
+              {% endfor %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="site-section section-surface-hero section-surface-services" id="servicios">
+      <div class="container section-shell">
+        <div class="row align-items-stretch site-grid-row site-grid-row-lg section-hero-row">
+          <div class="col-lg-7 site-col">
+            <div class="section-hero-copy services-copy-panel">
+            <span class="section-kicker">Servicios principales</span>
+            <h2 class="section-title section-title-balanced">Servicios técnicos estructurados para sistemas de aire, mantención y proyectos.</h2>
+            <p class="section-copy">
+                Ingeniería aplicada, montaje y mantención para obras, edificios, oficinas, comercio e instituciones.
+              </p>
+              <div class="service-focus-strip" aria-label="Pilares de servicio de MAX SERVICES SPA">
+                {% for point in service_focus_points %}
+                  <article class="service-focus-item">
+                    <strong>{{ point.title }}</strong>
+                    <span>{{ point.description }}</span>
+                  </article>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-5 site-col">
+            <div class="section-hero-visual services-hero-visual">
+              <img class="section-hero-image" src="{% static 'assets/home/hero-main.png' %}" alt="Técnico de MAX SERVICES SPA realizando una intervención de climatización en una oficina corporativa.">
+              <div class="section-hero-overlay">
+                <span>Soporte técnico en terreno</span>
+                <strong>Diseño, montaje, mantención y reparación de sistemas HVAC.</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row site-grid-row site-card-row">
+          <div class="col-md-6 col-xl-4 site-col">
+            <article class="service-card-premium">
+              <span class="service-card-index">01</span>
+              <h3>Climatización y aire acondicionado</h3>
+              <p>Diseño, suministro, montaje y optimización de sistemas de climatización.</p>
+              <small>Aplicación en oficinas, edificios, retail, salud y universidades.</small>
+            </article>
+          </div>
+          <div class="col-md-6 col-xl-4 site-col">
+            <article class="service-card-premium">
+              <span class="service-card-index">02</span>
+              <h3>Ventilación e inyección de aire</h3>
+              <p>Sistemas de ventilación e inyección definidos según el proyecto.</p>
+              <small>Renovación de aire en recintos técnicos, edificios y subterráneos.</small>
+            </article>
+          </div>
+          <div class="col-md-6 col-xl-4 site-col">
+            <article class="service-card-premium">
+              <span class="service-card-index">03</span>
+              <h3>Extracción de aire</h3>
+              <p>Diseño, suministro y montaje de sistemas de extracción para distintos recintos.</p>
+              <small>Baños, cocinas, subterráneos y zonas de operación exigente.</small>
+            </article>
+          </div>
+          <div class="col-md-6 col-xl-4 site-col">
+            <article class="service-card-premium">
+              <span class="service-card-index">04</span>
+              <h3>Presurización de caja de escaleras</h3>
+              <p>Diseño y montaje de sistemas para seguridad y control de aire en edificios.</p>
+              <small>Aplicación en circulaciones protegidas y recintos de apoyo.</small>
+            </article>
+          </div>
+          <div class="col-md-6 col-xl-4 site-col">
+            <article class="service-card-premium">
+              <span class="service-card-index">05</span>
+              <h3>Mantención preventiva y correctiva</h3>
+              <p>Mantención de sistemas HVAC según uso, criticidad y estado de la instalación.</p>
+              <small>Revisión programada, ajustes y continuidad de funcionamiento.</small>
+            </article>
+          </div>
+          <div class="col-md-6 col-xl-4 site-col">
+            <article class="service-card-premium">
+              <span class="service-card-index">06</span>
+              <h3>Reparación de sistemas</h3>
+              <p>Diagnóstico de fallas, ajustes técnicos y recuperación de operación.</p>
+              <small>Apoyo para restablecer continuidad operativa y ejecutar mejoras puntuales.</small>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="site-section brands-section" aria-labelledby="brands-section-title">
+      <div class="container section-shell">
+        <div class="section-header section-header-inline">
+          <div>
+            <span class="section-kicker">Marcas y proveedores</span>
+            <h2 class="section-title" id="brands-section-title">Trabajo con marcas reconocidas del rubro y soluciones compatibles con distintos tipos de proyecto.</h2>
+          </div>
+          <p class="section-copy">
+            Marcas con presencia habitual en instalación, mantención y recambio.
+          </p>
+        </div>
+
+        <div class="brand-partners-grid">
+          {% for brand in brand_partners %}
+            <article class="brand-partner-chip" aria-label="{{ brand.name }}">
+              <img class="{{ brand.logo_class }}" src="{% static brand.logo %}" alt="Logo de {{ brand.name }}">
+            </article>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <section class="site-section section-alt section-surface-hero section-surface-projects" id="proyectos">
+      <div class="container section-shell">
+        <div class="section-header section-header-inline">
+          <div>
+            <span class="section-kicker">Proyectos destacados</span>
+            <h2 class="section-title">Referencias de trabajo en retail, salud, oficinas e instituciones.</h2>
+            <p class="section-copy">
+              Referencias resumidas para mostrar tipo de trabajo, sector y experiencia aplicada.
+            </p>
+          </div>
+          <a class="btn btn-brand-outline" href="{% url 'portfolio:projects_index' %}">Ver todos los proyectos</a>
+        </div>
+
+        <div class="project-method-strip" aria-label="Criterios de lectura de proyectos">
+          {% for item in project_method_points %}
+            <article class="project-method-item">
+              <strong>{{ item }}</strong>
+            </article>
+          {% endfor %}
+        </div>
+
+        <div class="project-grid" id="featured-projects-grid" aria-live="polite"></div>
+      </div>
+    </section>
+
+
+    <section class="site-section section-alt section-surface-hero section-surface-company" id="empresa">
+      <div class="container section-shell">
+        <div class="row align-items-start site-grid-row site-grid-row-lg about-section-layout">
+          <div class="col-lg-7 site-col">
+            <div class="about-story-block">
+              <span class="section-kicker">Quiénes somos</span>
+              <h2 class="section-title">Perfil técnico orientado a climatización, mantención y ejecución en terreno.</h2>
+              <p class="about-subtitle">
+                MAX SERVICES SPA se inicia el 11 de octubre de 2011 con foco en climatización, ventilación, mantención y soporte técnico.
+              </p>
+
+              <div class="company-profile-strip" aria-label="Resumen de MAX SERVICES SPA">
+                {% for point in company_profile_points %}
+                  <article class="company-profile-item">
+                    <strong>{{ point.title }}</strong>
+                    <span>{{ point.description }}</span>
+                  </article>
+                {% endfor %}
+              </div>
+
+              <div class="about-story-copy">
+                <p>
+                  Participación en trabajos para retail, salud, universidades, oficinas, edificios y constructoras.
+                </p>
+                <p>
+                  Trabajo orientado a obra, montaje, mantención y respuesta técnica según el requerimiento.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-5 site-col">
+            <div class="about-visual-panel">
+              <div class="about-visual-main">
+                <img class="about-visual-image" src="{% static 'assets/home/about-company.png' %}" alt="Equipo técnico de MAX SERVICES revisando planos y coordinando una instalación HVAC.">
+                <span>Trayectoria en terreno</span>
+                <strong>Planificación y ejecución para proyectos de climatización, aire y ventilación.</strong>
+              </div>
+              <div class="about-visual-note">
+                <p class="mb-1">Razón social: MAX SERVICES SpA | RUT 76.174.166-7</p>
+                <strong>Representante legal: Felipe Andrés Dinamarca Abarca.</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row site-grid-row site-card-row about-pillars-grid">
+          <div class="col-md-4 site-col">
+            <article class="about-pillar-card">
+              <h3>Inicio y continuidad</h3>
+              <p>Empresa iniciada en 2011 con trabajo sostenido en HVAC.</p>
+            </article>
+          </div>
+          <div class="col-md-4 site-col">
+            <article class="about-pillar-card">
+              <h3>Capacidad técnica</h3>
+              <p>Diseño, suministro, montaje y mantención según el proyecto.</p>
+            </article>
+          </div>
+          <div class="col-md-4 site-col">
+            <article class="about-pillar-card">
+              <h3>Respaldo comercial</h3>
+              <p>Experiencia con constructoras, instituciones, retail, oficinas y edificios.</p>
+            </article>
+          </div>
+        </div>
+
+        <div class="about-closing-quote">
+          <p>Experiencia, criterio técnico y ejecución en terreno desde 2011.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact-section section-surface-hero section-surface-contact" id="contacto">
+      <div class="container section-shell">
+        <div class="contact-shell">
+          <div class="row align-items-stretch site-grid-row contact-top-row">
+            <div class="col-lg-5 site-col">
+              <div class="contact-copy-block contact-copy-panel">
+                <span class="section-kicker">Contacto</span>
+                <h2 class="section-title">Solicita evaluación técnica, cotización o plan de mantención.</h2>
+                <p class="section-copy">
+                  Completa el formulario con tus antecedentes y el tipo de requerimiento. El equipo revisa cada solicitud y coordina el siguiente paso según el alcance técnico y comercial del trabajo.
+                </p>
+
+                <div class="contact-meta-list" aria-label="Datos comerciales de MAX SERVICES SPA">
+                  <a href="mailto:{{ company_contact_email }}">{{ company_contact_email }}</a>
+                  <a href="{{ company_phone_href }}">{{ company_phone_display }}</a>
+                  <span>{{ company_address }}</span>
+                  <span>{{ company_hours }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-7 site-col">
+              <div class="contact-form-card">
+                {% if messages %}
+                  <div class="contact-status-stack">
+                    {% for message in messages %}
+                      <div class="contact-status-alert{% if message.tags %} is-{{ message.tags }}{% endif %}" role="status">
+                        {{ message }}
+                      </div>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+
+                {% if contact_form.errors %}
+                  <div class="contact-status-stack">
+                    <div class="contact-status-alert is-error" role="alert">
+                      Completa los datos marcados para que podamos revisar correctamente la solicitud.
+                    </div>
+                  </div>
+                {% endif %}
+
+                {% if contact_form.non_field_errors %}
+                  <div class="contact-status-stack">
+                    {% for error in contact_form.non_field_errors %}
+                      <div class="contact-status-alert is-error" role="alert">{{ error }}</div>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+
+                <form method="post" action="{{ home_url }}#contacto" novalidate>
+                  {% csrf_token %}
+                  <div class="row site-grid-row site-form-row">
+                    <div class="col-md-6 site-col">
+                      <label class="form-label" for="{{ contact_form.full_name.id_for_label }}">{{ contact_form.full_name.label }}</label>
+                      {{ contact_form.full_name }}
+                      {% for error in contact_form.full_name.errors %}
+                        <p class="field-error">{{ error }}</p>
+                      {% endfor %}
+                    </div>
+                    <div class="col-md-6 site-col">
+                      <label class="form-label" for="{{ contact_form.company.id_for_label }}">{{ contact_form.company.label }}</label>
+                      {{ contact_form.company }}
+                      {% for error in contact_form.company.errors %}
+                        <p class="field-error">{{ error }}</p>
+                      {% endfor %}
+                    </div>
+                    <div class="col-md-6 site-col">
+                      <label class="form-label" for="{{ contact_form.email.id_for_label }}">{{ contact_form.email.label }}</label>
+                      {{ contact_form.email }}
+                      {% for error in contact_form.email.errors %}
+                        <p class="field-error">{{ error }}</p>
+                      {% endfor %}
+                    </div>
+                    <div class="col-md-6 site-col">
+                      <label class="form-label" for="{{ contact_form.phone.id_for_label }}">{{ contact_form.phone.label }}</label>
+                      {{ contact_form.phone }}
+                      {% for error in contact_form.phone.errors %}
+                        <p class="field-error">{{ error }}</p>
+                      {% endfor %}
+                    </div>
+                    <div class="col-12 site-col">
+                      <label class="form-label" for="{{ contact_form.service.id_for_label }}">{{ contact_form.service.label }}</label>
+                      {{ contact_form.service }}
+                      {% for error in contact_form.service.errors %}
+                        <p class="field-error">{{ error }}</p>
+                      {% endfor %}
+                    </div>
+                    <div class="col-12 site-col">
+                      <label class="form-label" for="{{ contact_form.region.id_for_label }}">{{ contact_form.region.label }}</label>
+                      {{ contact_form.region }}
+                      {% for error in contact_form.region.errors %}
+                        <p class="field-error">{{ error }}</p>
+                      {% endfor %}
+                    </div>
+                    <div class="col-md-6 site-col">
+                      <label class="form-label" for="{{ contact_form.city.id_for_label }}">{{ contact_form.city.label }}</label>
+                      {{ contact_form.city }}
+                      {% for error in contact_form.city.errors %}
+                        <p class="field-error">{{ error }}</p>
+                      {% endfor %}
+                    </div>
+                    <div class="col-md-6 site-col">
+                      <label class="form-label" for="{{ contact_form.commune.id_for_label }}">{{ contact_form.commune.label }}</label>
+                      {{ contact_form.commune }}
+                      {% for error in contact_form.commune.errors %}
+                        <p class="field-error">{{ error }}</p>
+                      {% endfor %}
+                    </div>
+                    <div class="col-12 site-col">
+                      <label class="form-label" for="{{ contact_form.message.id_for_label }}">{{ contact_form.message.label }}</label>
+                      {{ contact_form.message }}
+                      {% for error in contact_form.message.errors %}
+                        <p class="field-error">{{ error }}</p>
+                      {% endfor %}
+                    </div>
+                    <div class="col-12 site-col d-flex flex-wrap gap-3 align-items-center">
+                      <button class="btn btn-brand-primary" type="submit">Enviar solicitud</button>
+                      <span class="form-note">Completa los datos marcados para que el equipo pueda revisar y responder el requerimiento.</span>
+                    </div>
+                  </div>
+                </form>
+                <script id="contact-location-map" type="application/json">{{ contact_form.location_map_json|safe }}</script>
+              </div>
+            </div>
+          </div>
+
+          <div class="row align-items-start site-grid-row contact-bottom-row">
+            <div class="col-lg-5 site-col">
+              <div class="contact-direct-grid">
+                <article class="contact-direct-card">
+                  <strong>Canales disponibles</strong>
+                  <p>Atención por correo y teléfono para solicitudes comerciales, visitas, mantenciones y requerimientos técnicos.</p>
+                </article>
+                <article class="contact-direct-card">
+                  <strong>Horario y cobertura</strong>
+                  <p>Atención de lunes a viernes de 9:00 a 18:30 hrs para Santiago, Región Metropolitana y proyectos en otras zonas según requerimiento.</p>
+                </article>
+              </div>
+            </div>
+            <div class="col-lg-7 site-col">
+              <div class="section-hero-visual section-hero-visual-compact contact-intro-visual contact-intro-visual-bottom">
+                <img class="section-hero-image" src="{% static 'assets/home/contact-evaluation.png' %}" alt="Técnico de MAX SERVICES SPA evaluando un equipo de climatización en terreno.">
+                <div class="section-hero-overlay">
+                  <span>Atención comercial</span>
+                  <strong>Evaluación técnica, coordinación y respuesta para proyectos, mantenciones y requerimientos en terreno.</strong>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 site-col">
+              <div class="contact-map-inline-card">
+                <iframe
+                  title="Ubicación de MAX SERVICES SPA en Patricio Lynch 9619, El Bosque, Santiago"
+                  src="https://www.google.com/maps?q=Patricio+Lynch+9619,+El+Bosque,+Santiago,+Chile&z=16&output=embed"
+                  loading="lazy"
+                  referrerpolicy="no-referrer-when-downgrade"
+                  allowfullscreen>
+                </iframe>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  {% include "includes/site_footer.html" with footer_description="Empresa orientada a climatización, aire acondicionado, ventilación, extracción, presurización y mantenciones para oficinas, comercio, edificios y recintos operativos." footer_column_title="Servicios" footer_column_items="Climatización|Aire acondicionado|Ventilación|Extracción|Presurización|Mantenciones" footer_bottom_copy="MAX SERVICES SPA | Soluciones HVAC para Santiago y la Región Metropolitana." footer_bottom_href=home_url footer_bottom_section="inicio" footer_bottom_label="Volver arriba" %}
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'js/home-projects.js' %}"></script>
+  <script src="{% static 'js/contact-location.js' %}"></script>
+{% endblock %}
