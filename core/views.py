@@ -1,15 +1,29 @@
+import logging
 from smtplib import SMTPException
+from urllib.parse import urlparse
+from xml.sax.saxutils import escape
 
+from django.conf import settings
 from django.contrib import messages
 from django.core.mail import BadHeaderError
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
 from core.emailing import send_contact_request_notification
 from core.forms import ContactRequestForm
 from core.locations import get_city_choices, get_commune_choices
+from core.seo import absolute_static_url
+from core.sitemaps import StaticViewSitemap
 from portfolio.catalog import get_project_catalog
+
+
+logger = logging.getLogger(__name__)
+
+
+class SitemapSite:
+    def __init__(self, domain):
+        self.domain = domain
 
 
 def home(request):
@@ -23,7 +37,13 @@ def home(request):
                     request,
                     "Solicitud enviada correctamente. El equipo revisará los antecedentes y responderá a la brevedad.",
                 )
-            except (OSError, SMTPException, BadHeaderError):
+            except (OSError, SMTPException, BadHeaderError) as exc:
+                logger.exception(
+                    "Contact form email notification failed. exception_type=%s exception_message=%s password_present=%s",
+                    exc.__class__.__name__,
+                    str(exc),
+                    bool(settings.EMAIL_HOST_PASSWORD),
+                )
                 messages.warning(
                     request,
                     "La solicitud fue registrada correctamente, pero el aviso por correo no pudo enviarse en este momento.",
@@ -36,8 +56,10 @@ def home(request):
         request,
         "core/home.html",
         {
-            "page_title": "MAX SERVICES SpA | Climatización, Ventilación y Mantenciones en Santiago",
-            "page_description": "MAX SERVICES SpA desarrolla climatización, ventilación, extracción, inyección de aire, presurización, mantención, reparación y proyectos técnicos desde 2011, con experiencia en retail, salud, universidades, oficinas y edificios.",
+            "page_title": "MAX SERVICES SPA | Climatización, ventilación y proyectos HVAC",
+            "page_description": "Empresa de climatización y ventilación en Santiago. Instalación, mantención, extracción, presurización, inyección de aire y proyectos HVAC para empresas, edificios e instituciones.",
+            "canonical_path": "/",
+            "og_image": absolute_static_url("assets/home/hero-main.png"),
             "project_catalog": get_project_catalog(),
             "contact_form": contact_form,
             "experience_highlights": [
@@ -310,3 +332,43 @@ def location_communes_api(request):
             ],
         }
     )
+
+
+def robots_txt(request):
+    content = "\n".join(
+        [
+            "User-agent: *",
+            "Disallow: /admin/",
+            f"Sitemap: {settings.SITE_URL}/sitemap.xml",
+            "",
+        ]
+    )
+    return HttpResponse(content, content_type="text/plain")
+
+
+def sitemap_xml(request):
+    parsed_site_url = urlparse(settings.SITE_URL)
+    protocol = parsed_site_url.scheme or "https"
+    domain = parsed_site_url.netloc
+    sitemap = StaticViewSitemap()
+    urls = sitemap.get_urls(
+        page=1,
+        site=SitemapSite(domain),
+        protocol=protocol,
+    )
+    lines = [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    ]
+    for url in urls:
+        lines.extend(
+            [
+                "  <url>",
+                f"    <loc>{escape(url['location'])}</loc>",
+                f"    <changefreq>{escape(url['changefreq'])}</changefreq>",
+                f"    <priority>{url['priority']}</priority>",
+                "  </url>",
+            ]
+        )
+    lines.append("</urlset>")
+    return HttpResponse("\n".join(lines), content_type="application/xml")

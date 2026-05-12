@@ -1,3 +1,4 @@
+import logging
 from email.mime.image import MIMEImage
 from mimetypes import guess_type
 from pathlib import Path
@@ -6,6 +7,8 @@ from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 
+
+logger = logging.getLogger(__name__)
 
 SERVICE_LABELS = {
     "climatizacion": "Climatizacion",
@@ -55,7 +58,16 @@ def _send_html_email(*, subject, to, html_template, text_template, context, repl
             logo.add_header("Content-ID", f"<{BRAND_LOCKUP_CID}>")
             logo.add_header("Content-Disposition", "inline", filename=BRAND_LOCKUP_PATH.name)
             message.attach(logo)
-    message.send(fail_silently=False)
+    try:
+        message.send(fail_silently=False)
+    except Exception as exc:
+        logger.exception(
+            "Email send failed. exception_type=%s exception_message=%s password_present=%s",
+            exc.__class__.__name__,
+            str(exc),
+            bool(settings.EMAIL_HOST_PASSWORD),
+        )
+        raise
 
 
 def send_contact_request_notification(contact_request):
