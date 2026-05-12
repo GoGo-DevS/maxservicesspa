@@ -61,6 +61,20 @@ def _send_html_email(*, subject, to, html_template, text_template, context, repl
     try:
         message.send(fail_silently=False)
     except Exception as exc:
+        print("SMTP DEBUG START", flush=True)
+        print(f"exception_type={exc.__class__.__name__}", flush=True)
+        print(f"exception_message={exc}", flush=True)
+        print(f"EMAIL_HOST={settings.EMAIL_HOST}", flush=True)
+        print(f"EMAIL_PORT={settings.EMAIL_PORT}", flush=True)
+        print(f"EMAIL_USE_TLS={settings.EMAIL_USE_TLS}", flush=True)
+        print(f"EMAIL_USE_SSL={settings.EMAIL_USE_SSL}", flush=True)
+        print(f"EMAIL_HOST_USER={settings.EMAIL_HOST_USER}", flush=True)
+        print(f"DEFAULT_FROM_EMAIL={settings.DEFAULT_FROM_EMAIL}", flush=True)
+        print(f"CONTACT_EMAIL={settings.CONTACT_EMAIL}", flush=True)
+        print(
+            f"EMAIL_HOST_PASSWORD presente={'Sí' if settings.EMAIL_HOST_PASSWORD else 'No'}",
+            flush=True,
+        )
         logger.exception(
             "Email send failed. exception_type=%s exception_message=%s password_present=%s",
             exc.__class__.__name__,
