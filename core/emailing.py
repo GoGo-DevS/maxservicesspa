@@ -4,6 +4,8 @@ from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 
+from core.seo import absolute_static_url
+
 
 logger = logging.getLogger(__name__)
 
@@ -25,6 +27,7 @@ def _build_contact_context(contact_request):
         "phone_value": contact_request.phone or "No informado",
         "company_value": contact_request.company or "No informado",
         "location_value": contact_request.location or "No informado",
+        "brand_logo_url": absolute_static_url("assets/brand/max-services-symbol-real-v2.png"),
     }
 
 
