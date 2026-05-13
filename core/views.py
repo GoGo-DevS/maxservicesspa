@@ -136,9 +136,9 @@ def home(request):
                 },
                 {
                     "name": "SYP",
-                    "logo": "assets/clients/grid/syp.svg",
+                    "logo": "assets/clients/grid/syp.webp",
                     "logo_alt": "Logo de SYP",
-                    "logo_class": "logo-scale-up-lg",
+                    "logo_class": "logo-scale-up",
                     "url": "https://syplimitada.cl/",
                 },
                 {
