@@ -129,10 +129,10 @@ def home(request):
                     "logo_class": "logo-scale-up-sm",
                 },
                 {
-                    "name": "Inverko",
-                    "logo": "assets/clients/grid/inverko.png",
-                    "logo_alt": "Logo de Inverko",
-                    "logo_class": "logo-scale-up-max",
+                    "name": "SYP",
+                    "logo": "assets/clients/grid/syp.svg",
+                    "logo_alt": "Logo de SYP",
+                    "logo_class": "logo-scale-up-lg",
                 },
                 {
                     "name": "Desco",
