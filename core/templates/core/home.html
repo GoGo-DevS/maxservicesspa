@@ -400,11 +400,11 @@
             </div>
 
             <div class="col-lg-7 site-col">
-              <div class="contact-form-card">
+              <div class="contact-form-card" id="formulario">
                 {% if messages %}
                   <div class="contact-status-stack">
                     {% for message in messages %}
-                      <div class="contact-status-alert{% if message.tags %} is-{{ message.tags }}{% endif %}" role="status">
+                      <div class="contact-status-alert{% if 'warning' in message.tags %} is-error{% elif message.tags %} is-{{ message.tags }}{% endif %}" role="status">
                         {{ message }}
                       </div>
                     {% endfor %}

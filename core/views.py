@@ -48,7 +48,7 @@ def home(request):
                     request,
                     "La solicitud fue registrada correctamente, pero el aviso por correo no pudo enviarse en este momento.",
                 )
-            return redirect(f"{reverse('core:home')}?focus=contacto")
+            return redirect(f"{reverse('core:home')}?focus=formulario")
     else:
         contact_form = ContactRequestForm()
 
