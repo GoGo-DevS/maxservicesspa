@@ -187,3 +187,7 @@ CONTACT_EMAIL = os.getenv(
     EMAIL_HOST_USER or "contacto@maxservicesspa.cl",
 )
 EMAIL_BRAND_LOGO_URL = os.getenv("EMAIL_BRAND_LOGO_URL", "")
+EMAIL_BRAND_LOGO_FALLBACK_URL = (
+    "https://raw.githubusercontent.com/GoGo-DevS/maxservicesspa/main/"
+    "static/assets/brand/max-services-symbol-real-v2.png"
+)

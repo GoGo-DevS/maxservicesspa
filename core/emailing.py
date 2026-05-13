@@ -21,8 +21,13 @@ SERVICE_LABELS = {
 
 
 def _build_contact_context(contact_request):
-    brand_logo_url = getattr(settings, "EMAIL_BRAND_LOGO_URL", "") or absolute_static_url(
-        "assets/brand/max-services-symbol-real-v2.png"
+    configured_logo_url = getattr(settings, "EMAIL_BRAND_LOGO_URL", "").strip()
+    if ".onrender.com/static/" in configured_logo_url:
+        configured_logo_url = ""
+    brand_logo_url = (
+        configured_logo_url
+        or getattr(settings, "EMAIL_BRAND_LOGO_FALLBACK_URL", "").strip()
+        or absolute_static_url("assets/brand/max-services-symbol-real-v2.png")
     )
     return {
         "contact_request": contact_request,
@@ -37,6 +42,7 @@ def _build_contact_context(contact_request):
 def _send_html_email(*, subject, to, html_template, text_template, context, reply_to=None):
     text_body = render_to_string(text_template, context)
     html_body = render_to_string(html_template, context)
+    print(f"EMAIL BRAND LOGO URL={context.get('brand_logo_url')}", flush=True)
     message = EmailMultiAlternatives(
         subject,
         text_body,
