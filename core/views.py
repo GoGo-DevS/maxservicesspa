@@ -85,12 +85,14 @@ def home(request):
                     "logo": "assets/clients/grid/logo-boetsch.svg",
                     "logo_alt": "Logo de Boetsch",
                     "logo_class": "logo-standard-wide",
+                    "url": "https://boetsch.cl/",
                 },
                 {
                     "name": "Echeverría Izquierdo",
                     "logo": "assets/clients/grid/echeverria_izq.png",
                     "logo_alt": "Logo de Echeverría Izquierdo",
                     "logo_class": "logo-scale-up",
+                    "url": "https://eiii.cl/",
                 },
                 {
                     "name": "Gespania",
@@ -109,30 +111,35 @@ def home(request):
                     "logo": "assets/clients/grid/siena.svg",
                     "logo_alt": "Logo de Siena",
                     "logo_class": "logo-scale-up",
+                    "url": "https://www.siena.cl/",
                 },
                 {
                     "name": "Universidad Diego Portales",
                     "logo": "assets/clients/grid/Logo_Universidad_Diego_Portales.png",
                     "logo_alt": "Logo de Universidad Diego Portales",
                     "logo_class": "logo-scale-up-sm",
+                    "url": "https://www.udp.cl/",
                 },
                 {
                     "name": "Hospital Luis Calvo Mackenna",
                     "logo": "assets/clients/grid/hospital_lcm.png",
                     "logo_alt": "Logo de Hospital Luis Calvo Mackenna",
                     "logo_class": "logo-scale-up-lg",
+                    "url": "https://www.calvomackenna.cl/",
                 },
                 {
                     "name": "Universidad Autónoma de Chile",
                     "logo": "assets/clients/grid/Universidad-autonoma-de-chile.png",
                     "logo_alt": "Logo de Universidad Autónoma de Chile",
                     "logo_class": "logo-scale-up-sm",
+                    "url": "https://www.uautonoma.cl/",
                 },
                 {
                     "name": "SYP",
                     "logo": "assets/clients/grid/syp.svg",
                     "logo_alt": "Logo de SYP",
                     "logo_class": "logo-scale-up-lg",
+                    "url": "https://syplimitada.cl/",
                 },
                 {
                     "name": "Desco",
@@ -151,6 +158,7 @@ def home(request):
                     "logo": "assets/clients/grid/Moller y Pérez-Cotapos.png",
                     "logo_alt": "Logo de Moller y Pérez-Cotapos",
                     "logo_class": "logo-scale-up",
+                    "url": "https://www.mpc.cl/",
                 },
             ],
             "additional_clients": [
@@ -158,6 +166,7 @@ def home(request):
                     "name": "Ingevec",
                     "logo": "assets/clients/grid/Ingevec.png",
                     "logo_alt": "Logo de Ingevec",
+                    "url": "https://www.ingevec.cl/",
                 },
                 {
                     "name": "Tasco",
@@ -188,6 +197,7 @@ def home(request):
                     "name": "Pacal",
                     "logo": "assets/clients/marquee/pacal.png",
                     "logo_alt": "Logo de Pacal",
+                    "url": "https://www.pacal.cl/",
                 },
                 {
                     "name": "Grevia",
@@ -215,6 +225,7 @@ def home(request):
                     "name": "El Volcán",
                     "logo": "assets/clients/marquee/logo_elvolcan.png",
                     "logo_alt": "Logo de El Volcán",
+                    "url": "https://www.elvolcan.cl/",
                 },
                 {
                     "name": "DVC",
@@ -258,12 +269,41 @@ def home(request):
                 },
             ],
             "brand_partners": [
-                {"name": "CLARK", "logo": "assets/brands/clark.webp", "logo_class": "brand-logo-clark"},
-                {"name": "LG", "logo": "assets/brands/lg.png", "logo_class": "brand-logo-lg"},
-                {"name": "BRAVO AIRES", "logo": "assets/brands/bravo-aires.png", "logo_class": "brand-logo-bravo"},
-                {"name": "FRIGAIR", "logo": "assets/brands/frigair.png", "logo_class": "brand-logo-frigair"},
-                {"name": "GREE", "logo": "assets/brands/gree.png", "logo_class": "brand-logo-gree"},
-                {"name": "ANWO", "logo": "assets/brands/anwo.png", "logo_class": "brand-logo-anwo"},
+                {
+                    "name": "CLARK",
+                    "logo": "assets/brands/clark.webp",
+                    "logo_class": "brand-logo-clark",
+                    "url": "https://clark-airconditioning.com/",
+                },
+                {
+                    "name": "LG",
+                    "logo": "assets/brands/lg.png",
+                    "logo_class": "brand-logo-lg",
+                    "url": "https://www.lg.com/cl/aire-acondicionado/",
+                },
+                {
+                    "name": "BRAVO AIRES",
+                    "logo": "assets/brands/bravo-aires.png",
+                    "logo_class": "brand-logo-bravo",
+                    "url": "https://bravoclimatizacion.cl/",
+                },
+                {
+                    "name": "FRIGAIR",
+                    "logo": "assets/brands/frigair.png",
+                    "logo_class": "brand-logo-frigair",
+                },
+                {
+                    "name": "GREE",
+                    "logo": "assets/brands/gree.png",
+                    "logo_class": "brand-logo-gree",
+                    "url": "https://www.gree.cl/",
+                },
+                {
+                    "name": "ANWO",
+                    "logo": "assets/brands/anwo.png",
+                    "logo_class": "brand-logo-anwo",
+                    "url": "https://www.anwo.cl/",
+                },
             ],
             "service_focus_points": [
                 {

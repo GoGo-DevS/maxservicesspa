@@ -146,10 +146,20 @@
             <article class="trust-name-card{% if not client.logo %} trust-name-card-fallback{% endif %}" aria-label="{{ client.name }}">
               {% if client.logo %}
                 <div class="trust-name-logo-wrap">
-                  <img class="trust-name-logo{% if client.logo_class %} {{ client.logo_class }}{% endif %}" src="{% static client.logo %}" alt="{{ client.logo_alt|default:client.name }}">
+                  {% if client.url %}
+                    <a class="logo-link" href="{{ client.url }}" target="_blank" rel="noopener noreferrer" aria-label="Abrir sitio web de {{ client.name }}">
+                      <img class="trust-name-logo{% if client.logo_class %} {{ client.logo_class }}{% endif %}" src="{% static client.logo %}" alt="{{ client.logo_alt|default:client.name }}">
+                    </a>
+                  {% else %}
+                    <img class="trust-name-logo{% if client.logo_class %} {{ client.logo_class }}{% endif %}" src="{% static client.logo %}" alt="{{ client.logo_alt|default:client.name }}">
+                  {% endif %}
                 </div>
               {% else %}
-                <strong>{{ client.name }}</strong>
+                {% if client.url %}
+                  <a class="logo-link" href="{{ client.url }}" target="_blank" rel="noopener noreferrer" aria-label="Abrir sitio web de {{ client.name }}"><strong>{{ client.name }}</strong></a>
+                {% else %}
+                  <strong>{{ client.name }}</strong>
+                {% endif %}
               {% endif %}
             </article>
           {% endfor %}
@@ -161,9 +171,19 @@
               {% for client in additional_clients %}
                 <article class="trust-marquee-item{% if client.logo %} trust-marquee-item-logo{% endif %}" aria-label="{{ client.name }}">
                   {% if client.logo %}
-                    <img class="trust-marquee-logo" src="{% static client.logo %}" alt="{{ client.logo_alt|default:client.name }}">
+                    {% if client.url %}
+                      <a class="logo-link" href="{{ client.url }}" target="_blank" rel="noopener noreferrer" aria-label="Abrir sitio web de {{ client.name }}">
+                        <img class="trust-marquee-logo" src="{% static client.logo %}" alt="{{ client.logo_alt|default:client.name }}">
+                      </a>
+                    {% else %}
+                      <img class="trust-marquee-logo" src="{% static client.logo %}" alt="{{ client.logo_alt|default:client.name }}">
+                    {% endif %}
                   {% else %}
-                    <span class="trust-name-chip">{{ client.name }}</span>
+                    {% if client.url %}
+                      <a class="trust-name-chip" href="{{ client.url }}" target="_blank" rel="noopener noreferrer">{{ client.name }}</a>
+                    {% else %}
+                      <span class="trust-name-chip">{{ client.name }}</span>
+                    {% endif %}
                   {% endif %}
                 </article>
               {% endfor %}
@@ -272,7 +292,13 @@
         <div class="brand-partners-grid">
           {% for brand in brand_partners %}
             <article class="brand-partner-chip" aria-label="{{ brand.name }}">
-              <img class="{{ brand.logo_class }}" src="{% static brand.logo %}" alt="Logo de {{ brand.name }}">
+              {% if brand.url %}
+                <a class="logo-link" href="{{ brand.url }}" target="_blank" rel="noopener noreferrer" aria-label="Abrir sitio web de {{ brand.name }}">
+                  <img class="{{ brand.logo_class }}" src="{% static brand.logo %}" alt="Logo de {{ brand.name }}">
+                </a>
+              {% else %}
+                <img class="{{ brand.logo_class }}" src="{% static brand.logo %}" alt="Logo de {{ brand.name }}">
+              {% endif %}
             </article>
           {% endfor %}
         </div>
@@ -427,7 +453,7 @@
                   </div>
                 {% endif %}
 
-                <form method="post" action="{{ home_url }}#contacto" novalidate>
+                <form method="post" action="{{ home_url }}#formulario" novalidate>
                   {% csrf_token %}
                   <div class="row site-grid-row site-form-row">
                     <div class="col-md-6 site-col">

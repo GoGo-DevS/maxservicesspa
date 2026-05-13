@@ -70,6 +70,7 @@
 
     var pendingSection = window.sessionStorage.getItem(pendingSectionKey);
     var focusSection = new URLSearchParams(window.location.search).get("focus");
+    var hashSection = window.location.hash ? window.location.hash.slice(1) : "";
     clearHomeHash();
 
     if (pendingSection) {
@@ -89,6 +90,16 @@
           scrollToTarget(focusSection);
           setActiveHomeNav(focusSection);
           window.history.replaceState(null, "", homeUrl);
+        });
+      });
+      return;
+    }
+
+    if (hashSection) {
+      window.requestAnimationFrame(function () {
+        window.requestAnimationFrame(function () {
+          scrollToTarget(hashSection === "contacto" ? "formulario" : hashSection);
+          setActiveHomeNav(hashSection === "formulario" ? "contacto" : hashSection);
         });
       });
       return;
