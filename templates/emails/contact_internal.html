@@ -1,82 +1,94 @@
 <!doctype html>
 <html lang="es">
-  <body style="margin:0; padding:24px; background:#eef3f7; font-family:Arial, Helvetica, sans-serif; color:#163042;">
+  <body style="margin:0; padding:12px; background:#eef3f7; font-family:Arial, Helvetica, sans-serif; color:#163042;">
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
       <tr>
         <td align="center">
-          <table role="presentation" width="100%" style="max-width:680px; background:#f8fbfd; border:1px solid #cfdbe5; border-radius:22px; overflow:hidden; box-shadow:0 14px 34px rgba(11,31,51,.08);">
+          <table role="presentation" width="100%" style="max-width:620px; background:#f8fbfd; border:1px solid #cfdbe5; border-radius:18px; overflow:hidden; box-shadow:0 14px 34px rgba(11,31,51,.08);">
             <tr>
-              <td style="padding:22px 32px 18px; background:#f8fbfd; border-bottom:1px solid #d6e0e8;">
+              <td style="padding:18px 22px 16px; background:#f8fbfd; border-bottom:1px solid #d6e0e8;">
                 <table role="presentation" cellspacing="0" cellpadding="0">
                   <tr>
-                    <td style="padding:0 14px 0 0; vertical-align:middle; width:56px;">
-                      <img src="{{ brand_logo_url }}" alt="MAX SERVICES SPA" width="48" style="display:block; width:48px; height:auto;">
+                    <td style="padding:0 12px 0 0; vertical-align:middle; width:46px;">
+                      <img src="{{ brand_logo_url }}" alt="MAX SERVICES SPA" width="40" style="display:block; width:40px; height:auto;">
                     </td>
                     <td style="vertical-align:middle;">
-                      <div style="color:#163042; font-size:18px; line-height:1.15; font-weight:800; letter-spacing:-0.02em;">MAX SERVICES SPA</div>
-                      <div style="margin-top:5px; color:#6a7681; font-size:12px; line-height:1.35; font-weight:700; letter-spacing:.03em;">CLIMATIZACION, VENTILACION Y SISTEMAS DE AIRE</div>
+                      <div style="color:#163042; font-size:17px; line-height:1.16; font-weight:800; letter-spacing:-0.01em;">MAX SERVICES SPA</div>
+                      <div style="margin-top:4px; color:#6a7681; font-size:11px; line-height:1.35; font-weight:700; letter-spacing:.02em;">CLIMATIZACION, VENTILACION Y SISTEMAS DE AIRE</div>
                     </td>
                   </tr>
                 </table>
               </td>
             </tr>
             <tr>
-              <td style="background:linear-gradient(135deg, #1567b3, #0b84d8); padding:24px 32px 22px;">
-                <div style="display:inline-block; padding:8px 14px; border:1px solid rgba(255,255,255,.4); border-radius:999px; color:#ffffff; font-size:11px; font-weight:700; letter-spacing:.18em; text-transform:uppercase;">
+              <td style="background:linear-gradient(135deg, #1567b3, #0b84d8); padding:20px 22px 22px;">
+                <div style="display:inline-block; padding:7px 12px; border:1px solid rgba(255,255,255,.4); border-radius:999px; color:#ffffff; font-size:10px; font-weight:700; letter-spacing:.14em; text-transform:uppercase;">
                   Nueva oportunidad comercial
                 </div>
-                <h1 style="margin:18px 0 10px; color:#ffffff; font-size:30px; line-height:1.1;">Nueva consulta recibida</h1>
-                <p style="margin:0; color:#edf4fa; font-size:15px; line-height:1.6;">Se registró un nuevo requerimiento desde la web corporativa. A continuación encontrarás el resumen ejecutivo del lead y los datos para dar continuidad comercial.</p>
+                <h1 style="margin:16px 0 10px; color:#ffffff; font-size:24px; line-height:1.18;">Nueva consulta recibida</h1>
+                <p style="margin:0; color:#edf4fa; font-size:14px; line-height:1.55;">Se registró un nuevo requerimiento desde la web corporativa. A continuación encontrarás los datos para dar continuidad comercial.</p>
               </td>
             </tr>
             <tr>
-              <td style="padding:24px 24px 10px; background:#f8fbfd;">
-                <div style="padding:22px 24px; background:#ffffff; border:1px solid #d6e0e8; border-radius:18px;">
-                <h2 style="margin:0 0 16px; color:#1567b3; font-size:12px; font-weight:700; letter-spacing:.18em; text-transform:uppercase;">Resumen del lead</h2>
+              <td style="padding:18px 16px 8px; background:#f8fbfd;">
+                <div style="padding:18px 18px; background:#ffffff; border:1px solid #d6e0e8; border-radius:16px;">
+                <h2 style="margin:0 0 14px; color:#1567b3; font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase;">Resumen del lead</h2>
                 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;">
                   <tr>
-                    <td style="padding:12px 0; border-top:1px solid #d6e0e8; font-weight:700; width:34%;">Nombre</td>
-                    <td style="padding:12px 0; border-top:1px solid #d6e0e8;">{{ contact_request.full_name }}</td>
+                    <td style="padding:12px 0; border-top:1px solid #d6e0e8;">
+                      <div style="color:#5e6a75; font-size:11px; font-weight:800; letter-spacing:.08em; text-transform:uppercase;">Nombre</div>
+                      <div style="margin-top:5px; color:#163042; font-size:14px; line-height:1.45;">{{ contact_request.full_name }}</div>
+                    </td>
                   </tr>
                   <tr>
-                    <td style="padding:12px 0; border-top:1px solid #d6e0e8; font-weight:700;">Correo</td>
-                    <td style="padding:12px 0; border-top:1px solid #d6e0e8;"><a href="mailto:{{ contact_request.email }}" style="color:#0b84d8; text-decoration:none;">{{ contact_request.email }}</a></td>
+                    <td style="padding:12px 0; border-top:1px solid #d6e0e8;">
+                      <div style="color:#5e6a75; font-size:11px; font-weight:800; letter-spacing:.08em; text-transform:uppercase;">Correo</div>
+                      <div style="margin-top:5px; color:#163042; font-size:14px; line-height:1.45;"><a href="mailto:{{ contact_request.email }}" style="color:#0b84d8; text-decoration:none;">{{ contact_request.email }}</a></div>
+                    </td>
                   </tr>
                   <tr>
-                    <td style="padding:12px 0; border-top:1px solid #d6e0e8; font-weight:700;">Telefono</td>
-                    <td style="padding:12px 0; border-top:1px solid #d6e0e8;">{{ phone_value }}</td>
+                    <td style="padding:12px 0; border-top:1px solid #d6e0e8;">
+                      <div style="color:#5e6a75; font-size:11px; font-weight:800; letter-spacing:.08em; text-transform:uppercase;">Telefono</div>
+                      <div style="margin-top:5px; color:#163042; font-size:14px; line-height:1.45;">{{ phone_value }}</div>
+                    </td>
                   </tr>
                   <tr>
-                    <td style="padding:12px 0; border-top:1px solid #d6e0e8; font-weight:700;">Empresa</td>
-                    <td style="padding:12px 0; border-top:1px solid #d6e0e8;">{{ company_value }}</td>
+                    <td style="padding:12px 0; border-top:1px solid #d6e0e8;">
+                      <div style="color:#5e6a75; font-size:11px; font-weight:800; letter-spacing:.08em; text-transform:uppercase;">Empresa</div>
+                      <div style="margin-top:5px; color:#163042; font-size:14px; line-height:1.45;">{{ company_value }}</div>
+                    </td>
                   </tr>
                   <tr>
-                    <td style="padding:12px 0; border-top:1px solid #d6e0e8; font-weight:700;">Servicio</td>
-                    <td style="padding:12px 0; border-top:1px solid #d6e0e8;">{{ service_label }}</td>
+                    <td style="padding:12px 0; border-top:1px solid #d6e0e8;">
+                      <div style="color:#5e6a75; font-size:11px; font-weight:800; letter-spacing:.08em; text-transform:uppercase;">Servicio</div>
+                      <div style="margin-top:5px; color:#163042; font-size:14px; line-height:1.45;">{{ service_label }}</div>
+                    </td>
                   </tr>
                   <tr>
-                    <td style="padding:12px 0; border-top:1px solid #d6e0e8; font-weight:700;">Ubicacion</td>
-                    <td style="padding:12px 0; border-top:1px solid #d6e0e8;">{{ location_value }}</td>
+                    <td style="padding:12px 0; border-top:1px solid #d6e0e8;">
+                      <div style="color:#5e6a75; font-size:11px; font-weight:800; letter-spacing:.08em; text-transform:uppercase;">Ubicacion</div>
+                      <div style="margin-top:5px; color:#163042; font-size:14px; line-height:1.45;">{{ location_value }}</div>
+                    </td>
                   </tr>
                 </table>
                 </div>
               </td>
             </tr>
             <tr>
-              <td style="padding:8px 24px 24px; background:#f8fbfd;">
-                <div style="padding:22px 24px; background:#ffffff; border:1px solid #d6e0e8; border-radius:18px;">
-                <h2 style="margin:0 0 14px; color:#1567b3; font-size:12px; font-weight:700; letter-spacing:.18em; text-transform:uppercase;">Mensaje del cliente</h2>
-                <div style="padding:18px 20px; background:#f1f6fa; border:1px solid #d6e0e8; border-radius:16px; color:#163042; line-height:1.7;">
+              <td style="padding:8px 16px 18px; background:#f8fbfd;">
+                <div style="padding:18px 18px; background:#ffffff; border:1px solid #d6e0e8; border-radius:16px;">
+                <h2 style="margin:0 0 12px; color:#1567b3; font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase;">Mensaje del cliente</h2>
+                <div style="padding:15px 16px; background:#f1f6fa; border:1px solid #d6e0e8; border-radius:14px; color:#163042; font-size:14px; line-height:1.65;">
                   {{ contact_request.message|linebreaksbr }}
                 </div>
-                <p style="margin:18px 0 0; padding:14px 16px; background:#f4f7fa; border:1px solid #d6e0e8; border-left:4px solid #d91f26; border-radius:14px; color:#5e6a75; font-size:13px; line-height:1.6;">
+                <p style="margin:16px 0 0; padding:13px 14px; background:#f4f7fa; border:1px solid #d6e0e8; border-left:4px solid #d91f26; border-radius:13px; color:#5e6a75; font-size:13px; line-height:1.55;">
                   Consejo: puedes responder directamente este correo y el destinatario será el cliente enviado en Reply-To.
                 </p>
                 </div>
               </td>
             </tr>
             <tr>
-              <td style="background:#0b1f33; padding:16px 32px; color:#edf4fa; font-size:12px;">
+              <td style="background:#0b1f33; padding:15px 22px; color:#edf4fa; font-size:12px; line-height:1.5;">
                 MAX SERVICES SPA · Solicitud recibida desde el sitio web
               </td>
             </tr>
