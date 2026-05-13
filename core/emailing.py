@@ -21,13 +21,16 @@ SERVICE_LABELS = {
 
 
 def _build_contact_context(contact_request):
+    brand_logo_url = getattr(settings, "EMAIL_BRAND_LOGO_URL", "") or absolute_static_url(
+        "assets/brand/max-services-symbol-real-v2.png"
+    )
     return {
         "contact_request": contact_request,
         "service_label": SERVICE_LABELS.get(contact_request.service, contact_request.service),
         "phone_value": contact_request.phone or "No informado",
         "company_value": contact_request.company or "No informado",
         "location_value": contact_request.location or "No informado",
-        "brand_logo_url": absolute_static_url("assets/brand/max-services-symbol-real-v2.png"),
+        "brand_logo_url": brand_logo_url,
     }
 
 

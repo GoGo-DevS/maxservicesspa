@@ -186,3 +186,4 @@ CONTACT_EMAIL = os.getenv(
     "CONTACT_EMAIL",
     EMAIL_HOST_USER or "contacto@maxservicesspa.cl",
 )
+EMAIL_BRAND_LOGO_URL = os.getenv("EMAIL_BRAND_LOGO_URL", "")
