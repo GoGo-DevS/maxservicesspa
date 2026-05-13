@@ -1,7 +1,4 @@
 import logging
-from email.mime.image import MIMEImage
-from mimetypes import guess_type
-from pathlib import Path
 
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
@@ -21,10 +18,6 @@ SERVICE_LABELS = {
 }
 
 
-BRAND_LOCKUP_PATH = Path(settings.BASE_DIR) / "static" / "assets" / "brand" / "max-services-symbol-real-v2.png"
-BRAND_LOCKUP_CID = "maxservices-lockup"
-
-
 def _build_contact_context(contact_request):
     return {
         "contact_request": contact_request,
@@ -32,7 +25,6 @@ def _build_contact_context(contact_request):
         "phone_value": contact_request.phone or "No informado",
         "company_value": contact_request.company or "No informado",
         "location_value": contact_request.location or "No informado",
-        "brand_lockup_cid": BRAND_LOCKUP_CID,
     }
 
 
@@ -40,24 +32,13 @@ def _send_html_email(*, subject, to, html_template, text_template, context, repl
     text_body = render_to_string(text_template, context)
     html_body = render_to_string(html_template, context)
     message = EmailMultiAlternatives(
-        subject=subject,
-        body=text_body,
-        from_email=settings.DEFAULT_FROM_EMAIL,
-        to=to,
+        subject,
+        text_body,
+        settings.DEFAULT_FROM_EMAIL,
+        to,
         reply_to=reply_to or [],
     )
     message.attach_alternative(html_body, "text/html")
-    message.mixed_subtype = "related"
-    if BRAND_LOCKUP_PATH.exists():
-        with open(BRAND_LOCKUP_PATH, "rb") as image_file:
-            mime_type, _encoding = guess_type(BRAND_LOCKUP_PATH.name)
-            image_subtype = "png"
-            if mime_type and "/" in mime_type:
-                image_subtype = mime_type.split("/", 1)[1]
-            logo = MIMEImage(image_file.read(), _subtype=image_subtype)
-            logo.add_header("Content-ID", f"<{BRAND_LOCKUP_CID}>")
-            logo.add_header("Content-Disposition", "inline", filename=BRAND_LOCKUP_PATH.name)
-            message.attach(logo)
     try:
         message.send(fail_silently=False)
     except Exception as exc:
