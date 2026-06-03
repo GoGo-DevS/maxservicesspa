@@ -82,7 +82,7 @@ def home(request):
             "featured_clients": [
                 {
                     "name": "Boetsch",
-                    "logo": "assets/clients/grid/logo-boetsch.svg",
+                    "logo": "assets/clients/grid/logo-boetsch-1.png",
                     "logo_alt": "Logo de Boetsch",
                     "logo_class": "logo-standard-wide",
                     "url": "https://boetsch.cl/",
@@ -135,11 +135,11 @@ def home(request):
                     "url": "https://www.uautonoma.cl/",
                 },
                 {
-                    "name": "SYP",
-                    "logo": "assets/clients/grid/syp.webp",
-                    "logo_alt": "Logo de SYP",
+                    "name": "Inverko",
+                    "logo": "assets/clients/grid/inverko.png",
+                    "logo_alt": "Logo de Inverko",
                     "logo_class": "logo-scale-up",
-                    "url": "https://syplimitada.cl/",
+                    "url": "https://www.inverko.cl/",
                 },
                 {
                     "name": "Desco",
@@ -303,6 +303,12 @@ def home(request):
                     "logo": "assets/brands/anwo.png",
                     "logo_class": "brand-logo-anwo",
                     "url": "https://www.anwo.cl/",
+                },
+                {
+                    "name": "S&P",
+                    "logo": "assets/brands/syp.webp",
+                    "logo_class": "brand-logo-syp",
+                    "url": "https://www.solerpalau.com/",
                 },
             ],
             "service_focus_points": [
