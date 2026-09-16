@@ -327,3 +327,18 @@ class SeguridadTests(TestCase):
             from config import settings as s
             importlib.reload(s)
             self.assertEqual(s.SECRET_KEY, "una-clave-larga-de-prueba-para-el-test")
+
+
+class DominioCanonicoTests(TestCase):
+    """El sitio respondia igual en maxservicesspa.onrender.com: contenido duplicado."""
+
+    @override_settings(DEBUG=False, SITE_URL="https://maxservicesspa.cl")
+    def test_el_dominio_de_render_redirige_al_propio(self):
+        r = self.client.get("/servicios/", HTTP_HOST="maxservicesspa.onrender.com", secure=True)
+        self.assertEqual(r.status_code, 301)
+        self.assertEqual(r["Location"], "https://maxservicesspa.cl/servicios/")
+
+    @override_settings(DEBUG=False, SITE_URL="https://maxservicesspa.cl")
+    def test_el_dominio_propio_no_redirige(self):
+        r = self.client.get("/servicios/", HTTP_HOST="maxservicesspa.cl", secure=True)
+        self.assertEqual(r.status_code, 200)

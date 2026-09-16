@@ -15,6 +15,15 @@ class StaticViewSitemap(Sitemap):
     changefreq = "weekly"
     priority = 0.8
 
+    def priority(self, item):  # noqa: F811
+        if item == "/":
+            return 1.0
+        if item.startswith("/servicios/"):
+            return 0.9
+        if item.startswith("/proyectos/") and item != "/proyectos/":
+            return 0.6
+        return 0.8
+
     def items(self):
         return [
             "/",
