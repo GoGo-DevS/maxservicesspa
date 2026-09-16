@@ -1093,20 +1093,25 @@ textarea {
 
 .hero-title {
   margin: 0;
-  max-width: 9.2ch;
+  /* Estaba en 9.2ch y por eso el titular se partia en seis lineas, incluso en
+     escritorio. A 20ch respira y se lee de corrido. */
+  max-width: 20ch;
   font-family: var(--font-display);
-  font-size: clamp(2.45rem, 4vw, 3.95rem);
-  line-height: 0.98;
-  letter-spacing: -0.055em;
+  font-size: clamp(2.1rem, 4.2vw, 3.7rem);
+  line-height: 1.02;
+  letter-spacing: -0.04em;
   color: var(--color-primary-900);
+  text-wrap: balance;
 }
 
 .hero-summary {
   margin: var(--space-5) 0 0;
-  max-width: 54ch;
-  color: var(--color-text-muted);
-  font-size: 0.98rem;
-  line-height: 1.68;
+  max-width: 46ch;
+  /* Es la frase que explica a que se dedica la empresa: iba en gris claro y a
+     0.98rem, mas chica que el texto de las tarjetas de abajo. */
+  color: var(--color-text);
+  font-size: clamp(1.02rem, 1.3vw, 1.14rem);
+  line-height: 1.6;
 }
 
 .hero-actions {
@@ -2686,3 +2691,7 @@ textarea.site-input {
   .servicios-cierre-acciones { width: 100%; }
   .servicios-cierre-acciones .btn { flex: 1 1 100%; }
 }
+
+.servicios-cta-home { display: flex; justify-content: center; margin-top: 2rem; }
+.site-footer .footer-list a { color: inherit; text-decoration: none; }
+.site-footer .footer-list a:hover { text-decoration: underline; }

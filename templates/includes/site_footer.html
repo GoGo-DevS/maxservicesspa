@@ -40,9 +40,10 @@
         <div class="col-sm-6 col-lg-2">
           <h3 class="footer-title">{{ footer_column_title }}</h3>
           <ul class="footer-list">
-            {% for item in footer_column_items|split_pipe %}
-              <li>{{ item }}</li>
+            {% for servicio in servicios_del_sitio %}
+              <li><a href="{% url 'core:servicio' servicio.slug %}">{{ servicio.nombre_corto }}</a></li>
             {% endfor %}
+            <li><a href="{{ servicios_url }}">Ver todos</a></li>
           </ul>
         </div>
 

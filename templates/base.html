@@ -27,6 +27,7 @@
   <meta name="twitter:image" content="{{ resolved_og_image }}">
   {% endwith %}
   <meta name="theme-color" content="#0b1f33">
+  {% if google_site_verification %}<meta name="google-site-verification" content="{{ google_site_verification }}">{% endif %}
   <link rel="icon" type="image/png" href="{% static favicon_image %}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -39,6 +40,16 @@
   <script type="application/ld+json">{{ schema_json|safe }}</script>
   {% endif %}
   {% block extra_css %}{% endblock %}
+  {% if ga4_measurement_id %}
+  {# Analytics. Va al final del head y con async: medir no puede retrasar la pagina. #}
+  <script async src="https://www.googletagmanager.com/gtag/js?id={{ ga4_measurement_id }}"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', '{{ ga4_measurement_id }}');
+  </script>
+  {% endif %}
 </head>
 <body
   class="site-body"

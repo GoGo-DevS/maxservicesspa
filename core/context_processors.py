@@ -3,16 +3,55 @@ import json
 from django.conf import settings
 
 from core.seo import absolute_static_url
+from core.servicios import SERVICIOS
 
 
 def site_meta(request):
+    # Ficha de la empresa para Google. Lo que estaba antes no traia direccion,
+    # telefono ni horario: justo los datos con los que Google arma el panel
+    # lateral y decide si el negocio es real y esta cerca de quien busca.
     local_business_schema = {
         "@context": "https://schema.org",
-        "@type": "LocalBusiness",
+        "@type": "HVACBusiness",
         "name": "MAX SERVICES SPA",
+        "legalName": "MAX SERVICES SpA",
         "description": "Empresa de climatización, ventilación y proyectos HVAC en Santiago, Región Metropolitana, Chile.",
         "url": settings.SITE_URL,
         "email": "contacto@maxservicesspa.cl",
+        "telephone": "+56225690108",
+        "foundingDate": "2011-10-11",
+        "image": absolute_static_url("assets/social/og-default.jpg"),
+        "logo": absolute_static_url("assets/brand/max-services-symbol-real-v2.png"),
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Patricio Lynch 9619",
+            "addressLocality": "El Bosque",
+            "addressRegion": "Región Metropolitana",
+            "addressCountry": "CL",
+        },
+        "openingHoursSpecification": [
+            {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+                "opens": "09:00",
+                "closes": "18:30",
+            }
+        ],
+        "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Servicios HVAC",
+            "itemListElement": [
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                        "@type": "Service",
+                        "name": servicio["nombre"],
+                        "url": f"{settings.SITE_URL}/servicios/{servicio['slug']}/",
+                    },
+                }
+                for servicio in SERVICIOS
+            ],
+        },
         "areaServed": {
             "@type": "AdministrativeArea",
             "name": "Santiago, Región Metropolitana, Chile",
@@ -30,6 +69,10 @@ def site_meta(request):
 
     return {
         "site_url": settings.SITE_URL,
+        # Para el pie: la lista de servicios la necesita cada pagina.
+        "servicios_del_sitio": SERVICIOS,
+        "ga4_measurement_id": settings.GA4_MEASUREMENT_ID,
+        "google_site_verification": settings.GOOGLE_SITE_VERIFICATION,
         "default_og_image": absolute_static_url("assets/social/og-default.jpg"),
         "favicon_image": "assets/brand/max-services-symbol-real-v2.png",
         "local_business_schema_json": json.dumps(

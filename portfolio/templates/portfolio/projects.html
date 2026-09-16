@@ -89,6 +89,22 @@
       </div>
     </section>
 
+    <section class="site-section section-alt">
+      <div class="container section-shell">
+        <span class="section-kicker">Servicios</span>
+        <h2 class="section-title section-title-balanced">Lo que ejecutamos en estos proyectos</h2>
+        <div class="servicio-relacionados">
+          {% for servicio in servicios_del_sitio %}
+            <a class="servicio-relacionado-card" href="{% url 'core:servicio' servicio.slug %}">
+              <span class="servicio-relacionado-numero">{{ servicio.numero }}</span>
+              <strong>{{ servicio.nombre }}</strong>
+              <span class="servicio-relacionado-copy">{{ servicio.resumen }}</span>
+            </a>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
   </main>
 
   {% include "includes/site_footer.html" with footer_description="Selección de trabajos ejecutados por MAX SERVICES SPA en climatización, ventilación, extracción, presurización y mantenciones." footer_column_title="Especialidades" footer_column_items="Climatización|Ventilación|Extracción|Presurización|Mantenciones|Aire acondicionado" footer_bottom_copy="MAX SERVICES SPA | Proyectos y experiencia aplicada." footer_bottom_href=projects_url footer_bottom_section="explorar-proyectos" footer_bottom_label="Explorar proyectos" %}

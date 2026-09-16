@@ -155,6 +155,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 SITE_URL = os.getenv("SITE_URL", "http://127.0.0.1:8000").rstrip("/")
 
+# Medicion. Vacias por defecto A PROPOSITO: sin ID no se carga ningun script,
+# asi que el sitio no arrastra peso ni cookies hasta que exista la cuenta real.
+# GA4_MEASUREMENT_ID llega como G-XXXXXXXXXX desde Google Analytics; el de
+# Search Console es el codigo del metodo "etiqueta HTML".
+GA4_MEASUREMENT_ID = os.getenv("GA4_MEASUREMENT_ID", "").strip()
+GOOGLE_SITE_VERIFICATION = os.getenv("GOOGLE_SITE_VERIFICATION", "").strip()
+
 
 def env_bool(name, default=False):
     value = os.getenv(name)
