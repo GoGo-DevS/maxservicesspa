@@ -1,6 +1,7 @@
 from django.contrib.sitemaps import Sitemap
 
 from core.servicios import SERVICIOS
+from portfolio.catalog import get_project_catalog
 
 
 class StaticViewSitemap(Sitemap):
@@ -20,6 +21,7 @@ class StaticViewSitemap(Sitemap):
             "/servicios/",
             *[f"/servicios/{s['slug']}/" for s in SERVICIOS],
             "/proyectos/",
+            *[f"/proyectos/{p['slug']}/" for p in get_project_catalog()["projects"]],
             "/empresa/",
             "/contacto/",
         ]

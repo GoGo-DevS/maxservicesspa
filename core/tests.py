@@ -249,12 +249,18 @@ class PaginasPropiasTests(TestCase):
             self.assertIn(item["p"], html)
 
     def test_el_sitemap_publica_todas_las_paginas(self):
+        """Publicaba 2 URLs: la home y /proyectos/."""
         from core.servicios import SERVICIOS
+        from portfolio.catalog import get_project_catalog
 
+        proyectos = get_project_catalog()["projects"]
         cuerpo = self.client.get("/sitemap.xml").content.decode()
-        self.assertEqual(cuerpo.count("<loc>"), 5 + len(SERVICIOS))
+        # home + indice de servicios + proyectos + empresa + contacto = 5 fijas
+        self.assertEqual(cuerpo.count("<loc>"), 5 + len(SERVICIOS) + len(proyectos))
         for servicio in SERVICIOS:
             self.assertIn(f"/servicios/{servicio['slug']}/", cuerpo)
+        for proyecto in proyectos:
+            self.assertIn(f"/proyectos/{proyecto['slug']}/", cuerpo)
 
     def test_el_menu_lleva_a_las_paginas_y_no_a_anclas(self):
         html = self.client.get("/").content.decode()

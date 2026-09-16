@@ -89,6 +89,22 @@
       </div>
     </section>
 
+    <section class="site-section">
+      <div class="container section-shell">
+        <span class="section-kicker">Fichas</span>
+        <h2 class="section-title section-title-balanced">Cada proyecto con su ficha</h2>
+        <div class="servicio-relacionados">
+          {% for proyecto in proyectos %}
+            <a class="servicio-relacionado-card" href="{% url 'portfolio:project_detail' proyecto.slug %}">
+              <span class="servicio-relacionado-numero">{{ proyecto.sector }}</span>
+              <strong>{{ proyecto.name }}</strong>
+              <span class="servicio-relacionado-copy">{{ proyecto.summary|truncatechars:110 }}</span>
+            </a>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
     <section class="site-section section-alt">
       <div class="container section-shell">
         <span class="section-kicker">Servicios</span>

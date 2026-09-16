@@ -2695,3 +2695,6 @@ textarea.site-input {
 .servicios-cta-home { display: flex; justify-content: center; margin-top: 2rem; }
 .site-footer .footer-list a { color: inherit; text-decoration: none; }
 .site-footer .footer-list a:hover { text-decoration: underline; }
+
+.proyecto-galeria { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+.proyecto-galeria img { width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-lg); border: 1px solid var(--color-border); }

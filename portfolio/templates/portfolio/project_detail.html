@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page %}
+  {% url 'core:home' as home_url %}
+  {% url 'core:contacto' as contacto_url %}
+  {% url 'portfolio:projects_index' as projects_url %}
+  {% include "includes/site_header.html" with topbar_text="Proyectos, mantenciones y trabajos ejecutados por MAX SERVICES SPA" topbar_link_href=home_url topbar_link_section="contacto" topbar_link_text="Solicitar evaluación" current_page="projects" header_cta_text="Solicitar cotización" %}
+
+  <main>
+    <section class="servicio-hero section-surface-hero">
+      <div class="container section-shell">
+        {% include "core/includes/migas.html" %}
+        <div class="row align-items-stretch site-grid-row site-grid-row-lg section-hero-row">
+          <div class="col-lg-7 site-col">
+            <div class="section-hero-copy">
+              <span class="section-kicker">{{ proyecto.reference|default:"Proyecto ejecutado" }}</span>
+              <h1 class="section-title servicio-titulo">{{ proyecto.name }}</h1>
+              <p class="section-copy">{{ proyecto.summary }}</p>
+              {% if proyecto.description %}<p class="section-copy">{{ proyecto.description }}</p>{% endif %}
+              <div class="hero-actions d-flex flex-wrap gap-3">
+                <a class="btn btn-brand-primary" href="{{ contacto_url }}">Solicitar un proyecto similar</a>
+                <a class="btn btn-brand-secondary" href="{{ projects_url }}">Ver todos los proyectos</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-5 site-col">
+            <div class="section-hero-visual">
+              <img class="section-hero-image" src="{% static proyecto.asset_dir|add:'/'|add:proyecto.cover %}" alt="{{ proyecto.name }} — proyecto HVAC ejecutado por MAX SERVICES SPA." decoding="async" fetchpriority="high" width="1600" height="1068">
+              <div class="section-hero-overlay">
+                <span>{{ proyecto.sector }}</span>
+                <strong>{{ proyecto.location }}</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="site-section">
+      <div class="container section-shell">
+        <div class="empresa-datos">
+          <div class="empresa-dato"><span>Sector</span><strong>{{ proyecto.sector }}</strong></div>
+          <div class="empresa-dato"><span>Ubicación</span><strong>{{ proyecto.location }}</strong></div>
+          <div class="empresa-dato"><span>Estado</span><strong>{{ proyecto.reference }}</strong></div>
+          <div class="empresa-dato"><span>Especialidades</span><strong>{{ proyecto.services|join:" · " }}</strong></div>
+        </div>
+      </div>
+    </section>
+
+    {% if proyecto.gallery|length > 1 %}
+    <section class="site-section section-alt">
+      <div class="container section-shell">
+        <span class="section-kicker">Registro</span>
+        <h2 class="section-title section-title-balanced">Fotos del proyecto</h2>
+        <div class="proyecto-galeria">
+          {% for foto in proyecto.gallery %}
+            <img src="{% static proyecto.asset_dir|add:'/'|add:foto %}" alt="{{ proyecto.name }} — registro de la ejecución." loading="lazy" decoding="async" width="1600" height="1068">
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+    {% endif %}
+
+    <section class="site-section">
+      <div class="container section-shell">
+        <span class="section-kicker">Servicios aplicados</span>
+        <h2 class="section-title section-title-balanced">Lo que ejecutamos en proyectos como este</h2>
+        <div class="servicio-relacionados">
+          {% for servicio in servicios %}
+            {% for aplicado in proyecto.services %}
+              {% if aplicado|lower in servicio.nombre|lower %}
+                <a class="servicio-relacionado-card" href="{% url 'core:servicio' servicio.slug %}">
+                  <span class="servicio-relacionado-numero">{{ servicio.numero }}</span>
+                  <strong>{{ servicio.nombre }}</strong>
+                  <span class="servicio-relacionado-copy">{{ servicio.resumen }}</span>
+                </a>
+              {% endif %}
+            {% endfor %}
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    {% if otros %}
+    <section class="site-section section-alt">
+      <div class="container section-shell">
+        <span class="section-kicker">Más experiencia</span>
+        <h2 class="section-title section-title-balanced">Otros proyectos ejecutados</h2>
+        <div class="servicio-relacionados">
+          {% for otro in otros %}
+            <a class="servicio-relacionado-card" href="{% url 'portfolio:project_detail' otro.slug %}">
+              <span class="servicio-relacionado-numero">{{ otro.sector }}</span>
+              <strong>{{ otro.name }}</strong>
+              <span class="servicio-relacionado-copy">{{ otro.summary|truncatechars:120 }}</span>
+            </a>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+    {% endif %}
+  </main>
+
+  {% include "includes/site_footer.html" with footer_description="Empresa orientada a climatización, aire acondicionado, ventilación, extracción, presurización y mantenciones para oficinas, comercio, edificios y recintos operativos." footer_column_title="Servicios" footer_bottom_copy="MAX SERVICES SPA | Soluciones HVAC para Santiago y la Región Metropolitana." footer_bottom_href=home_url footer_bottom_section="inicio" footer_bottom_label="Volver arriba" %}
+{% endblock %}
