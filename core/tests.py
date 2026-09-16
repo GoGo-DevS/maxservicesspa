@@ -182,3 +182,107 @@ class HomeViewTests(TestCase):
             response,
             "La solicitud fue registrada correctamente, pero el aviso por correo no pudo enviarse en este momento.",
         )
+
+
+@override_settings(
+    EMAIL_BACKEND="django.core.mail.backends.locmem.EmailBackend",
+    CONTACT_EMAIL="contacto@maxservicesspa.cl",
+    DEFAULT_FROM_EMAIL="contacto@maxservicesspa.cl",
+)
+class PaginasPropiasTests(TestCase):
+    """Cada servicio con su propia URL (16-09-2026).
+
+    Antes el sitio era UNA pagina y "Servicios", "Empresa" y "Contacto" eran
+    anclas a la home: el sitemap publicaba 2 URLs y Google tenia una sola pagina
+    indexada, asi que el sitio solo podia aparecer buscando su propia marca.
+    """
+
+    def test_todas_las_paginas_de_servicio_responden(self):
+        from core.servicios import SERVICIOS
+
+        for servicio in SERVICIOS:
+            with self.subTest(servicio=servicio["slug"]):
+                r = self.client.get(reverse("core:servicio", args=[servicio["slug"]]))
+                self.assertEqual(r.status_code, 200)
+                self.assertContains(r, servicio["h1"])
+
+    def test_un_servicio_inventado_da_404(self):
+        self.assertEqual(self.client.get("/servicios/no-existe/").status_code, 404)
+
+    def test_cada_pagina_trae_su_propio_titulo_y_descripcion(self):
+        """Repetir el title entre paginas es lo mismo que no tenerlo."""
+        rutas = ["/", "/servicios/", "/empresa/", "/contacto/",
+                 "/servicios/mantencion-hvac/", "/servicios/extraccion-de-aire/"]
+        titulos, descripciones = set(), set()
+        for ruta in rutas:
+            html = self.client.get(ruta).content.decode()
+            titulo = html.split("<title>")[1].split("</title>")[0]
+            desc = html.split('name="description" content="')[1].split('"')[0]
+            self.assertLessEqual(len(titulo), 70, f"title muy largo en {ruta}")
+            self.assertTrue(desc.strip(), f"sin description en {ruta}")
+            titulos.add(titulo)
+            descripciones.add(desc)
+        self.assertEqual(len(titulos), len(rutas), "hay titles repetidos entre paginas")
+        self.assertEqual(len(descripciones), len(rutas), "hay descriptions repetidas")
+
+    def test_el_canonical_apunta_a_la_misma_pagina(self):
+        html = self.client.get("/servicios/mantencion-hvac/").content.decode()
+        self.assertIn("/servicios/mantencion-hvac/\">", html.split('rel="canonical" href="')[1][:200])
+
+    def test_la_pagina_de_servicio_declara_service_breadcrumb_y_faq(self):
+        html = self.client.get("/servicios/mantencion-hvac/").content.decode()
+        bloques = [json.loads(t.split("</script>")[0]) for t in
+                   html.split('<script type="application/ld+json">')[1:]]
+        tipos = set()
+        for b in bloques:
+            tipos.add(b.get("@type"))
+            for sub in b.get("@graph", []):
+                tipos.add(sub.get("@type"))
+        self.assertTrue({"Service", "BreadcrumbList", "FAQPage"} <= tipos, tipos)
+
+    def test_las_preguntas_del_schema_estan_escritas_en_la_pagina(self):
+        """Marcar preguntas que el visitante no ve es lo que Google penaliza."""
+        from core.servicios import POR_SLUG
+
+        html = self.client.get("/servicios/mantencion-hvac/").content.decode()
+        for item in POR_SLUG["mantencion-hvac"]["faq"]:
+            self.assertIn(item["p"], html)
+
+    def test_el_sitemap_publica_todas_las_paginas(self):
+        from core.servicios import SERVICIOS
+
+        cuerpo = self.client.get("/sitemap.xml").content.decode()
+        self.assertEqual(cuerpo.count("<loc>"), 5 + len(SERVICIOS))
+        for servicio in SERVICIOS:
+            self.assertIn(f"/servicios/{servicio['slug']}/", cuerpo)
+
+    def test_el_menu_lleva_a_las_paginas_y_no_a_anclas(self):
+        html = self.client.get("/").content.decode()
+        for ruta in ("/servicios/", "/empresa/", "/contacto/"):
+            self.assertIn(f'href="{ruta}"', html, f"el menu no enlaza {ruta}")
+
+    def test_la_home_enlaza_cada_tarjeta_con_su_servicio(self):
+        """Es lo que le pasa autoridad a las paginas nuevas."""
+        from core.servicios import SERVICIOS
+
+        html = self.client.get("/").content.decode()
+        for servicio in SERVICIOS:
+            self.assertIn(f"/servicios/{servicio['slug']}/", html)
+
+    def test_el_formulario_funciona_en_contacto_y_vuelve_a_contacto(self):
+        datos = {
+            "full_name": "Ana Rivas",
+            "email": "ana@empresa.cl",
+            "phone": "+56 9 1111 2222",
+            "company": "Empresa Ejemplo",
+            "service": "mantenciones",
+            "region": "Metropolitana de Santiago",
+            "city": "Santiago",
+            "commune": "Providencia",
+            "message": "Necesitamos un plan de mantención para 12 equipos de oficina.",
+        }
+        r = self.client.post("/contacto/", datos)
+        self.assertEqual(r.status_code, 302)
+        self.assertTrue(r["Location"].startswith("/contacto/"), r["Location"])
+        self.assertEqual(ContactRequest.objects.count(), 1)
+        self.assertEqual(len(mail.outbox), 2)

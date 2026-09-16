@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page %}
+  {% url 'core:home' as home_url %}
+  {% include "includes/site_header.html" with topbar_text="Santiago y Región Metropolitana | HVAC y mantenciones" topbar_link_href=home_url topbar_link_section="contacto" topbar_link_text="Coordinar evaluación" current_page="contacto" header_cta_text="Solicitar cotización" %}
+
+  <main>
+    <section class="servicio-hero section-surface-hero">
+      <div class="container section-shell">
+        {% include "core/includes/migas.html" %}
+        <div class="row align-items-stretch site-grid-row site-grid-row-lg section-hero-row">
+          <div class="col-lg-7 site-col">
+            <div class="section-hero-copy">
+              <span class="section-kicker">Contacto</span>
+              <h1 class="section-title servicio-titulo">Evaluación técnica, cotización o plan de mantención</h1>
+              <p class="section-copy">
+                Cuéntanos qué recinto es, qué necesitas y en qué plazo. El equipo revisa cada solicitud y
+                coordina el siguiente paso según el alcance técnico del trabajo.
+              </p>
+              <div class="contact-meta-list" aria-label="Datos de contacto de MAX SERVICES SPA">
+                <a href="mailto:{{ company_contact_email }}">{{ company_contact_email }}</a>
+                <a href="{{ company_phone_href }}">{{ company_phone_display }}</a>
+                <span>{{ company_address }}</span>
+                <span>{{ company_hours }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-5 site-col">
+            <div class="section-hero-visual">
+              <img class="section-hero-image" src="{% static 'assets/home/contact-evaluation.webp' %}" alt="Técnico de MAX SERVICES SPA evaluando un equipo de climatización en terreno." decoding="async" fetchpriority="high" width="1536" height="1024">
+              <div class="section-hero-overlay">
+                <span>Atención comercial</span>
+                <strong>Evaluación técnica, coordinación y respuesta para proyectos y mantenciones.</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {% include "core/includes/contacto_seccion.html" %}
+  </main>
+
+  {% include "includes/site_footer.html" with footer_description="Empresa orientada a climatización, aire acondicionado, ventilación, extracción, presurización y mantenciones para oficinas, comercio, edificios y recintos operativos." footer_column_title="Servicios" footer_column_items="Climatización|Aire acondicionado|Ventilación|Extracción|Presurización|Mantenciones" footer_bottom_copy="MAX SERVICES SPA | Soluciones HVAC para Santiago y la Región Metropolitana." footer_bottom_href=home_url footer_bottom_section="inicio" footer_bottom_label="Volver arriba" %}
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'js/contact-location.js' %}"></script>
+{% endblock %}

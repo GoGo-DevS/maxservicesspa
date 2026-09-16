@@ -1,6 +1,9 @@
 {% load static %}
 {% url 'core:home' as home_url %}
 {% url 'portfolio:projects_index' as projects_url %}
+{% url 'core:servicios' as servicios_url %}
+{% url 'core:empresa' as empresa_url %}
+{% url 'core:contacto' as contacto_url %}
 <header class="site-header sticky-top">
   <div class="site-topbar">
     <div class="container">
@@ -44,16 +47,16 @@
               <a class="nav-link site-nav-link" href="{{ home_url }}" data-home-section="inicio" data-nav-target="inicio">Inicio</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link site-nav-link" href="{{ home_url }}" data-home-section="servicios" data-nav-target="servicios">Servicios</a>
+              <a class="nav-link site-nav-link{% if current_page == 'servicios' %} active{% endif %}" href="{{ servicios_url }}" data-nav-target="servicios">Servicios</a>
             </li>
             <li class="nav-item">
               <a class="nav-link site-nav-link{% if current_page == 'projects' %} active{% endif %}" href="{{ projects_url }}" data-nav-target="proyectos">Proyectos</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link site-nav-link" href="{{ home_url }}" data-home-section="empresa" data-nav-target="empresa">Empresa</a>
+              <a class="nav-link site-nav-link{% if current_page == 'empresa' %} active{% endif %}" href="{{ empresa_url }}" data-nav-target="empresa">Empresa</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link site-nav-link" href="{{ home_url }}" data-home-section="contacto" data-nav-target="contacto">Contacto</a>
+              <a class="nav-link site-nav-link{% if current_page == 'contacto' %} active{% endif %}" href="{{ contacto_url }}" data-nav-target="contacto">Contacto</a>
             </li>
           </ul>
 

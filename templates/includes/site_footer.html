@@ -2,6 +2,9 @@
 {% load static %}
 {% url 'core:home' as home_url %}
 {% url 'portfolio:projects_index' as projects_url %}
+{% url 'core:servicios' as servicios_url %}
+{% url 'core:empresa' as empresa_url %}
+{% url 'core:contacto' as contacto_url %}
 <footer class="site-footer">
   <div class="container">
     <div class="footer-main">
@@ -27,10 +30,10 @@
           <h3 class="footer-title">Navegación</h3>
           <ul class="footer-list">
             <li><a href="{{ home_url }}">Inicio</a></li>
-            <li><a href="{{ home_url }}" data-home-section="servicios">Servicios</a></li>
+            <li><a href="{{ servicios_url }}">Servicios</a></li>
             <li><a href="{{ projects_url }}">Proyectos</a></li>
-            <li><a href="{{ home_url }}" data-home-section="empresa">Empresa</a></li>
-            <li><a href="{{ home_url }}" data-home-section="contacto">Contacto</a></li>
+            <li><a href="{{ empresa_url }}">Empresa</a></li>
+            <li><a href="{{ contacto_url }}">Contacto</a></li>
           </ul>
         </div>
 

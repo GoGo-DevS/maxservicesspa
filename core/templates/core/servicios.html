@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page %}
+  {% url 'core:home' as home_url %}
+  {% url 'core:contacto' as contacto_url %}
+  {% url 'portfolio:projects_index' as projects_url %}
+  {% include "includes/site_header.html" with topbar_text="Santiago y Región Metropolitana | HVAC y mantenciones" topbar_link_href=home_url topbar_link_section="contacto" topbar_link_text="Coordinar evaluación" current_page="servicios" header_cta_text="Solicitar cotización" %}
+
+  <main>
+    <section class="servicio-hero section-surface-hero">
+      <div class="container section-shell">
+        {% include "core/includes/migas.html" %}
+        <div class="row align-items-stretch site-grid-row site-grid-row-lg section-hero-row">
+          <div class="col-lg-7 site-col">
+            <div class="section-hero-copy">
+              <span class="section-kicker">Servicios</span>
+              <h1 class="section-title servicio-titulo">Servicios de climatización, ventilación y mantención HVAC en Santiago</h1>
+              <p class="section-copy">
+                Seis líneas de trabajo para empresas, edificios e instituciones: desde el diseño y el montaje
+                hasta la mantención que mantiene los equipos funcionando. Cada una con su propia página,
+                su alcance y las preguntas que llegan antes de contratar.
+              </p>
+              <div class="hero-actions d-flex flex-wrap gap-3">
+                <a class="btn btn-brand-primary" href="{{ contacto_url }}">Solicitar evaluación técnica</a>
+                <a class="btn btn-brand-secondary" href="{{ projects_url }}">Ver proyectos ejecutados</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-5 site-col">
+            <div class="section-hero-visual">
+              <img class="section-hero-image" src="{% static 'assets/home/hero-main.webp' %}" alt="Técnico de MAX SERVICES SPA trabajando en una instalación de climatización." decoding="async" fetchpriority="high" width="1536" height="1024">
+              <div class="section-hero-overlay">
+                <span>Desde 2011</span>
+                <strong>Diseño, montaje, mantención y reparación de sistemas HVAC.</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="site-section">
+      <div class="container section-shell">
+        <div class="servicios-grid">
+          {% for servicio in servicios %}
+            <a class="servicio-card" href="{% url 'core:servicio' servicio.slug %}">
+              <span class="servicio-card-numero">{{ servicio.numero }}</span>
+              <h2 class="servicio-card-titulo">{{ servicio.nombre }}</h2>
+              <p class="servicio-card-copy">{{ servicio.resumen }}</p>
+              <ul class="servicio-card-lista">
+                {% for punto in servicio.aplica|slice:":3" %}<li>{{ punto }}</li>{% endfor %}
+              </ul>
+              <span class="servicio-card-link">Ver el servicio</span>
+            </a>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <section class="site-section section-alt">
+      <div class="container section-shell">
+        <div class="servicios-cierre">
+          <div>
+            <span class="section-kicker">Cobertura</span>
+            <h2 class="section-title section-title-balanced">{{ company_location }}, y proyectos en regiones según requerimiento.</h2>
+            <p class="section-copy">
+              Atención {{ company_hours|lower }}. Para coordinar una visita, describe el recinto y el tipo de
+              requerimiento y el equipo responde con el siguiente paso.
+            </p>
+          </div>
+          <div class="servicios-cierre-acciones">
+            <a class="btn btn-brand-primary" href="{{ contacto_url }}">Solicitar evaluación técnica</a>
+            <a class="btn btn-brand-secondary" href="{{ company_phone_href }}">{{ company_phone_display }}</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  {% include "includes/site_footer.html" with footer_description="Empresa orientada a climatización, aire acondicionado, ventilación, extracción, presurización y mantenciones para oficinas, comercio, edificios y recintos operativos." footer_column_title="Servicios" footer_column_items="Climatización|Aire acondicionado|Ventilación|Extracción|Presurización|Mantenciones" footer_bottom_copy="MAX SERVICES SPA | Soluciones HVAC para Santiago y la Región Metropolitana." footer_bottom_href=home_url footer_bottom_section="inicio" footer_bottom_label="Volver arriba" %}
+{% endblock %}

@@ -1,0 +1,15 @@
+{% comment %}
+  Migas de pan visibles. Van junto al BreadcrumbList del schema: lo que ve la
+  persona y lo que lee Google tienen que decir lo mismo.
+{% endcomment %}
+{% if migas_visibles %}
+<nav class="site-breadcrumb" aria-label="Estás aquí">
+  <ol>
+    {% for nombre, ruta in migas_visibles %}
+      <li>
+        {% if not forloop.last %}<a href="{{ ruta }}">{{ nombre }}</a>{% else %}<span aria-current="page">{{ nombre }}</span>{% endif %}
+      </li>
+    {% endfor %}
+  </ol>
+</nav>
+{% endif %}

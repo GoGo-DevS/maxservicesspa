@@ -1,0 +1,169 @@
+{% load static %}
+{% comment %}
+  La seccion de contacto vive aca porque la usan la home y /contacto/.
+  Si se duplica, el dia que cambie un telefono va a quedar bien en una y mal
+  en la otra.
+{% endcomment %}
+    <section class="contact-section section-surface-hero section-surface-contact" id="contacto">
+      <div class="container section-shell">
+        <div class="contact-shell">
+          <div class="row align-items-stretch site-grid-row contact-top-row">
+            <div class="col-lg-5 site-col">
+              <div class="contact-copy-block contact-copy-panel">
+                <span class="section-kicker">Contacto</span>
+                <h2 class="section-title">Solicita evaluación técnica, cotización o plan de mantención.</h2>
+                <p class="section-copy">
+                  Completa el formulario con tus antecedentes y el tipo de requerimiento. El equipo revisa cada solicitud y coordina el siguiente paso según el alcance técnico y comercial del trabajo.
+                </p>
+
+                <div class="contact-meta-list" aria-label="Datos comerciales de MAX SERVICES SPA">
+                  <a href="mailto:{{ company_contact_email }}">{{ company_contact_email }}</a>
+                  <a href="{{ company_phone_href }}">{{ company_phone_display }}</a>
+                  <span>{{ company_address }}</span>
+                  <span>{{ company_hours }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-7 site-col">
+              <div class="contact-form-card" id="formulario">
+                {% if messages %}
+                  <div class="contact-status-stack">
+                    {% for message in messages %}
+                      <div class="contact-status-alert{% if 'warning' in message.tags %} is-error{% elif message.tags %} is-{{ message.tags }}{% endif %}" role="status">
+                        {{ message }}
+                      </div>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+
+                {% if contact_form.errors %}
+                  <div class="contact-status-stack">
+                    <div class="contact-status-alert is-error" role="alert">
+                      Completa los datos marcados para que podamos revisar correctamente la solicitud.
+                    </div>
+                  </div>
+                {% endif %}
+
+                {% if contact_form.non_field_errors %}
+                  <div class="contact-status-stack">
+                    {% for error in contact_form.non_field_errors %}
+                      <div class="contact-status-alert is-error" role="alert">{{ error }}</div>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+
+                <form method="post" action="{{ home_url }}#formulario" novalidate>
+                  {% csrf_token %}
+                  <div class="row site-grid-row site-form-row">
+                    <div class="col-md-6 site-col">
+                      <label class="form-label" for="{{ contact_form.full_name.id_for_label }}">{{ contact_form.full_name.label }}</label>
+                      {{ contact_form.full_name }}
+                      {% for error in contact_form.full_name.errors %}
+                        <p class="field-error">{{ error }}</p>
+                      {% endfor %}
+                    </div>
+                    <div class="col-md-6 site-col">
+                      <label class="form-label" for="{{ contact_form.company.id_for_label }}">{{ contact_form.company.label }}</label>
+                      {{ contact_form.company }}
+                      {% for error in contact_form.company.errors %}
+                        <p class="field-error">{{ error }}</p>
+                      {% endfor %}
+                    </div>
+                    <div class="col-md-6 site-col">
+                      <label class="form-label" for="{{ contact_form.email.id_for_label }}">{{ contact_form.email.label }}</label>
+                      {{ contact_form.email }}
+                      {% for error in contact_form.email.errors %}
+                        <p class="field-error">{{ error }}</p>
+                      {% endfor %}
+                    </div>
+                    <div class="col-md-6 site-col">
+                      <label class="form-label" for="{{ contact_form.phone.id_for_label }}">{{ contact_form.phone.label }}</label>
+                      {{ contact_form.phone }}
+                      {% for error in contact_form.phone.errors %}
+                        <p class="field-error">{{ error }}</p>
+                      {% endfor %}
+                    </div>
+                    <div class="col-12 site-col">
+                      <label class="form-label" for="{{ contact_form.service.id_for_label }}">{{ contact_form.service.label }}</label>
+                      {{ contact_form.service }}
+                      {% for error in contact_form.service.errors %}
+                        <p class="field-error">{{ error }}</p>
+                      {% endfor %}
+                    </div>
+                    <div class="col-12 site-col">
+                      <label class="form-label" for="{{ contact_form.region.id_for_label }}">{{ contact_form.region.label }}</label>
+                      {{ contact_form.region }}
+                      {% for error in contact_form.region.errors %}
+                        <p class="field-error">{{ error }}</p>
+                      {% endfor %}
+                    </div>
+                    <div class="col-md-6 site-col">
+                      <label class="form-label" for="{{ contact_form.city.id_for_label }}">{{ contact_form.city.label }}</label>
+                      {{ contact_form.city }}
+                      {% for error in contact_form.city.errors %}
+                        <p class="field-error">{{ error }}</p>
+                      {% endfor %}
+                    </div>
+                    <div class="col-md-6 site-col">
+                      <label class="form-label" for="{{ contact_form.commune.id_for_label }}">{{ contact_form.commune.label }}</label>
+                      {{ contact_form.commune }}
+                      {% for error in contact_form.commune.errors %}
+                        <p class="field-error">{{ error }}</p>
+                      {% endfor %}
+                    </div>
+                    <div class="col-12 site-col">
+                      <label class="form-label" for="{{ contact_form.message.id_for_label }}">{{ contact_form.message.label }}</label>
+                      {{ contact_form.message }}
+                      {% for error in contact_form.message.errors %}
+                        <p class="field-error">{{ error }}</p>
+                      {% endfor %}
+                    </div>
+                    <div class="col-12 site-col d-flex flex-wrap gap-3 align-items-center">
+                      <button class="btn btn-brand-primary" type="submit">Enviar solicitud</button>
+                      <span class="form-note">Completa los datos marcados para que el equipo pueda revisar y responder el requerimiento.</span>
+                    </div>
+                  </div>
+                </form>
+                <script id="contact-location-map" type="application/json">{{ contact_form.location_map_json|safe }}</script>
+              </div>
+            </div>
+          </div>
+
+          <div class="row align-items-start site-grid-row contact-bottom-row">
+            <div class="col-lg-5 site-col">
+              <div class="contact-direct-grid">
+                <article class="contact-direct-card">
+                  <strong>Canales disponibles</strong>
+                  <p>Atención por correo y teléfono para solicitudes comerciales, visitas, mantenciones y requerimientos técnicos.</p>
+                </article>
+                <article class="contact-direct-card">
+                  <strong>Horario y cobertura</strong>
+                  <p>Atención de lunes a viernes de 9:00 a 18:30 hrs para Santiago, Región Metropolitana y proyectos en otras zonas según requerimiento.</p>
+                </article>
+              </div>
+            </div>
+            <div class="col-lg-7 site-col">
+              <div class="section-hero-visual section-hero-visual-compact contact-intro-visual contact-intro-visual-bottom">
+                <img class="section-hero-image" src="{% static 'assets/home/contact-evaluation.webp' %}" alt="Técnico de MAX SERVICES SPA evaluando un equipo de climatización en terreno." loading="lazy" decoding="async" width="1536" height="1024">
+                <div class="section-hero-overlay">
+                  <span>Atención comercial</span>
+                  <strong>Evaluación técnica, coordinación y respuesta para proyectos, mantenciones y requerimientos en terreno.</strong>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 site-col">
+              <div class="contact-map-inline-card">
+                <iframe
+                  title="Ubicación de MAX SERVICES SPA en Patricio Lynch 9619, El Bosque, Santiago"
+                  src="https://www.google.com/maps?q=Patricio+Lynch+9619,+El+Bosque,+Santiago,+Chile&z=16&output=embed"
+                  loading="lazy"
+                  referrerpolicy="no-referrer-when-downgrade"
+                  allowfullscreen>
+                </iframe>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>

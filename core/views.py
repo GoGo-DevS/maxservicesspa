@@ -6,14 +6,15 @@ from xml.sax.saxutils import escape
 from django.conf import settings
 from django.contrib import messages
 from django.core.mail import BadHeaderError
-from django.http import HttpResponse, JsonResponse
+from django.http import Http404, HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
 from core.emailing import send_contact_request_notification
 from core.forms import ContactRequestForm
 from core.locations import get_city_choices, get_commune_choices
-from core.seo import absolute_static_url
+from core.seo import absolute_static_url, migas, schema_json, schema_preguntas, schema_servicio
+from core.servicios import POR_SLUG, SERVICIOS, con_relacionados
 from core.sitemaps import StaticViewSitemap
 from portfolio.catalog import get_project_catalog
 
@@ -24,6 +25,41 @@ logger = logging.getLogger(__name__)
 class SitemapSite:
     def __init__(self, domain):
         self.domain = domain
+
+
+def _procesar_contacto(request, ruta_de_vuelta):
+    """Recibe el formulario de contacto y devuelve (form, respuesta).
+
+    Lo usan la home y /contacto/: el formulario es el mismo y tiene que
+    comportarse igual en las dos, incluido volver a SU propia pagina despues de
+    enviar. Si `respuesta` no es None, la vista tiene que devolverla tal cual.
+    """
+    if request.method != "POST":
+        return ContactRequestForm(), None
+
+    contact_form = ContactRequestForm(request.POST)
+    if not contact_form.is_valid():
+        return contact_form, None
+
+    contact_request = contact_form.save()
+    try:
+        send_contact_request_notification(contact_request)
+        messages.success(
+            request,
+            "Solicitud enviada correctamente. El equipo revisará los antecedentes y responderá a la brevedad.",
+        )
+    except (OSError, SMTPException, BadHeaderError) as exc:
+        logger.exception(
+            "Contact form email notification failed. exception_type=%s exception_message=%s password_present=%s",
+            exc.__class__.__name__,
+            str(exc),
+            bool(settings.EMAIL_HOST_PASSWORD),
+        )
+        messages.warning(
+            request,
+            "La solicitud fue registrada correctamente, pero el aviso por correo no pudo enviarse en este momento.",
+        )
+    return contact_form, redirect(f"{ruta_de_vuelta}?focus=formulario")
 
 
 def home(request):
@@ -352,6 +388,104 @@ def home(request):
                 "Mantención preventiva y correctiva",
                 "Reparación de sistemas y proyectos de clima",
             ],
+        },
+    )
+
+
+def servicios_index(request):
+    """Indice de servicios: la puerta de entrada a las seis paginas nuevas."""
+    return render(
+        request,
+        "core/servicios.html",
+        {
+            "current_page": "servicios",
+            "page_title": "Servicios de climatización, ventilación y HVAC | MAX SERVICES",
+            "page_description": (
+                "Servicios HVAC para empresas en Santiago: climatización, ventilación, extracción, "
+                "presurización de escaleras, mantención preventiva y reparación de sistemas."
+            ),
+            "canonical_path": "/servicios/",
+            "servicios": SERVICIOS,
+            "migas_visibles": [("Inicio", "/"), ("Servicios", "/servicios/")],
+            "schema_json": schema_json(migas([("Inicio", "/"), ("Servicios", "/servicios/")])),
+        },
+    )
+
+
+def servicio_detalle(request, slug):
+    servicio = POR_SLUG.get(slug)
+    if servicio is None:
+        raise Http404("Servicio no encontrado")
+
+    ruta = f"/servicios/{slug}/"
+    contact_form, respuesta = _procesar_contacto(request, ruta)
+    if respuesta is not None:
+        return respuesta
+
+    camino = [("Inicio", "/"), ("Servicios", "/servicios/"), (servicio["nombre"], ruta)]
+    return render(
+        request,
+        "core/servicio.html",
+        {
+            "current_page": "servicios",
+            "page_title": servicio["titulo_seo"],
+            "page_description": servicio["descripcion_seo"],
+            "canonical_path": ruta,
+            "og_image": absolute_static_url("assets/social/og-default.jpg"),
+            "servicio": servicio,
+            "relacionados": con_relacionados(servicio),
+            "contact_form": contact_form,
+            "migas_visibles": camino,
+            "schema_json": schema_json(
+                schema_servicio(servicio, ruta),
+                migas(camino),
+                schema_preguntas(servicio["faq"]),
+            ),
+        },
+    )
+
+
+def empresa(request):
+    camino = [("Inicio", "/"), ("Empresa", "/empresa/")]
+    return render(
+        request,
+        "core/empresa.html",
+        {
+            "current_page": "empresa",
+            "page_title": "Empresa de climatización en Santiago desde 2011 | MAX SERVICES",
+            "page_description": (
+                "MAX SERVICES SpA, empresa de climatización, ventilación y proyectos HVAC con "
+                "operación iniciada en 2011 en Santiago. Trabajo para constructoras, edificios, "
+                "comercio e instituciones."
+            ),
+            "canonical_path": "/empresa/",
+            "servicios": SERVICIOS,
+            "migas_visibles": camino,
+            "schema_json": schema_json(migas(camino)),
+        },
+    )
+
+
+def contacto(request):
+    contact_form, respuesta = _procesar_contacto(request, "/contacto/")
+    if respuesta is not None:
+        return respuesta
+
+    camino = [("Inicio", "/"), ("Contacto", "/contacto/")]
+    return render(
+        request,
+        "core/contacto.html",
+        {
+            "current_page": "contacto",
+            "page_title": "Contacto | Cotizaciones y evaluación técnica | MAX SERVICES",
+            "page_description": (
+                "Solicita evaluación técnica, cotización o plan de mantención HVAC en Santiago. "
+                "Atención de lunes a viernes para empresas, edificios e instituciones."
+            ),
+            "canonical_path": "/contacto/",
+            "contact_form": contact_form,
+            "migas_visibles": camino,
+            "schema_json": schema_json(migas(camino)),
         },
     )
 
