@@ -292,3 +292,38 @@ class PaginasPropiasTests(TestCase):
         self.assertTrue(r["Location"].startswith("/contacto/"), r["Location"])
         self.assertEqual(ContactRequest.objects.count(), 1)
         self.assertEqual(len(mail.outbox), 2)
+
+
+class SeguridadTests(TestCase):
+    """DEBUG estaba en True Y ASI CORRIA EN PRODUCCION (16-09-2026).
+
+    Se comprobo en vivo: https://maxservicesspa.cl/pagina-que-no-existe/ devolvia
+    la pagina de depuracion de Django con el listado de rutas. Con un error 500
+    habria mostrado la traza completa y las variables de entorno.
+    """
+
+    def test_debug_apagado_por_defecto(self):
+        import importlib
+        import os
+        from unittest.mock import patch
+
+        with patch.dict(os.environ, {}, clear=False):
+            os.environ.pop("DJANGO_DEBUG", None)
+            from config import settings as s
+            importlib.reload(s)
+            self.assertFalse(s.DEBUG, "DEBUG tiene que estar apagado si nadie lo pide")
+            self.assertTrue(s.SECURE_SSL_REDIRECT)
+            self.assertTrue(s.SESSION_COOKIE_SECURE)
+            self.assertEqual(s.X_FRAME_OPTIONS, "DENY")
+            self.assertNotIn("*", s.ALLOWED_HOSTS, "ALLOWED_HOSTS no puede ser comodin")
+            self.assertIn("maxservicesspa.cl", s.ALLOWED_HOSTS)
+
+    def test_la_clave_de_firma_sale_del_entorno(self):
+        import importlib
+        import os
+        from unittest.mock import patch
+
+        with patch.dict(os.environ, {"DJANGO_SECRET_KEY": "una-clave-larga-de-prueba-para-el-test"}):
+            from config import settings as s
+            importlib.reload(s)
+            self.assertEqual(s.SECRET_KEY, "una-clave-larga-de-prueba-para-el-test")

@@ -219,8 +219,8 @@ SERVICIOS = [
         "titulo_seo": "Mantención de aire acondicionado y HVAC en Santiago | MAX SERVICES",
         "h1": "Mantención preventiva y correctiva de sistemas HVAC en Santiago",
         "descripcion_seo": (
-            "Planes de mantención preventiva y correctiva de aire acondicionado y sistemas HVAC "
-            "para empresas, edificios e instituciones en Santiago. Revisión programada y ajustes."
+            "Mantención preventiva y correctiva de aire acondicionado y sistemas HVAC para "
+            "empresas, edificios e instituciones en Santiago."
         ),
         "resumen": "Mantención de sistemas HVAC según uso, criticidad y estado de la instalación.",
         "imagen": "assets/home/experience-support.webp",

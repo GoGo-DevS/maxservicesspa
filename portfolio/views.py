@@ -34,7 +34,14 @@ def project_detail(request, slug):
 
     ruta = f"/proyectos/{slug}/"
     camino = [("Inicio", "/"), ("Proyectos", "/proyectos/"), (proyecto["name"], ruta)]
+    # Google corta el title cerca de los 60-70 caracteres. Primero se suelta el
+    # "Proyecto HVAC" y, si el nombre igual es largo, se acorta el nombre: lo
+    # que nunca se pierde es la marca al final.
     titulo = f"{proyecto['name']} | Proyecto HVAC | MAX SERVICES"
+    if len(titulo) > 70:
+        titulo = f"{proyecto['name']} | MAX SERVICES"
+    if len(titulo) > 70:
+        titulo = f"{proyecto['name'][:70 - len(' | MAX SERVICES') - 1].rstrip()}… | MAX SERVICES"
     ficha = {
         "@context": "https://schema.org",
         "@type": "CreativeWork",
@@ -51,7 +58,7 @@ def project_detail(request, slug):
             "current_page": "projects",
             # El title se corta en ~60 caracteres en Google: si el nombre del
             # proyecto ya es largo, se deja solo con la marca corta.
-            "page_title": titulo if len(titulo) <= 70 else f"{proyecto['name']} | MAX SERVICES",
+            "page_title": titulo,
             "page_description": proyecto.get("summary", "")[:155],
             "canonical_path": ruta,
             "og_image": absolute_static_url("assets/social/og-proyectos.jpg"),

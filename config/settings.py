@@ -32,19 +32,58 @@ if ENV_PATH.exists():
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-bs%$=)bvyr((3$%*xn48401vjikhi9%a105eb)-31!&r9jxu&4'
+# La clave de firma sale del entorno. La de abajo es solo para desarrollo: la
+# que estaba escrita aca quedo publicada en el historial del repositorio, asi que
+# hay que definir DJANGO_SECRET_KEY en Render y darla por rotada.
+SECRET_KEY = os.getenv(
+    "DJANGO_SECRET_KEY",
+    "django-insecure-solo-para-desarrollo-local-no-usar-en-produccion",
+)
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# 16-09-2026: estaba en True y ASI CORRIA EN PRODUCCION. Con DEBUG encendido,
+# cualquier error muestra la traza completa con las variables de entorno, y el
+# 404 lista todas las rutas del sitio. Ahora hay que pedirlo explicitamente.
+DEBUG = os.getenv("DJANGO_DEBUG", "False").strip().lower() in {"1", "true", "yes", "on"}
 
+# Con DEBUG apagado, Django EXIGE que el host este en esta lista: si queda corta,
+# el sitio responde 400 a todo. Por eso van los dominios reales, el de Render y
+# el que Render inyecta solo en cada despliegue.
 ALLOWED_HOSTS = [
+    "maxservicesspa.cl",
+    "www.maxservicesspa.cl",
+    "maxservicesspa.onrender.com",
+    ".onrender.com",
     "127.0.0.1",
     "localhost",
     "0.0.0.0",
-    ".local",
-    "*",
+    "testserver",
 ]
+_host_render = os.getenv("RENDER_EXTERNAL_HOSTNAME", "").strip()
+if _host_render and _host_render not in ALLOWED_HOSTS:
+    ALLOWED_HOSTS.append(_host_render)
+ALLOWED_HOSTS += [h.strip() for h in os.getenv("ALLOWED_HOSTS", "").split(",") if h.strip()]
+
+# El formulario de contacto va por POST: sin esto Django lo rechaza por CSRF
+# cuando el sitio se sirve por https detras de Cloudflare/Render.
+CSRF_TRUSTED_ORIGINS = [
+    "https://maxservicesspa.cl",
+    "https://www.maxservicesspa.cl",
+    "https://*.onrender.com",
+]
+
+if not DEBUG:
+    # Render y Cloudflare terminan el TLS antes de llegar a Django: sin esta
+    # cabecera, Django cree que todo es http y el redirect entra en bucle.
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
+    X_FRAME_OPTIONS = "DENY"
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
 
 
 # Application definition

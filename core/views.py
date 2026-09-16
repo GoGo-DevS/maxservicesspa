@@ -93,8 +93,9 @@ def home(request):
         "core/home.html",
         {
             "page_title": "MAX SERVICES SPA | Climatización, ventilación y proyectos HVAC",
-            "page_description": "Empresa de climatización y ventilación en Santiago. Instalación, mantención, extracción, presurización, inyección de aire y proyectos HVAC para empresas, edificios e instituciones.",
+            "page_description": "Empresa de climatización y ventilación en Santiago: instalación, mantención, extracción y presurización para empresas, edificios e instituciones.",
             "canonical_path": "/",
+            "hero_preload": "assets/home/hero-main.webp",
             "og_image": absolute_static_url("assets/social/og-default.jpg"),
             "project_catalog": get_project_catalog(),
             "contact_form": contact_form,
@@ -454,9 +455,8 @@ def empresa(request):
             "current_page": "empresa",
             "page_title": "Empresa de climatización en Santiago desde 2011 | MAX SERVICES",
             "page_description": (
-                "MAX SERVICES SpA, empresa de climatización, ventilación y proyectos HVAC con "
-                "operación iniciada en 2011 en Santiago. Trabajo para constructoras, edificios, "
-                "comercio e instituciones."
+                "MAX SERVICES SpA: climatización, ventilación y proyectos HVAC en Santiago desde "
+                "2011, para constructoras, edificios, comercio e instituciones."
             ),
             "canonical_path": "/empresa/",
             "servicios": SERVICIOS,

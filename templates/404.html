@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load static %}
+{% comment %}
+  404 propia. La de Django es una pagina en blanco con texto plano: quien llega
+  ahi desde Google se va. Esta ofrece las salidas reales del sitio.
+{% endcomment %}
+
+{% block page %}
+  {% url 'core:home' as home_url %}
+  {% url 'core:servicios' as servicios_url %}
+  {% url 'core:contacto' as contacto_url %}
+  {% url 'portfolio:projects_index' as projects_url %}
+  {% include "includes/site_header.html" with topbar_text="Santiago y Región Metropolitana | HVAC y mantenciones" topbar_link_href=home_url topbar_link_section="contacto" topbar_link_text="Coordinar evaluación" header_cta_text="Solicitar cotización" %}
+
+  <main>
+    <section class="servicio-hero section-surface-hero">
+      <div class="container section-shell">
+        <div class="section-hero-copy" style="max-width:46rem">
+          <span class="section-kicker">Error 404</span>
+          <h1 class="section-title servicio-titulo">Esta página no existe</h1>
+          <p class="section-copy">
+            El enlace puede estar antiguo o mal escrito. Estas son las secciones del sitio:
+          </p>
+          <div class="hero-actions d-flex flex-wrap gap-3">
+            <a class="btn btn-brand-primary" href="{{ servicios_url }}">Ver los servicios</a>
+            <a class="btn btn-brand-secondary" href="{{ projects_url }}">Ver proyectos</a>
+            <a class="btn btn-brand-outline" href="{{ contacto_url }}">Contacto</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="site-section">
+      <div class="container section-shell">
+        <div class="servicio-relacionados">
+          {% for servicio in servicios_del_sitio %}
+            <a class="servicio-relacionado-card" href="{% url 'core:servicio' servicio.slug %}">
+              <span class="servicio-relacionado-numero">{{ servicio.numero }}</span>
+              <strong>{{ servicio.nombre }}</strong>
+              <span class="servicio-relacionado-copy">{{ servicio.resumen }}</span>
+            </a>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+  </main>
+
+  {% include "includes/site_footer.html" with footer_description="Empresa orientada a climatización, aire acondicionado, ventilación, extracción, presurización y mantenciones para oficinas, comercio, edificios y recintos operativos." footer_column_title="Servicios" footer_bottom_copy="MAX SERVICES SPA | Soluciones HVAC para Santiago y la Región Metropolitana." footer_bottom_href=home_url footer_bottom_section="inicio" footer_bottom_label="Volver arriba" %}
+{% endblock %}
