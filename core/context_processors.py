@@ -30,7 +30,7 @@ def site_meta(request):
 
     return {
         "site_url": settings.SITE_URL,
-        "default_og_image": absolute_static_url("assets/home/hero-main.png"),
+        "default_og_image": absolute_static_url("assets/social/og-default.jpg"),
         "favicon_image": "assets/brand/max-services-symbol-real-v2.png",
         "local_business_schema_json": json.dumps(
             local_business_schema,

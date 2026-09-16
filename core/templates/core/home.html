@@ -43,7 +43,7 @@
             <div class="hero-visual-shell">
               <div class="hero-photo-stage">
                 <div class="hero-photo-main">
-                  <img class="hero-photo-image" src="{% static 'assets/home/hero-main.png' %}" alt="Técnicos de climatización trabajando en una instalación HVAC corporativa.">
+                  <img class="hero-photo-image" src="{% static 'assets/home/hero-main.webp' %}" alt="Técnicos de climatización trabajando en una instalación HVAC corporativa." decoding="async" fetchpriority="high" width="1536" height="1024">
                 <div class="hero-photo-copy">
                   <span>Ejecución en terreno</span>
                   <strong>Climatización, mantención y soluciones técnicas para oficinas, comercio, salud y edificios</strong>
@@ -77,7 +77,7 @@
             <h2 class="section-title" id="experience-strip-title">Trayectoria técnica sostenida desde 2011 en climatización, aire y proyectos ejecutados.</h2>
           </div>
           <div class="experience-copy-panel experience-visual-panel" aria-label="Experiencia técnica aplicada de MAX SERVICES SPA">
-            <img class="experience-visual-image" src="{% static 'assets/home/experience-support.png' %}" alt="Instalación técnica HVAC con ductos, equipos y cielo falso en un recinto corporativo.">
+            <img class="experience-visual-image" src="{% static 'assets/home/experience-support.webp' %}" alt="Instalación técnica HVAC con ductos, equipos y cielo falso en un recinto corporativo." loading="lazy" decoding="async" width="1536" height="1024">
             <div class="experience-visual-overlay">
               <span>Experiencia aplicada</span>
               <strong>Retail, salud, universidades, oficinas, edificios y obras.</strong>
@@ -148,10 +148,10 @@
                 <div class="trust-name-logo-wrap">
                   {% if client.url %}
                     <a class="logo-link" href="{{ client.url }}" target="_blank" rel="noopener noreferrer" aria-label="Abrir sitio web de {{ client.name }}">
-                      <img class="trust-name-logo{% if client.logo_class %} {{ client.logo_class }}{% endif %}" src="{% static client.logo %}" alt="{{ client.logo_alt|default:client.name }}">
+                      <img class="trust-name-logo{% if client.logo_class %} {{ client.logo_class }}{% endif %}" src="{% static client.logo %}" alt="{{ client.logo_alt|default:client.name }}" loading="lazy" decoding="async">
                     </a>
                   {% else %}
-                    <img class="trust-name-logo{% if client.logo_class %} {{ client.logo_class }}{% endif %}" src="{% static client.logo %}" alt="{{ client.logo_alt|default:client.name }}">
+                    <img class="trust-name-logo{% if client.logo_class %} {{ client.logo_class }}{% endif %}" src="{% static client.logo %}" alt="{{ client.logo_alt|default:client.name }}" loading="lazy" decoding="async">
                   {% endif %}
                 </div>
               {% else %}
@@ -173,10 +173,10 @@
                   {% if client.logo %}
                     {% if client.url %}
                       <a class="logo-link" href="{{ client.url }}" target="_blank" rel="noopener noreferrer" aria-label="Abrir sitio web de {{ client.name }}">
-                        <img class="trust-marquee-logo" src="{% static client.logo %}" alt="{{ client.logo_alt|default:client.name }}">
+                        <img class="trust-marquee-logo" src="{% static client.logo %}" alt="{{ client.logo_alt|default:client.name }}" loading="lazy" decoding="async">
                       </a>
                     {% else %}
-                      <img class="trust-marquee-logo" src="{% static client.logo %}" alt="{{ client.logo_alt|default:client.name }}">
+                      <img class="trust-marquee-logo" src="{% static client.logo %}" alt="{{ client.logo_alt|default:client.name }}" loading="lazy" decoding="async">
                     {% endif %}
                   {% else %}
                     {% if client.url %}
@@ -215,7 +215,7 @@
           </div>
           <div class="col-lg-5 site-col">
             <div class="section-hero-visual services-hero-visual">
-              <img class="section-hero-image" src="{% static 'assets/home/hero-main.png' %}" alt="Técnico de MAX SERVICES SPA realizando una intervención de climatización en una oficina corporativa.">
+              <img class="section-hero-image" src="{% static 'assets/home/hero-main.webp' %}" alt="Técnico de MAX SERVICES SPA realizando una intervención de climatización en una oficina corporativa." loading="lazy" decoding="async" width="1536" height="1024">
               <div class="section-hero-overlay">
                 <span>Soporte técnico en terreno</span>
                 <strong>Diseño, montaje, mantención y reparación de sistemas HVAC.</strong>
@@ -294,10 +294,10 @@
             <article class="brand-partner-chip" aria-label="{{ brand.name }}">
               {% if brand.url %}
                 <a class="logo-link" href="{{ brand.url }}" target="_blank" rel="noopener noreferrer" aria-label="Abrir sitio web de {{ brand.name }}">
-                  <img class="{{ brand.logo_class }}" src="{% static brand.logo %}" alt="Logo de {{ brand.name }}">
+                  <img class="{{ brand.logo_class }}" src="{% static brand.logo %}" alt="Logo de {{ brand.name }}" loading="lazy" decoding="async">
                 </a>
               {% else %}
-                <img class="{{ brand.logo_class }}" src="{% static brand.logo %}" alt="Logo de {{ brand.name }}">
+                <img class="{{ brand.logo_class }}" src="{% static brand.logo %}" alt="Logo de {{ brand.name }}" loading="lazy" decoding="async">
               {% endif %}
             </article>
           {% endfor %}
@@ -365,7 +365,7 @@
           <div class="col-lg-5 site-col">
             <div class="about-visual-panel">
               <div class="about-visual-main">
-                <img class="about-visual-image" src="{% static 'assets/home/about-company.png' %}" alt="Equipo técnico de MAX SERVICES revisando planos y coordinando una instalación HVAC.">
+                <img class="about-visual-image" src="{% static 'assets/home/about-company.webp' %}" alt="Equipo técnico de MAX SERVICES revisando planos y coordinando una instalación HVAC." loading="lazy" decoding="async" width="1536" height="1024">
                 <span>Trayectoria en terreno</span>
                 <strong>Planificación y ejecución para proyectos de climatización, aire y ventilación.</strong>
               </div>
@@ -545,7 +545,7 @@
             </div>
             <div class="col-lg-7 site-col">
               <div class="section-hero-visual section-hero-visual-compact contact-intro-visual contact-intro-visual-bottom">
-                <img class="section-hero-image" src="{% static 'assets/home/contact-evaluation.png' %}" alt="Técnico de MAX SERVICES SPA evaluando un equipo de climatización en terreno.">
+                <img class="section-hero-image" src="{% static 'assets/home/contact-evaluation.webp' %}" alt="Técnico de MAX SERVICES SPA evaluando un equipo de climatización en terreno." loading="lazy" decoding="async" width="1536" height="1024">
                 <div class="section-hero-overlay">
                   <span>Atención comercial</span>
                   <strong>Evaluación técnica, coordinación y respuesta para proyectos, mantenciones y requerimientos en terreno.</strong>

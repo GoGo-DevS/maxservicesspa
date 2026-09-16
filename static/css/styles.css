@@ -609,7 +609,7 @@ textarea {
 }
 
 .section-surface-services {
-  background-image: url("../assets/home/hero-main.png");
+  background-image: url("../assets/home/hero-main.webp");
 }
 
 .section-surface-services::before {
@@ -619,15 +619,15 @@ textarea {
 }
 
 .section-surface-projects {
-  background-image: url("../assets/projects/climatizacion-oficinas-las-condes/cover.png");
+  background-image: url("../assets/projects/climatizacion-oficinas-las-condes/cover.webp");
 }
 
 .section-surface-company {
-  background-image: url("../assets/home/about-company.png");
+  background-image: url("../assets/home/about-company.webp");
 }
 
 .section-surface-contact {
-  background-image: url("../assets/home/contact-evaluation.png");
+  background-image: url("../assets/home/contact-evaluation.webp");
 }
 
 .trust-logos-section {
@@ -635,7 +635,7 @@ textarea {
   background:
     linear-gradient(180deg, rgba(16, 35, 53, 0.48) 0%, rgba(32, 55, 78, 0.4) 100%),
     linear-gradient(90deg, rgba(233, 240, 247, 0.58) 0%, rgba(221, 230, 239, 0.46) 34%, rgba(214, 225, 236, 0.5) 100%),
-    url("../assets/home/trust-background.png") center center / cover no-repeat;
+    url("../assets/home/trust-background.webp") center center / cover no-repeat;
 }
 
 .trust-logos-shell {
@@ -897,7 +897,7 @@ textarea {
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.54) 0%, rgba(248, 251, 253, 0.56) 100%),
     linear-gradient(90deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.3) 38%, rgba(244, 248, 251, 0.28) 100%),
-    url("../assets/home/experience-background.png") center center / cover no-repeat;
+    url("../assets/home/experience-background.webp") center center / cover no-repeat;
 }
 
 .experience-stage-section::before {
@@ -914,7 +914,7 @@ textarea {
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.56) 0%, rgba(248, 251, 253, 0.58) 100%),
     linear-gradient(90deg, rgba(255, 255, 255, 0.52) 0%, rgba(255, 255, 255, 0.34) 40%, rgba(244, 248, 251, 0.3) 100%),
-    url("../assets/home/sectors-background.png") center center / cover no-repeat;
+    url("../assets/home/sectors-background.webp") center center / cover no-repeat;
 }
 
 .experience-sectors-section::before {
@@ -1064,7 +1064,7 @@ textarea {
   padding: 2.4rem 0 2.2rem;
   background:
     linear-gradient(90deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.92) 34%, rgba(255, 255, 255, 0.78) 58%, rgba(244, 248, 251, 0.72) 100%),
-    url("../assets/home/hero-background.png") center center / cover no-repeat;
+    url("../assets/home/hero-background.webp") center center / cover no-repeat;
 }
 
 .home-hero::after {
@@ -2314,7 +2314,7 @@ textarea.site-input {
   .home-hero {
     background:
       linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(255, 255, 255, 0.88) 38%, rgba(244, 248, 251, 0.84) 100%),
-      url("../assets/home/hero-background.png") center center / cover no-repeat;
+      url("../assets/home/hero-background.webp") center center / cover no-repeat;
   }
 
   .section-surface-hero::before {
@@ -2483,7 +2483,7 @@ textarea.site-input {
     background:
       linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(248, 251, 253, 0.96) 100%),
       linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(244, 248, 251, 0.84) 100%),
-      url("../assets/home/about-company.png") center center / cover no-repeat;
+      url("../assets/home/about-company.webp") center center / cover no-repeat;
   }
 
   .trust-marquee-logo {

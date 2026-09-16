@@ -13,7 +13,7 @@ def projects_index(request):
             "page_title": "Proyectos HVAC y climatización | MAX SERVICES SPA",
             "page_description": "Conoce la experiencia de MAX SERVICES SPA en climatización, ventilación, extracción, mantención y proyectos técnicos para distintos rubros.",
             "canonical_path": "/proyectos/",
-            "og_image": absolute_static_url("assets/projects/edificio-tasco-terminado/cover.jpg"),
+            "og_image": absolute_static_url("assets/social/og-proyectos.jpg"),
             "project_catalog": get_project_catalog(),
         },
     )

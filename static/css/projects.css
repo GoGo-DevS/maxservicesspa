@@ -3,7 +3,7 @@
   padding: 4.5rem 0 3rem;
   background:
     linear-gradient(90deg, rgba(255, 255, 255, 0.96) 0%, rgba(255, 255, 255, 0.92) 34%, rgba(255, 255, 255, 0.82) 60%, rgba(247, 250, 252, 0.76) 100%),
-    url("../assets/projects/climatizacion-oficinas-las-condes/cover.png") center center / cover no-repeat;
+    url("../assets/projects/climatizacion-oficinas-las-condes/cover.webp") center center / cover no-repeat;
 }
 
 .projects-hero::before {
@@ -426,7 +426,7 @@ body.project-image-modal-open {
     padding: 3.75rem 0 2.5rem;
     background:
       linear-gradient(180deg, rgba(255, 255, 255, 0.97) 0%, rgba(255, 255, 255, 0.9) 36%, rgba(247, 250, 252, 0.84) 100%),
-      url("../assets/projects/climatizacion-oficinas-las-condes/cover.png") center center / cover no-repeat;
+      url("../assets/projects/climatizacion-oficinas-las-condes/cover.webp") center center / cover no-repeat;
   }
 
   .projects-hero-visual {
