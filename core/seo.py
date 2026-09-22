@@ -58,7 +58,7 @@ def schema_servicio(servicio, ruta):
             "@type": "LocalBusiness",
             "name": "MAX SERVICES SPA",
             "url": settings.SITE_URL,
-            "telephone": "+56225690108",
+            "telephone": "+56225590108",
             "email": "contacto@maxservicesspa.cl",
             "address": {
                 "@type": "PostalAddress",
