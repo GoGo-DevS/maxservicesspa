@@ -51,6 +51,16 @@
     gtag('config', '{{ ga4_measurement_id }}');
   </script>
   {% endif %}
+  {% if ga4_measurement_id %}
+  {% comment %}
+    Eventos de contacto (WhatsApp, telefono, correo, formulario). Sin esto GA4
+    solo cuenta visitas y no se sabe cuantas de ellas levantaron el telefono.
+    Va {% comment %} y NO {# #}: el de llaves solo sirve en UNA linea, el
+    multilinea se imprime en la pagina. Noveno caso del mismo bug en estos repos.
+  {% endcomment %}
+  <script src="{% static 'js/medicion-contactos.js' %}" defer></script>
+  {% endif %}
+
 </head>
 <body
   class="site-body"
