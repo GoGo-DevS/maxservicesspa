@@ -183,10 +183,12 @@ class ContactRequestForm(forms.ModelForm):
         city = cleaned_data.get("city", "").strip()
         commune = cleaned_data.get("commune", "").strip()
 
-        if not region:
+        # El campo vacio ya falla por "required" con este mismo texto: agregarlo
+        # aqui otra vez lo mostraba DOS veces bajo el campo (07-10-2026).
+        if not region and "region" not in self.errors:
             self.add_error("region", "Selecciona una región.")
 
-        if not city:
+        if not city and "city" not in self.errors:
             self.add_error("city", "Selecciona una ciudad.")
 
         if region and city:

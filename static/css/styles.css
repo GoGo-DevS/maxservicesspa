@@ -2707,3 +2707,7 @@ textarea.site-input {
 
 .proyecto-galeria { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
 .proyecto-galeria img { width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-lg); border: 1px solid var(--color-border); }
+
+/* Credito de GoGoDevS bajo la franja final del pie (07-10-2026). */
+.footer-credit { margin: 1rem 0 0; text-align: center; font-size: .8rem; opacity: .75; }
+.footer-credit a { color: inherit; text-decoration: underline; }

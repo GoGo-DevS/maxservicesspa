@@ -205,3 +205,25 @@ class MedicionIntactaTests(TestCase):
         js = (Path(settings.BASE_DIR) / "static/js/medicion-contactos.js").read_text(encoding="utf-8")
         for evento in ["contacto_whatsapp", "contacto_telefono", "contacto_email", "formulario_enviado"]:
             self.assertIn(evento, js)
+
+
+class FormularioSinErroresRepetidos(TestCase):
+    """07-10-2026: con el formulario vacio, "Selecciona una región." y
+    "Selecciona una ciudad." salian DOS veces: una por required y otra desde
+    clean(). Diego lo vio en el celular."""
+
+    def test_cada_error_sale_una_sola_vez(self):
+        from core.forms import ContactRequestForm
+        f = ContactRequestForm(data={})
+        self.assertFalse(f.is_valid())
+        self.assertEqual(f.errors['region'], ['Selecciona una región.'])
+        self.assertEqual(f.errors['city'], ['Selecciona una ciudad.'])
+
+
+class CreditoGoGoDevS(TestCase):
+    """07-10-2026: el pie no decia quien hizo el sitio."""
+
+    def test_el_pie_enlaza_a_gogodevs(self):
+        r = self.client.get('/')
+        self.assertEqual(r.status_code, 200)
+        self.assertIn('Sitio desarrollado por <a href="https://www.gogodevs.cl/"', r.content.decode())
