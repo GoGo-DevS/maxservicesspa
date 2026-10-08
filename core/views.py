@@ -6,15 +6,23 @@ from xml.sax.saxutils import escape
 from django.conf import settings
 from django.contrib import messages
 from django.core.mail import BadHeaderError
-from django.http import Http404, HttpResponse, JsonResponse
+from django.http import Http404, HttpResponse, HttpResponseGone, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
 from core.emailing import send_contact_request_notification
 from core.forms import ContactRequestForm
 from core.locations import get_city_choices, get_commune_choices
-from core.seo import absolute_static_url, migas, schema_json, schema_preguntas, schema_servicio
-from core.servicios import POR_SLUG, SERVICIOS, con_relacionados
+from core.seo import (
+    absolute_static_url,
+    migas,
+    schema_json,
+    schema_lista_proyectos,
+    schema_preguntas,
+    schema_servicio,
+    schema_sitio,
+)
+from core.servicios import POR_SLUG, SERVICIOS, con_relacionados, proyectos_del_servicio
 from core.sitemaps import StaticViewSitemap
 from portfolio.catalog import get_project_catalog
 
@@ -92,9 +100,16 @@ def home(request):
         request,
         "core/home.html",
         {
-            "page_title": "MAX SERVICES SPA | Climatización, ventilación y proyectos HVAC",
-            "page_description": "Empresa de climatización y ventilación en Santiago: instalación, mantención, extracción y presurización para empresas, edificios e instituciones.",
+            # 07-10-2026: la marca va primero y escrita como la busca la gente
+            # ("maxservices" posicion 4,2, "max service" 17,8): compite con
+            # maxservice.cl y con HBO Max, asi que el title dice QUE hace.
+            "page_title": "Max Services SpA | Climatización y ventilación en Santiago",
+            "page_description": (
+                "Max Services SpA: climatización, aire acondicionado, ventilación, extracción y "
+                "presurización de escaleras en Santiago desde 2011. Instalación y mantención."
+            ),
             "canonical_path": "/",
+            "schema_json": schema_json(schema_sitio()),
             "hero_preload": "assets/home/hero-main.webp",
             "og_image": absolute_static_url("assets/social/og-default.jpg"),
             "project_catalog": get_project_catalog(),
@@ -400,10 +415,10 @@ def servicios_index(request):
         "core/servicios.html",
         {
             "current_page": "servicios",
-            "page_title": "Servicios de climatización, ventilación y HVAC | MAX SERVICES",
+            "page_title": "Servicios de climatización y ventilación | Max Services",
             "page_description": (
-                "Servicios HVAC para empresas en Santiago: climatización, ventilación, extracción, "
-                "presurización de escaleras, mantención preventiva y reparación de sistemas."
+                "Servicios HVAC para empresas y edificios en Santiago: aire acondicionado, "
+                "ventilación, extracción, presurización de escaleras, mantención y reparación."
             ),
             "canonical_path": "/servicios/",
             "servicios": SERVICIOS,
@@ -424,6 +439,7 @@ def servicio_detalle(request, slug):
         return respuesta
 
     camino = [("Inicio", "/"), ("Servicios", "/servicios/"), (servicio["nombre"], ruta)]
+    proyectos = proyectos_del_servicio(servicio, get_project_catalog()["projects"])
     return render(
         request,
         "core/servicio.html",
@@ -435,12 +451,14 @@ def servicio_detalle(request, slug):
             "og_image": absolute_static_url("assets/social/og-default.jpg"),
             "servicio": servicio,
             "relacionados": con_relacionados(servicio),
+            "proyectos": proyectos,
             "contact_form": contact_form,
             "migas_visibles": camino,
             "schema_json": schema_json(
                 schema_servicio(servicio, ruta),
                 migas(camino),
                 schema_preguntas(servicio["faq"]),
+                schema_lista_proyectos(proyectos, servicio["titulo_proyectos"]),
             ),
         },
     )
@@ -453,7 +471,7 @@ def empresa(request):
         "core/empresa.html",
         {
             "current_page": "empresa",
-            "page_title": "Empresa de climatización en Santiago desde 2011 | MAX SERVICES",
+            "page_title": "Empresa de climatización en Santiago | Max Services",
             "page_description": (
                 "MAX SERVICES SpA: climatización, ventilación y proyectos HVAC en Santiago desde "
                 "2011, para constructoras, edificios, comercio e instituciones."
@@ -477,7 +495,7 @@ def contacto(request):
         "core/contacto.html",
         {
             "current_page": "contacto",
-            "page_title": "Contacto | Cotizaciones y evaluación técnica | MAX SERVICES",
+            "page_title": "Contacto y cotizaciones HVAC en Santiago | Max Services",
             "page_description": (
                 "Solicita evaluación técnica, cotización o plan de mantención HVAC en Santiago. "
                 "Atención de lunes a viernes para empresas, edificios e instituciones."
@@ -526,6 +544,20 @@ def robots_txt(request):
     return HttpResponse(content, content_type="text/plain")
 
 
+def recurso_retirado(request):
+    """410 Gone para las direcciones del sitio anterior.
+
+    /index.rdf y /rss.xml eran feeds del sitio viejo. Search Console los seguia
+    rastreando (uno con 404, el otro "rastreada, sin indexar"). Un 404 Google lo
+    reintenta por meses porque puede ser un error pasajero; un 410 dice que se
+    fue para siempre y deja de gastar rastreo ahi.
+    """
+    return HttpResponseGone(
+        "Este recurso pertenecía al sitio anterior y ya no existe.",
+        content_type="text/plain; charset=utf-8",
+    )
+
+
 def sitemap_xml(request):
     parsed_site_url = urlparse(settings.SITE_URL)
     protocol = parsed_site_url.scheme or "https"
@@ -545,6 +577,7 @@ def sitemap_xml(request):
             [
                 "  <url>",
                 f"    <loc>{escape(url['location'])}</loc>",
+                *([f"    <lastmod>{url['lastmod'].isoformat()}</lastmod>"] if url.get("lastmod") else []),
                 f"    <changefreq>{escape(url['changefreq'])}</changefreq>",
                 f"    <priority>{url['priority']}</priority>",
                 "  </url>",

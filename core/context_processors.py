@@ -2,7 +2,7 @@ import json
 
 from django.conf import settings
 
-from core.seo import absolute_static_url
+from core.seo import ID_EMPRESA, NOMBRE_EMPRESA, NOMBRES_ALTERNATIVOS, absolute_static_url
 from core.servicios import SERVICIOS
 
 
@@ -13,9 +13,16 @@ def site_meta(request):
     local_business_schema = {
         "@context": "https://schema.org",
         "@type": "HVACBusiness",
-        "name": "MAX SERVICES SPA",
+        "@id": ID_EMPRESA,
+        "name": NOMBRE_EMPRESA,
+        "alternateName": NOMBRES_ALTERNATIVOS,
         "legalName": "MAX SERVICES SpA",
-        "description": "Empresa de climatización, ventilación y proyectos HVAC en Santiago, Región Metropolitana, Chile.",
+        # El RUT ya esta publicado en la home y en /empresa/.
+        "taxID": "76.174.166-7",
+        "description": (
+            "MAX SERVICES SpA es una empresa de climatización, aire acondicionado, ventilación, "
+            "extracción, presurización de escaleras y mantención HVAC en Santiago, Chile, desde 2011."
+        ),
         "url": settings.SITE_URL,
         "email": "contacto@maxservicesspa.cl",
         "telephone": "+56225590108",

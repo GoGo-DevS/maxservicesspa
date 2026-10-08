@@ -17,11 +17,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
-from core.views import robots_txt, sitemap_xml
+from core.views import recurso_retirado, robots_txt, sitemap_xml
 
 urlpatterns = [
     path('robots.txt', robots_txt, name='robots_txt'),
     path('sitemap.xml', sitemap_xml, name='sitemap_xml'),
+    # Restos del sitio anterior que Google seguia rastreando: 410, no 404.
+    path('index.rdf', recurso_retirado, name='retirado_index_rdf'),
+    path('rss.xml', recurso_retirado, name='retirado_rss_xml'),
     path('admin/', admin.site.urls),
     path('', include('core.urls')),
     path('proyectos/', include('portfolio.urls')),

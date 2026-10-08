@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.contrib.sitemaps import Sitemap
 
 from core.servicios import SERVICIOS
@@ -34,6 +36,14 @@ class StaticViewSitemap(Sitemap):
             "/empresa/",
             "/contacto/",
         ]
+
+    # Fecha de la ultima revision de contenido. Se cambia a mano cuando se edita el
+    # contenido de las paginas: un lastmod que se mueve solo en cada deploy sin
+    # que cambie nada, Google aprende a ignorarlo.
+    ULTIMA_REVISION = date(2026, 10, 7)
+
+    def lastmod(self, item):
+        return self.ULTIMA_REVISION
 
     def location(self, item):
         return item

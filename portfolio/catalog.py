@@ -15,6 +15,8 @@ PROJECTS = [
     # ── Proyectos terminados ──────────────────────────────────────────────────
     {
         "slug": "edificio-residencial-vista-parque",
+        "titulo_seo": "Edificio Vista Parque: HVAC y presurización",
+        "descripcion_seo": "Climatización, ventilación y presurización de caja de escaleras en el Edificio Residencial Vista Parque, Santiago. Obra terminada.",
         "name": "Edificio Residencial Vista Parque",
         "category": "terminado",
         "location": "Av. Las Pipcas 4219, Santiago",
@@ -30,6 +32,8 @@ PROJECTS = [
     },
     {
         "slug": "edificio-residencial-tasco-boetsch",
+        "titulo_seo": "Edificio TASCO Boetsch: presurización",
+        "descripcion_seo": "Presurización y ventilación en edificio residencial ejecutado con TASCO Boetsch Edificaciones en Santiago: suministro, montaje y puesta en marcha.",
         "name": "Edificio Residencial – TASCO Boetsch",
         "category": "terminado",
         "location": "Santiago",
@@ -45,6 +49,8 @@ PROJECTS = [
     },
     {
         "slug": "edificio-mixto-independencia-1760",
+        "titulo_seo": "Edificio Av. Independencia 1760: HVAC",
+        "descripcion_seo": "Climatización, ventilación y extracción en edificio de uso mixto en Av. Independencia 1760, Santiago, con local comercial y departamentos.",
         "name": "Edificio Mixto – Av. Independencia 1760",
         "category": "terminado",
         "location": "Av. Independencia 1760, Santiago",
@@ -60,6 +66,8 @@ PROJECTS = [
     },
     {
         "slug": "edificio-residencial-1840",
+        "titulo_seo": "Edificio Residencial 1840: climatización",
+        "descripcion_seo": "Climatización y ventilación en el Edificio Residencial 1840, Santiago: participación desde el diseño hasta la puesta en marcha. Obra terminada.",
         "name": "Edificio Residencial – 1840",
         "category": "terminado",
         "location": "Santiago",
@@ -75,6 +83,8 @@ PROJECTS = [
     },
     {
         "slug": "edificio-patrimonial-ladrillo",
+        "titulo_seo": "Renovación HVAC en edificio patrimonial",
+        "descripcion_seo": "Reemplazo de equipos obsoletos y nuevos sistemas de ventilación y extracción en un edificio patrimonial de ladrillo en Santiago.",
         "name": "Edificio Patrimonial – Renovación HVAC",
         "category": "terminado",
         "location": "Santiago",
@@ -91,6 +101,8 @@ PROJECTS = [
     # ── Proyectos en ejecución ────────────────────────────────────────────────
     {
         "slug": "obra-inmobiliaria-la-fontana-11-pisos",
+        "titulo_seo": "Obra La Fontana, 11 pisos: presurización",
+        "descripcion_seo": "Climatización, presurización y ventilación en edificio mixto de 11 pisos de Inmobiliaria La Fontana S.A. en Santiago. Obra en ejecución.",
         "name": "Obra en ejecución – Inmobiliaria La Fontana",
         "category": "en-ejecucion",
         "location": "Santiago",
@@ -106,6 +118,8 @@ PROJECTS = [
     },
     {
         "slug": "obra-echeverria-izquierdo-edificaciones",
+        "titulo_seo": "Obra Echeverría Izquierdo: ventilación",
+        "descripcion_seo": "Ductos, ventilación, extracción y presurización en obra de Echeverría Izquierdo Edificaciones en Santiago, desde la obra gruesa. En ejecución.",
         "name": "Obra en ejecución – Echeverría Izquierdo",
         "category": "en-ejecucion",
         "location": "Santiago",
@@ -121,6 +135,8 @@ PROJECTS = [
     },
     {
         "slug": "obra-tasco-boetsch-en-ejecucion",
+        "titulo_seo": "Obra TASCO Boetsch en ejecución",
+        "descripcion_seo": "Segunda obra con TASCO Boetsch Edificaciones: presurización y ventilación en Santiago, coordinadas con el avance de la estructura. En ejecución.",
         "name": "Obra en ejecución – TASCO Boetsch",
         "category": "en-ejecucion",
         "location": "Santiago",
@@ -137,6 +153,8 @@ PROJECTS = [
     # ── Proyectos de referencia (CV) ──────────────────────────────────────────
     {
         "slug": "hospital-luis-calvo-mackenna-climatizacion",
+        "titulo_seo": "Climatización Hospital Luis Calvo Mackenna",
+        "descripcion_seo": "Climatización y ventilación para el Hospital Luis Calvo Mackenna, Santiago: soluciones HVAC para un recinto clínico con continuidad operativa.",
         "name": "Sistema de climatización – Hospital Luis Calvo Mackenna",
         "category": "climatizacion",
         "location": "Santiago",
@@ -152,6 +170,8 @@ PROJECTS = [
     },
     {
         "slug": "hiper-lider-departamental-remodelacion",
+        "titulo_seo": "Remodelación HVAC Hiper Líder Departamental",
+        "descripcion_seo": "Ventilación y climatización en la remodelación del Hiper Líder Departamental, Santiago: retail de alto flujo con continuidad del servicio.",
         "name": "Remodelación HVAC – Hiper Líder Departamental",
         "category": "ventilacion",
         "location": "Santiago",
@@ -167,6 +187,8 @@ PROJECTS = [
     },
     {
         "slug": "oficinas-inverko-climatizacion",
+        "titulo_seo": "Climatización de oficinas Inverko",
+        "descripcion_seo": "Climatización y mantención para las oficinas corporativas de Inverko en Santiago: montaje, ajuste y coordinación con la operación del cliente.",
         "name": "Climatización para oficinas corporativas – Inverko",
         "category": "climatizacion",
         "location": "Santiago",
@@ -182,6 +204,8 @@ PROJECTS = [
     },
     {
         "slug": "universidad-diego-portales-climatizacion",
+        "titulo_seo": "Climatización Universidad Diego Portales",
+        "descripcion_seo": "Climatización y ventilación para la Universidad Diego Portales en Santiago: soluciones de aire para recintos institucionales de uso continuo.",
         "name": "Climatización institucional – Universidad Diego Portales",
         "category": "climatizacion",
         "location": "Santiago",
@@ -197,6 +221,8 @@ PROJECTS = [
     },
     {
         "slug": "lider-general-velasquez-alameda-remodelacion",
+        "titulo_seo": "Remodelación Líder General Velásquez",
+        "descripcion_seo": "Extracción y ventilación en la remodelación del Líder General Velásquez / Alameda, Santiago: adecuaciones técnicas en retail de alto uso.",
         "name": "Remodelación técnica – Líder General Velásquez / Alameda",
         "category": "extraccion",
         "location": "Santiago",
@@ -212,6 +238,8 @@ PROJECTS = [
     },
     {
         "slug": "universidad-autonoma-de-chile",
+        "titulo_seo": "Universidad Autónoma de Chile, Temuco y Talca",
+        "descripcion_seo": "Climatización y mantención para la Universidad Autónoma de Chile en Temuco y Talca: proyecto HVAC en regiones con continuidad operacional.",
         "name": "Soluciones de aire – Universidad Autónoma de Chile",
         "category": "climatizacion",
         "location": "Temuco y Talca",
@@ -227,6 +255,8 @@ PROJECTS = [
     },
     {
         "slug": "presurizacion-edificios-residenciales",
+        "titulo_seo": "Presurización en edificios y comunidades",
+        "descripcion_seo": "Presurización de caja de escaleras, ventilación y mantención para edificios residenciales, comunidades y obras inmobiliarias en Santiago y regiones.",
         "name": "Presurización y ventilación – Edificios residenciales y comunidades",
         "category": "presurizacion",
         "location": "Santiago y regiones",
@@ -242,6 +272,8 @@ PROJECTS = [
     },
     {
         "slug": "constructores-e-inmobiliarias-hvac",
+        "titulo_seo": "HVAC para constructoras e inmobiliarias",
+        "descripcion_seo": "Suministro, montaje y coordinación de obra en extracción y presurización para Boetsch, Echeverría Izquierdo, Carrán, Desco, Ormuz y otras.",
         "name": "Montaje y soporte HVAC – Constructoras e inmobiliarias",
         "category": "otros",
         "location": "Santiago",

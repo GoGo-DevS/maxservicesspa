@@ -68,15 +68,11 @@
         <h2 class="section-title section-title-balanced">Lo que ejecutamos en proyectos como este</h2>
         <div class="servicio-relacionados">
           {% for servicio in servicios %}
-            {% for aplicado in proyecto.services %}
-              {% if aplicado|lower in servicio.nombre|lower %}
-                <a class="servicio-relacionado-card" href="{% url 'core:servicio' servicio.slug %}">
-                  <span class="servicio-relacionado-numero">{{ servicio.numero }}</span>
-                  <strong>{{ servicio.nombre }}</strong>
-                  <span class="servicio-relacionado-copy">{{ servicio.resumen }}</span>
-                </a>
-              {% endif %}
-            {% endfor %}
+            <a class="servicio-relacionado-card" href="{% url 'core:servicio' servicio.slug %}">
+              <span class="servicio-relacionado-numero">{{ servicio.numero }}</span>
+              <strong>{{ servicio.nombre }}</strong>
+              <span class="servicio-relacionado-copy">{{ servicio.resumen }}</span>
+            </a>
           {% endfor %}
         </div>
       </div>
@@ -86,7 +82,7 @@
     <section class="site-section section-alt">
       <div class="container section-shell">
         <span class="section-kicker">Más experiencia</span>
-        <h2 class="section-title section-title-balanced">Otros proyectos ejecutados</h2>
+        <h2 class="section-title section-title-balanced">Proyectos con especialidades similares</h2>
         <div class="servicio-relacionados">
           {% for otro in otros %}
             <a class="servicio-relacionado-card" href="{% url 'portfolio:project_detail' otro.slug %}">

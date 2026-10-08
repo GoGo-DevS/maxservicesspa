@@ -7,31 +7,45 @@ podia aparecer buscando "max services" — su propia marca — y no por lo que l
 gente realmente busca ("mantencion aire acondicionado Santiago"). Sin URL propia
 no hay donde rankear.
 
-El contenido sale de lo que ya decia la home y de lo que la empresa hace de
-verdad. No se inventan certificaciones, plazos, precios ni garantias: si un dato
-no estaba antes en el sitio, no se escribe aca.
+07-10-2026: con Search Console a 28 dias, los seis servicios estaban en la
+pagina 2 de Google (posiciones 10 a 23). Cada uno paso a tener un title que
+cabe entero (60 caracteres), una description que no se corta (155), secciones
+que responden la busqueda concreta y los proyectos reales donde se aplico.
+
+El contenido sale de lo que ya decia el sitio y de lo que la empresa hace de
+verdad: las referencias y clientes estan publicados en la home y en las fichas
+de proyecto, y las marcas en "Marcas y proveedores". No se inventan
+certificaciones, normas, plazos, precios, garantias ni comunas: si un dato no
+estaba antes en el sitio, no se escribe aca.
 """
 
 CIUDAD = "Santiago"
 
+# Las marcas que la home ya publica en "Marcas y proveedores".
+MARCAS_PUBLICADAS = "CLARK, LG, GREE, Bravo Aires, Frigair, ANWO y S&P"
+
 # El orden manda en el menu, en la home y en el sitemap.
+#
+# `etiquetas_proyectos` son los valores de `services` de cada proyecto en
+# portfolio/catalog.py: con eso cada servicio enlaza a las obras reales donde se
+# aplico, y cada ficha de proyecto queda enlazada desde al menos un servicio.
 SERVICIOS = [
     {
         "slug": "climatizacion-aire-acondicionado",
         "numero": "01",
         "nombre": "Climatización y aire acondicionado",
         "nombre_corto": "Climatización",
-        "titulo_seo": "Climatización y aire acondicionado en Santiago | MAX SERVICES",
+        "titulo_seo": "Climatización y aire acondicionado, Santiago | Max Services",
         "h1": "Climatización y aire acondicionado para empresas en Santiago",
         "descripcion_seo": (
-            "Diseño, suministro, montaje y optimización de sistemas de climatización y aire "
-            "acondicionado para oficinas, edificios, retail, salud y universidades en Santiago."
+            "Diseño, suministro y montaje de climatización y aire acondicionado para oficinas, "
+            "edificios, retail, salud y universidades en Santiago, desde 2011."
         ),
         "resumen": "Diseño, suministro, montaje y optimización de sistemas de climatización.",
         "imagen": "assets/home/hero-main.webp",
         "imagen_alt": "Técnico instalando un equipo de climatización en una oficina corporativa.",
         "entrada": [
-            "MAX SERVICES SPA ejecuta proyectos de climatización y aire acondicionado desde 2011, "
+            "MAX SERVICES SpA ejecuta proyectos de climatización y aire acondicionado desde 2011, "
             "en Santiago y en regiones. El trabajo parte por entender el recinto: cuánta gente lo "
             "usa, qué equipos disipan calor y qué horario tiene que cubrir el sistema.",
             "Con eso se define el equipamiento, el trazado de ductos y los puntos de suministro, "
@@ -51,11 +65,45 @@ SERVICIOS = [
             "Recintos de salud",
             "Universidades e instituciones educativas",
         ],
+        "secciones": [
+            {
+                "h2": "Aire acondicionado para empresas, no para un dormitorio",
+                "parrafos": [
+                    "Un recinto de trabajo no se climatiza como una casa. Una oficina con mucha "
+                    "gente, una sala con equipos encendidos todo el día o un local de retail con "
+                    "flujo constante cargan calor de forma distinta, y el sistema se dimensiona "
+                    "según esa carga y según el horario que tiene que cubrir.",
+                    "Por eso la evaluación se hace en terreno y sobre el uso real del recinto, y "
+                    "no a partir de los metros cuadrados solamente.",
+                ],
+            },
+            {
+                "h2": "Instalación nueva o una que ya existe",
+                "parrafos": [
+                    "Se ejecutan proyectos de obra nueva, coordinados con la constructora, y "
+                    "también trabajos sobre instalaciones en funcionamiento: ampliar, reubicar u "
+                    "optimizar un sistema, o reemplazar solo las unidades que ya cumplieron su "
+                    "vida útil, coordinando con la operación del cliente.",
+                ],
+            },
+            {
+                "h2": "Experiencia en salud, universidades, retail y oficinas",
+                "parrafos": [
+                    "Entre las referencias de climatización están el Hospital Luis Calvo "
+                    "Mackenna, la Universidad Diego Portales, la Universidad Autónoma de Chile en "
+                    "Temuco y Talca, las oficinas de Inverko y la remodelación del Hiper Líder "
+                    "Departamental. Cada una tiene su ficha en la sección de proyectos.",
+                ],
+            },
+        ],
+        "etiquetas_proyectos": ["Climatización"],
+        "titulo_proyectos": "Proyectos de climatización ejecutados",
         "faq": [
             {
                 "p": "¿Atienden proyectos de climatización fuera de Santiago?",
                 "r": "Sí. La base de operaciones está en Santiago y también se ejecutan proyectos "
-                     "en regiones, coordinando el traslado del equipo técnico según el alcance.",
+                     "en regiones, coordinando el traslado del equipo técnico según el alcance. "
+                     "Un ejemplo es la Universidad Autónoma de Chile, en Temuco y Talca.",
             },
             {
                 "p": "¿Trabajan con el equipo que ya tiene instalado la empresa?",
@@ -64,9 +112,14 @@ SERVICIOS = [
             },
             {
                 "p": "¿Con qué marcas trabajan?",
-                "r": "Con marcas reconocidas del rubro y con soluciones compatibles con distintos "
-                     "tipos de proyecto. La marca se define según el recinto, el presupuesto y la "
-                     "disponibilidad de repuestos.",
+                "r": f"Con marcas reconocidas del rubro, entre ellas {MARCAS_PUBLICADAS}. La "
+                     "marca se define según el recinto, el presupuesto y la disponibilidad de "
+                     "repuestos.",
+            },
+            {
+                "p": "¿También hacen la mantención del aire acondicionado después de instalarlo?",
+                "r": "Sí. La mantención preventiva y correctiva es un servicio propio y se puede "
+                     "contratar para equipos instalados por MAX SERVICES o por otra empresa.",
             },
         ],
     },
@@ -75,11 +128,11 @@ SERVICIOS = [
         "numero": "02",
         "nombre": "Ventilación e inyección de aire",
         "nombre_corto": "Ventilación",
-        "titulo_seo": "Ventilación e inyección de aire en Santiago | MAX SERVICES",
-        "h1": "Sistemas de ventilación e inyección de aire en Santiago",
+        "titulo_seo": "Ventilación e inyección de aire en Santiago | Max Services",
+        "h1": "Ventilación, inyección y retorno de aire en Santiago",
         "descripcion_seo": (
-            "Sistemas de ventilación e inyección de aire para edificios, recintos técnicos y "
-            "subterráneos en Santiago. Diseño, montaje y renovación de aire según el proyecto."
+            "Sistemas de ventilación, inyección y retorno de aire para edificios, "
+            "subterráneos y salas técnicas en Santiago. Diseño de caudales, ductos y montaje."
         ),
         "resumen": "Sistemas de ventilación e inyección definidos según el proyecto.",
         "imagen": "assets/home/experience-support.webp",
@@ -104,12 +157,41 @@ SERVICIOS = [
             "Edificios corporativos y habitacionales",
             "Bodegas y zonas de operación",
         ],
+        "secciones": [
+            {
+                "h2": "Inyección y retorno de aire: por qué se diseñan juntos",
+                "parrafos": [
+                    "La inyección introduce aire de forma dirigida a un recinto y el retorno o la "
+                    "extracción lo saca. Si solo se diseña la mitad, el aire no circula: lo que "
+                    "entra tiene que tener por dónde salir.",
+                    "Por eso el proyecto define los dos recorridos a la vez, con sus caudales, "
+                    "sus ductos y la ubicación de rejillas y equipos.",
+                ],
+            },
+            {
+                "h2": "Ventilación en obra nueva y en edificios en uso",
+                "parrafos": [
+                    "En obra nueva, el montaje avanza coordinado con la constructora desde las "
+                    "etapas tempranas, como en las obras de Echeverría Izquierdo y TASCO Boetsch. "
+                    "En un edificio ya construido, el trazado se adapta al espacio disponible "
+                    "para ductos y equipos, que se revisa en terreno antes de proponer la solución.",
+                ],
+            },
+        ],
+        "etiquetas_proyectos": ["Ventilación"],
+        "titulo_proyectos": "Proyectos de ventilación ejecutados",
         "faq": [
             {
                 "p": "¿Qué diferencia hay entre ventilación e inyección de aire?",
                 "r": "La ventilación renueva el aire de un recinto y la inyección lo introduce de "
                      "forma dirigida a un espacio determinado. En la práctica se diseñan juntas: "
                      "lo que entra tiene que poder salir.",
+            },
+            {
+                "p": "¿Qué es el retorno de aire?",
+                "r": "Es el recorrido por el que el aire sale del recinto después de ser inyectado, "
+                     "ya sea de vuelta al sistema o hacia el exterior. Se diseña junto con la "
+                     "inyección para que el aire realmente circule.",
             },
             {
                 "p": "¿Se puede instalar en un edificio ya construido?",
@@ -123,10 +205,10 @@ SERVICIOS = [
         "numero": "03",
         "nombre": "Extracción de aire",
         "nombre_corto": "Extracción",
-        "titulo_seo": "Extracción de aire para empresas en Santiago | MAX SERVICES",
-        "h1": "Sistemas de extracción de aire en Santiago",
+        "titulo_seo": "Sistemas de extracción de aire en Santiago | Max Services",
+        "h1": "Sistemas de extracción de aire para cocinas, baños y subterráneos",
         "descripcion_seo": (
-            "Diseño, suministro y montaje de sistemas de extracción de aire para baños, cocinas, "
+            "Diseño, montaje y mantención de sistemas de extracción de aire para cocinas, baños, "
             "subterráneos y zonas de operación exigente en Santiago y regiones."
         ),
         "resumen": "Diseño, suministro y montaje de sistemas de extracción para distintos recintos.",
@@ -152,6 +234,38 @@ SERVICIOS = [
             "Subterráneos y estacionamientos",
             "Zonas de producción y operación exigente",
         ],
+        "secciones": [
+            {
+                "h2": "Extracción para cocinas, baños y subterráneos",
+                "parrafos": [
+                    "En una cocina industrial o un casino la extracción parte en la campana y "
+                    "termina en la descarga al exterior; en un baño o un subterráneo, lo que manda "
+                    "es la humedad y la renovación del aire. Cada caso se dimensiona según lo que "
+                    "hay que sacar y desde dónde.",
+                ],
+            },
+            {
+                "h2": "Cuando el sistema de extracción quedó corto",
+                "parrafos": [
+                    "Si el recinto sigue con olor, humo o humedad, el problema puede estar en el "
+                    "equipo, en el trazado o en la descarga. Se revisa en terreno qué está "
+                    "limitando el sistema y se propone la corrección concreta.",
+                    "También se renuevan instalaciones antiguas: en un edificio patrimonial de "
+                    "ladrillo se reemplazaron equipos obsoletos por nuevos sistemas de "
+                    "ventilación y extracción, con mínima intervención en la estructura.",
+                ],
+            },
+            {
+                "h2": "Mantención de sistemas de extracción y ventilación",
+                "parrafos": [
+                    "Un extractor que trabaja todos los días necesita revisión programada, igual "
+                    "que un equipo de aire acondicionado. La mantención preventiva y correctiva "
+                    "de MAX SERVICES incluye los sistemas de extracción y ventilación.",
+                ],
+            },
+        ],
+        "etiquetas_proyectos": ["Extracción"],
+        "titulo_proyectos": "Proyectos de extracción ejecutados",
         "faq": [
             {
                 "p": "¿Hacen extracción para cocinas de casinos y restaurantes?",
@@ -163,6 +277,11 @@ SERVICIOS = [
                 "r": "Sí. Se evalúa en terreno qué está limitando el sistema —equipo, trazado o "
                      "descarga— y se propone la corrección concreta.",
             },
+            {
+                "p": "¿Hacen mantención de sistemas de extracción y ventilación?",
+                "r": "Sí. Se atienden dentro de la mantención preventiva y correctiva, con un plan "
+                     "que se define según el uso y el estado de la instalación.",
+            },
         ],
     },
     {
@@ -170,11 +289,11 @@ SERVICIOS = [
         "numero": "04",
         "nombre": "Presurización de caja de escaleras",
         "nombre_corto": "Presurización",
-        "titulo_seo": "Presurización de escaleras en edificios | MAX SERVICES",
+        "titulo_seo": "Presurización de escaleras en Santiago | Max Services",
         "h1": "Presurización de caja de escaleras para edificios en Santiago",
         "descripcion_seo": (
-            "Diseño y montaje de sistemas de presurización de caja de escaleras para edificios en "
-            "Santiago: seguridad y control de aire en circulaciones protegidas."
+            "Presurización de escaleras para edificios en Santiago: diseño, montaje y pruebas del "
+            "sistema que mantiene el humo fuera de la vía de evacuación."
         ),
         "resumen": "Diseño y montaje de sistemas para seguridad y control de aire en edificios.",
         "imagen": "assets/home/contact-evaluation.webp",
@@ -197,6 +316,38 @@ SERVICIOS = [
             "Edificios corporativos y de oficinas",
             "Circulaciones protegidas y recintos de apoyo",
         ],
+        "secciones": [
+            {
+                "h2": "Cómo funciona la presurización de escaleras",
+                "parrafos": [
+                    "El equipo inyecta aire a la caja de escaleras y la deja con más presión que "
+                    "los pisos. Cuando se abre una puerta, el aire sale desde la escalera hacia "
+                    "el piso y no al revés, así que el humo de un incendio no entra en la vía por "
+                    "la que la gente evacúa.",
+                    "El sistema se activa con su propio control y tiene que funcionar cuando se "
+                    "necesita; por eso la entrega incluye pruebas de funcionamiento.",
+                ],
+            },
+            {
+                "h2": "Presurización en obra, coordinada con la constructora",
+                "parrafos": [
+                    "Buena parte de estos proyectos se ejecuta directamente con constructoras e "
+                    "inmobiliarias: TASCO Boetsch, Echeverría Izquierdo e Inmobiliaria La "
+                    "Fontana, entre otras. El montaje avanza con la obra para que ductos, "
+                    "rejillas y equipo queden listos cuando el edificio se entrega.",
+                ],
+            },
+            {
+                "h2": "Edificios ya habitados y comunidades",
+                "parrafos": [
+                    "En edificios residenciales y comunidades también se trabaja sobre sistemas "
+                    "existentes, con presurización, ventilación y mantención para que el sistema "
+                    "siga respondiendo con el paso de los años.",
+                ],
+            },
+        ],
+        "etiquetas_proyectos": ["Presurización"],
+        "titulo_proyectos": "Obras con presurización de escaleras",
         "faq": [
             {
                 "p": "¿En qué edificios se exige presurización de escaleras?",
@@ -209,6 +360,16 @@ SERVICIOS = [
                 "r": "Sí. Buena parte de los proyectos se ejecuta directamente con constructoras e "
                      "inmobiliarias, coordinando plazos con el resto de las especialidades.",
             },
+            {
+                "p": "¿El sistema se prueba antes de entregarlo?",
+                "r": "Sí. La entrega incluye las pruebas de funcionamiento del equipo y de su "
+                     "sistema de control y activación.",
+            },
+            {
+                "p": "¿Hacen mantención a sistemas de presurización ya instalados?",
+                "r": "Sí, en edificios residenciales y comunidades, dentro de la mantención de "
+                     "sistemas HVAC.",
+            },
         ],
     },
     {
@@ -216,11 +377,11 @@ SERVICIOS = [
         "numero": "05",
         "nombre": "Mantención preventiva y correctiva",
         "nombre_corto": "Mantención",
-        "titulo_seo": "Mantención de aire acondicionado y HVAC en Santiago | MAX SERVICES",
-        "h1": "Mantención preventiva y correctiva de sistemas HVAC en Santiago",
+        "titulo_seo": "Mantención de aire acondicionado en Santiago | Max Services",
+        "h1": "Mantención de aire acondicionado y sistemas HVAC en Santiago",
         "descripcion_seo": (
-            "Mantención preventiva y correctiva de aire acondicionado y sistemas HVAC para "
-            "empresas, edificios e instituciones en Santiago."
+            "Mantención preventiva y correctiva de aire acondicionado, ventilación y extracción "
+            "para empresas, edificios, comunidades e instituciones en Santiago."
         ),
         "resumen": "Mantención de sistemas HVAC según uso, criticidad y estado de la instalación.",
         "imagen": "assets/home/experience-support.webp",
@@ -245,6 +406,35 @@ SERVICIOS = [
             "Recintos de salud y universidades",
             "Comunidades y administraciones de edificios",
         ],
+        "secciones": [
+            {
+                "h2": "Mantención preventiva: qué se revisa en cada visita",
+                "parrafos": [
+                    "La visita programada revisa el funcionamiento de cada equipo, limpia filtros "
+                    "y componentes y ajusta lo que se desvió. Lo que importa es encontrar la falla "
+                    "cuando todavía es un ajuste y no una detención, y dejar registro de lo "
+                    "realizado para que el historial de la instalación no dependa de la memoria.",
+                ],
+            },
+            {
+                "h2": "Mantención correctiva cuando el equipo ya falló",
+                "parrafos": [
+                    "Cuando un equipo se detuvo o perdió rendimiento, se diagnostica en terreno y "
+                    "se corrige. Si la falla se repite o el equipo ya no se justifica, se "
+                    "recomienda qué conviene hacer con él.",
+                ],
+            },
+            {
+                "h2": "Mantención de sistemas de extracción y ventilación",
+                "parrafos": [
+                    "La mantención no se limita al aire acondicionado: también cubre los sistemas "
+                    "de ventilación, extracción y presurización de edificios, que trabajan todo el "
+                    "año y suelen revisarse solo cuando fallan.",
+                ],
+            },
+        ],
+        "etiquetas_proyectos": ["Mantención"],
+        "titulo_proyectos": "Proyectos con mantención",
         "faq": [
             {
                 "p": "¿Cada cuánto se debe hacer mantención a un aire acondicionado?",
@@ -263,6 +453,11 @@ SERVICIOS = [
                 "r": "Sí, además de empresas e instituciones. El plan se ajusta al tipo de recinto "
                      "y a los horarios en que se puede intervenir.",
             },
+            {
+                "p": "¿La mantención incluye los sistemas de extracción y ventilación?",
+                "r": "Sí. El plan puede considerar el aire acondicionado y también la ventilación, "
+                     "la extracción y la presurización del edificio.",
+            },
         ],
     },
     {
@@ -270,11 +465,11 @@ SERVICIOS = [
         "numero": "06",
         "nombre": "Reparación de sistemas",
         "nombre_corto": "Reparación",
-        "titulo_seo": "Reparación de aire acondicionado y HVAC | MAX SERVICES",
+        "titulo_seo": "Reparación de aire acondicionado en Santiago | Max Services",
         "h1": "Reparación de sistemas de climatización y ventilación en Santiago",
         "descripcion_seo": (
-            "Diagnóstico de fallas, ajustes técnicos y recuperación de operación en sistemas de "
-            "climatización, ventilación y extracción para empresas en Santiago."
+            "Diagnóstico de fallas y reparación de aire acondicionado, ventilación y extracción "
+            "para empresas en Santiago, con recomendación escrita de qué conviene."
         ),
         "resumen": "Diagnóstico de fallas, ajustes técnicos y recuperación de operación.",
         "imagen": "assets/home/contact-evaluation.webp",
@@ -298,6 +493,18 @@ SERVICIOS = [
             "Sistemas de ventilación y extracción con fallas",
             "Instalaciones que requieren recuperar continuidad operativa",
         ],
+        "secciones": [
+            {
+                "h2": "Reparar o reemplazar: se decide después del diagnóstico",
+                "parrafos": [
+                    "No siempre conviene reparar. Después del diagnóstico se compara el costo de "
+                    "la reparación con la vida útil que le queda al equipo, y esa recomendación "
+                    "se entrega por escrito junto con la evaluación.",
+                ],
+            },
+        ],
+        "etiquetas_proyectos": ["Mantención"],
+        "titulo_proyectos": "Instalaciones con mantención y soporte técnico",
         "faq": [
             {
                 "p": "¿Reparan equipos de cualquier marca?",
@@ -325,3 +532,32 @@ def con_relacionados(servicio):
     esto cada servicio queda aislado y Google lo trata como una hoja suelta.
     """
     return [s for s in SERVICIOS if s["slug"] != servicio["slug"]]
+
+
+def proyectos_del_servicio(servicio, proyectos):
+    """Las fichas de proyecto donde se aplico este servicio.
+
+    07-10-2026: 15 de las 16 fichas estaban "Descubierta, actualmente sin
+    indexar" en Search Console. Las enlazaba solo /proyectos/; ningun servicio
+    apuntaba a ellas, asi que Google las veia como paginas sin importancia.
+    Primero van las obras terminadas y en ejecucion (fotos propias), despues las
+    referencias.
+    """
+    etiquetas = set(servicio.get("etiquetas_proyectos", []))
+    elegidos = [p for p in proyectos if etiquetas & set(p.get("services", []))]
+    orden = {"terminado": 0, "en-ejecucion": 1}
+    return sorted(elegidos, key=lambda p: orden.get(p.get("category"), 2))
+
+
+def servicios_del_proyecto(proyecto):
+    """Los servicios cuya pagina corresponde a lo que se hizo en el proyecto.
+
+    Reparacion comparte la etiqueta "Mantención" para mostrar proyectos, pero una
+    ficha de proyecto no la ofrece como "servicio aplicado": nadie la registro asi.
+    """
+    aplicados = set(proyecto.get("services", []))
+    return [
+        s for s in SERVICIOS
+        if aplicados & set(s.get("etiquetas_proyectos", []))
+        and s["slug"] != "reparacion-de-sistemas"
+    ]

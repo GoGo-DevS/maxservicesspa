@@ -64,6 +64,21 @@
       </div>
     </section>
 
+    {% if servicio.secciones %}
+    <section class="site-section section-alt">
+      <div class="container section-shell">
+        <div class="servicio-secciones">
+          {% for seccion in servicio.secciones %}
+            <div class="servicio-seccion">
+              <h2 class="section-title section-title-balanced">{{ seccion.h2 }}</h2>
+              {% for parrafo in seccion.parrafos %}<p class="section-copy">{{ parrafo }}</p>{% endfor %}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+    {% endif %}
+
     {% if servicio.faq %}
     <section class="site-section section-alt">
       <div class="container section-shell">
@@ -75,6 +90,29 @@
               <summary>{{ item.p }}</summary>
               <p>{{ item.r }}</p>
             </details>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+    {% endif %}
+
+    {% if proyectos %}
+    {% comment %}
+      Proyectos reales donde se aplico este servicio. Hasta el 07-10-2026 ningun
+      servicio enlazaba a las fichas de proyecto, y 15 de 16 seguian "descubierta,
+      sin indexar" en Search Console.
+    {% endcomment %}
+    <section class="site-section">
+      <div class="container section-shell">
+        <span class="section-kicker">Proyectos</span>
+        <h2 class="section-title section-title-balanced">{{ servicio.titulo_proyectos }}</h2>
+        <div class="servicio-relacionados">
+          {% for proyecto in proyectos %}
+            <a class="servicio-relacionado-card" href="{% url 'portfolio:project_detail' proyecto.slug %}">
+              <span class="servicio-relacionado-numero">{{ proyecto.reference }} · {{ proyecto.location }}</span>
+              <strong>{{ proyecto.name }}</strong>
+              <span class="servicio-relacionado-copy">{{ proyecto.summary|truncatechars:120 }}</span>
+            </a>
           {% endfor %}
         </div>
       </div>

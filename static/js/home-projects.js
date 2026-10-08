@@ -19,11 +19,10 @@
 
     var link = document.createElement("a");
     link.className = "project-card-link";
-    link.href = projectsUrl;
+    // Cada tarjeta va a la ficha propia del proyecto (07-10-2026). Antes las
+    // tres apuntaban a /proyectos/ y las fichas no recibian enlaces desde la home.
+    link.href = projectsUrl + project.slug + "/";
     link.setAttribute("aria-label", "Ver proyecto " + project.name);
-    link.addEventListener("click", function () {
-      window.sessionStorage.setItem("maxservices:pending-project-slug", project.slug);
-    });
 
     var figure = document.createElement("div");
     figure.className = "project-card-figure";
