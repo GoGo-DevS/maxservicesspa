@@ -1,4 +1,4 @@
-"""Los seis servicios, cada uno con su propia URL.
+"""Los siete servicios, cada uno con su propia URL.
 
 Por que existe este archivo: hasta el 16-09-2026 el sitio era UNA sola pagina y
 "Servicios", "Empresa" y "Contacto" eran anclas a la misma home. El sitemap
@@ -285,8 +285,98 @@ SERVICIOS = [
         ],
     },
     {
-        "slug": "presurizacion-de-escaleras",
+        # 16-10-2026: "extracción cocina industrial" es una de las búsquedas que
+        # trae al cliente que contrata (salió de una agencia de Ads que le
+        # escribió a Max), y el sitio la nombraba UNA vez, dentro de la página
+        # general de extracción. Cada frase sale de lo que ya publicaba esa
+        # página (campana, ductos, extractores, descarga, casinos y
+        # restaurantes, evaluación en terreno, mantención). Nada nuevo.
+        "slug": "extraccion-cocinas-industriales",
         "numero": "04",
+        "nombre": "Extracción para cocinas industriales",
+        "nombre_corto": "Cocinas industriales",
+        "titulo_seo": "Extracción para cocinas industriales | Max Services",
+        "h1": "Extracción de aire para cocinas industriales y casinos",
+        "descripcion_seo": (
+            "Campanas, ductos y extractores para cocinas industriales, casinos y restaurantes en "
+            "Santiago: diseño, montaje y mantención hasta la descarga al exterior."
+        ),
+        "resumen": "Campana, ductos y extractores, desde la cocina hasta la descarga al exterior.",
+        "imagen": "assets/home/about-company.webp",
+        "imagen_alt": "Sistema de extracción de aire montado en un recinto industrial.",
+        "entrada": [
+            "En una cocina industrial o un casino la extracción no es un tema de confort: es lo "
+            "que permite que el espacio se pueda usar. Saca del recinto el humo, el calor, la "
+            "humedad y los olores que genera la cocción.",
+            "El sistema parte en la campana y termina en la descarga al exterior. MAX SERVICES lo "
+            "dimensiona según lo que hay que extraer y desde dónde, y el montaje considera el "
+            "recorrido completo de los ductos.",
+        ],
+        "incluye": [
+            "Evaluación en terreno de la cocina y de la carga que debe extraerse",
+            "Diseño del recorrido desde la campana hasta la descarga al exterior",
+            "Suministro y montaje de campanas, ductos y extractores",
+            "Conexiones eléctricas y de control del sistema",
+            "Pruebas de funcionamiento y entrega",
+        ],
+        "aplica": [
+            "Cocinas industriales",
+            "Casinos de empresas e instituciones",
+            "Cocinas de restaurantes",
+        ],
+        "secciones": [
+            {
+                "h2": "De la campana a la descarga: el sistema completo",
+                "parrafos": [
+                    "La extracción de una cocina se diseña como un recorrido: la campana capta lo "
+                    "que sale de la cocción, los ductos lo conducen y el extractor lo lleva hasta "
+                    "la descarga al exterior. Si una de esas partes queda corta, el resto no "
+                    "alcanza a compensarla.",
+                    "Por eso el proyecto define las tres a la vez, igual que en la ventilación: "
+                    "el aire que se saca de un recinto tiene que tener por dónde reponerse.",
+                ],
+            },
+            {
+                "h2": "Cuando la cocina sigue con humo u olor",
+                "parrafos": [
+                    "Si el recinto sigue con olor, humo o humedad, el problema puede estar en el "
+                    "equipo, en el trazado o en la descarga. Se revisa en terreno qué está "
+                    "limitando el sistema y se propone la corrección concreta.",
+                ],
+            },
+            {
+                "h2": "Mantención de la extracción de la cocina",
+                "parrafos": [
+                    "Un extractor que trabaja todos los días necesita revisión programada, igual "
+                    "que un equipo de aire acondicionado. La mantención preventiva y correctiva "
+                    "de MAX SERVICES incluye los sistemas de extracción y ventilación, con un plan "
+                    "que se define según el uso y el estado de la instalación.",
+                ],
+            },
+        ],
+        "etiquetas_proyectos": ["Extracción"],
+        "titulo_proyectos": "Proyectos de extracción ejecutados",
+        "faq": [
+            {
+                "p": "¿Qué incluye un sistema de extracción para una cocina industrial?",
+                "r": "La campana, los ductos y el extractor, con el recorrido completo hasta la "
+                     "descarga al exterior, dimensionados según lo que hay que extraer.",
+            },
+            {
+                "p": "¿Pueden mejorar la extracción de una cocina que sigue con humo u olor?",
+                "r": "Sí. Se evalúa en terreno qué está limitando el sistema —equipo, trazado o "
+                     "descarga— y se propone la corrección concreta.",
+            },
+            {
+                "p": "¿La extracción de la cocina entra en la mantención?",
+                "r": "Sí. La mantención preventiva y correctiva incluye los sistemas de extracción "
+                     "y ventilación, con un plan según el uso y el estado de la instalación.",
+            },
+        ],
+    },
+    {
+        "slug": "presurizacion-de-escaleras",
+        "numero": "05",
         "nombre": "Presurización de caja de escaleras",
         "nombre_corto": "Presurización",
         "titulo_seo": "Presurización de escaleras en Santiago | Max Services",
@@ -374,7 +464,7 @@ SERVICIOS = [
     },
     {
         "slug": "mantencion-hvac",
-        "numero": "05",
+        "numero": "06",
         "nombre": "Mantención preventiva y correctiva",
         "nombre_corto": "Mantención",
         "titulo_seo": "Mantención de aire acondicionado en Santiago | Max Services",
@@ -462,7 +552,7 @@ SERVICIOS = [
     },
     {
         "slug": "reparacion-de-sistemas",
-        "numero": "06",
+        "numero": "07",
         "nombre": "Reparación de sistemas",
         "nombre_corto": "Reparación",
         "titulo_seo": "Reparación de aire acondicionado en Santiago | Max Services",

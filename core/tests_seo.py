@@ -191,7 +191,8 @@ class RestosDelSitioAnteriorTests(TestCase):
         cuerpo = r.content.decode()
         total = 5 + len(SERVICIOS) + len(PROYECTOS)
         self.assertEqual(cuerpo.count("<loc>"), total)
-        self.assertEqual(total, 27)
+        # 28 desde el 16-10-2026: se sumo /servicios/extraccion-cocinas-industriales/.
+        self.assertEqual(total, 28)
         self.assertEqual(cuerpo.count("<lastmod>"), total)
         self.assertNotIn("index.rdf", cuerpo)
         self.assertNotIn("rss.xml", cuerpo)
