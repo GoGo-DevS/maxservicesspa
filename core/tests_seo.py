@@ -224,7 +224,15 @@ class FormularioSinErroresRepetidos(TestCase):
 class CreditoGoGoDevS(TestCase):
     """07-10-2026: el pie no decia quien hizo el sitio."""
 
-    def test_el_pie_enlaza_a_gogodevs(self):
+    def test_el_pie_enlaza_a_gogodevs_con_la_palabra_clave(self):
+        # 02-11-2026, consejo de Jorge Urzua (SEO): el texto del enlace es la
+        # palabra clave, no la marca; la marca queda fuera del enlace.
         r = self.client.get('/')
         self.assertEqual(r.status_code, 200)
-        self.assertIn('Sitio desarrollado por <a href="https://www.gogodevs.cl/"', r.content.decode())
+        html = r.content.decode()
+        self.assertIn(
+            '<a href="https://www.gogodevs.cl/" target="_blank" rel="noopener">'
+            'Desarrollo web</a> por GoGoDevS',
+            html,
+        )
+        self.assertNotIn('Sitio desarrollado por', html)
