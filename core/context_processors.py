@@ -23,7 +23,9 @@ def site_meta(request):
             "MAX SERVICES SpA es una empresa de climatización, aire acondicionado, ventilación, "
             "extracción, presurización de escaleras y mantención HVAC en Santiago, Chile, desde 2011."
         ),
-        "url": settings.SITE_URL,
+        # Con barra final, igual que el canonical de la portada y el WebSite: la
+        # misma entidad tiene que declarar la misma URL en todas partes.
+        "url": f"{settings.SITE_URL}/",
         "email": "contacto@maxservicesspa.cl",
         "telephone": "+56225590108",
         "foundingDate": "2011-10-11",

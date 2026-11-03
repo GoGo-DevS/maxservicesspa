@@ -35,15 +35,22 @@ class SitemapSite:
         self.domain = domain
 
 
-def _procesar_contacto(request, ruta_de_vuelta):
+def _procesar_contacto(request, ruta_de_vuelta, servicio_inicial=None):
     """Recibe el formulario de contacto y devuelve (form, respuesta).
 
-    Lo usan la home y /contacto/: el formulario es el mismo y tiene que
-    comportarse igual en las dos, incluido volver a SU propia pagina despues de
-    enviar. Si `respuesta` no es None, la vista tiene que devolverla tal cual.
+    Lo usan /contacto/ y cada pagina de servicio: el formulario es el mismo y
+    tiene que comportarse igual en todas, incluido volver a SU propia pagina
+    despues de enviar. Si `respuesta` no es None, la vista tiene que devolverla
+    tal cual.
+
+    03-11-2026: hasta esta fecha la plantilla mandaba el formulario SIEMPRE a la
+    portada, asi que esta funcion nunca recibia nada desde una pagina de
+    servicio. `servicio_inicial` deja elegida la opcion del servicio que la
+    persona estaba leyendo; puede cambiarla.
     """
     if request.method != "POST":
-        return ContactRequestForm(), None
+        inicial = {"service": servicio_inicial} if servicio_inicial else None
+        return ContactRequestForm(initial=inicial), None
 
     contact_form = ContactRequestForm(request.POST)
     if not contact_form.is_valid():
@@ -67,7 +74,9 @@ def _procesar_contacto(request, ruta_de_vuelta):
             request,
             "La solicitud fue registrada correctamente, pero el aviso por correo no pudo enviarse en este momento.",
         )
-    return contact_form, redirect(f"{ruta_de_vuelta}?focus=formulario")
+    # El "#formulario" hace que el navegador baje solo hasta el mensaje de exito:
+    # fuera de la portada no hay JavaScript que lea ?focus=formulario.
+    return contact_form, redirect(f"{ruta_de_vuelta}?focus=formulario#formulario")
 
 
 def home(request):
@@ -434,7 +443,9 @@ def servicio_detalle(request, slug):
         raise Http404("Servicio no encontrado")
 
     ruta = f"/servicios/{slug}/"
-    contact_form, respuesta = _procesar_contacto(request, ruta)
+    contact_form, respuesta = _procesar_contacto(
+        request, ruta, servicio_inicial=servicio.get("servicio_formulario")
+    )
     if respuesta is not None:
         return respuesta
 

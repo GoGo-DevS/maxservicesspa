@@ -226,61 +226,24 @@
           </div>
         </div>
 
-        <div class="row site-grid-row site-card-row">
+        {% comment %}
+          03-11-2026: las tarjetas estaban escritas a mano y eran seis; la septima
+          (extraccion para cocinas industriales, 16-10) no tenia enlace desde la
+          portada y Google la tenia "descubierta, sin indexar". Ahora salen de
+          core/servicios.py: un servicio nuevo aparece aca sin tocar la plantilla.
+        {% endcomment %}
+        <div class="row site-grid-row site-card-row justify-content-center">
+          {% for servicio in servicios_del_sitio %}
           <div class="col-md-6 col-xl-4 site-col">
-            <a class="service-card-premium service-card-link-wrap" href="{% url 'core:servicio' 'climatizacion-aire-acondicionado' %}">
-              <span class="service-card-index">01</span>
-              <h3>Climatización y aire acondicionado</h3>
-              <p>Diseño, suministro, montaje y optimización de sistemas de climatización.</p>
-              <small>Aplicación en oficinas, edificios, retail, salud y universidades.</small>
+            <a class="service-card-premium service-card-link-wrap" href="{% url 'core:servicio' servicio.slug %}">
+              <span class="service-card-index">{{ servicio.numero }}</span>
+              <h3>{{ servicio.nombre }}</h3>
+              <p>{{ servicio.resumen }}</p>
+              <small>{{ servicio.tarjeta }}</small>
               <span class="service-card-link">Ver el servicio</span>
             </a>
           </div>
-          <div class="col-md-6 col-xl-4 site-col">
-            <a class="service-card-premium service-card-link-wrap" href="{% url 'core:servicio' 'ventilacion-inyeccion-de-aire' %}">
-              <span class="service-card-index">02</span>
-              <h3>Ventilación e inyección de aire</h3>
-              <p>Sistemas de ventilación e inyección definidos según el proyecto.</p>
-              <small>Renovación de aire en recintos técnicos, edificios y subterráneos.</small>
-              <span class="service-card-link">Ver el servicio</span>
-            </a>
-          </div>
-          <div class="col-md-6 col-xl-4 site-col">
-            <a class="service-card-premium service-card-link-wrap" href="{% url 'core:servicio' 'extraccion-de-aire' %}">
-              <span class="service-card-index">03</span>
-              <h3>Extracción de aire</h3>
-              <p>Diseño, suministro y montaje de sistemas de extracción para distintos recintos.</p>
-              <small>Baños, cocinas, subterráneos y zonas de operación exigente.</small>
-              <span class="service-card-link">Ver el servicio</span>
-            </a>
-          </div>
-          <div class="col-md-6 col-xl-4 site-col">
-            <a class="service-card-premium service-card-link-wrap" href="{% url 'core:servicio' 'presurizacion-de-escaleras' %}">
-              <span class="service-card-index">04</span>
-              <h3>Presurización de caja de escaleras</h3>
-              <p>Diseño y montaje de sistemas para seguridad y control de aire en edificios.</p>
-              <small>Aplicación en circulaciones protegidas y recintos de apoyo.</small>
-              <span class="service-card-link">Ver el servicio</span>
-            </a>
-          </div>
-          <div class="col-md-6 col-xl-4 site-col">
-            <a class="service-card-premium service-card-link-wrap" href="{% url 'core:servicio' 'mantencion-hvac' %}">
-              <span class="service-card-index">05</span>
-              <h3>Mantención preventiva y correctiva</h3>
-              <p>Mantención de sistemas HVAC según uso, criticidad y estado de la instalación.</p>
-              <small>Revisión programada, ajustes y continuidad de funcionamiento.</small>
-              <span class="service-card-link">Ver el servicio</span>
-            </a>
-          </div>
-          <div class="col-md-6 col-xl-4 site-col">
-            <a class="service-card-premium service-card-link-wrap" href="{% url 'core:servicio' 'reparacion-de-sistemas' %}">
-              <span class="service-card-index">06</span>
-              <h3>Reparación de sistemas</h3>
-              <p>Diagnóstico de fallas, ajustes técnicos y recuperación de operación.</p>
-              <small>Apoyo para restablecer continuidad operativa y ejecutar mejoras puntuales.</small>
-              <span class="service-card-link">Ver el servicio</span>
-            </a>
-          </div>
+          {% endfor %}
         </div>
         <div class="servicios-cta-home">
           <a class="btn btn-brand-outline" href="{% url 'core:servicios' %}">Ver todos los servicios</a>

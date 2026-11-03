@@ -72,6 +72,20 @@
             <div class="servicio-seccion">
               <h2 class="section-title section-title-balanced">{{ seccion.h2 }}</h2>
               {% for parrafo in seccion.parrafos %}<p class="section-copy">{{ parrafo }}</p>{% endfor %}
+              {% if seccion.lista %}
+                <ul class="servicio-lista servicio-seccion-lista">
+                  {% for punto in seccion.lista %}<li>{{ punto }}</li>{% endfor %}
+                </ul>
+              {% endif %}
+              {% comment %}
+                03-11-2026: enlace dentro del texto hacia el servicio vecino. El pie y
+                "Tambien ejecutamos" enlazan todo con todo; este dice POR QUE se
+                relacionan (la cocina necesita inyeccion, la presurizacion necesita
+                mantencion), que es el enlace que Google pondera.
+              {% endcomment %}
+              {% if seccion.enlace %}
+                <a class="servicio-seccion-enlace" href="{% url 'core:servicio' seccion.enlace.slug %}">{{ seccion.enlace.texto }}</a>
+              {% endif %}
             </div>
           {% endfor %}
         </div>

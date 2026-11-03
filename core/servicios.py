@@ -42,6 +42,8 @@ SERVICIOS = [
             "edificios, retail, salud y universidades en Santiago, desde 2011."
         ),
         "resumen": "Diseño, suministro, montaje y optimización de sistemas de climatización.",
+        "tarjeta": "Aplicación en oficinas, edificios, retail, salud y universidades.",
+        "servicio_formulario": "climatizacion",
         "imagen": "assets/home/hero-main.webp",
         "imagen_alt": "Técnico instalando un equipo de climatización en una oficina corporativa.",
         "entrada": [
@@ -128,13 +130,20 @@ SERVICIOS = [
         "numero": "02",
         "nombre": "Ventilación e inyección de aire",
         "nombre_corto": "Ventilación",
-        "titulo_seo": "Ventilación e inyección de aire en Santiago | Max Services",
-        "h1": "Ventilación, inyección y retorno de aire en Santiago",
+        # 03-11-2026: Search Console trae a esta pagina "inyeccion de aire" (pos 9,2),
+        # "inyección de aire" (7,5), "extraccion e inyeccion de aire" (7) e
+        # "inyeccion y extraccion de aire" (3). En el autocompletado la frase que
+        # se repite es "inyección y extracción de aire" (sistema, equipos,
+        # ductos, rejillas). El title y el H1 la dicen tal cual.
+        "titulo_seo": "Ventilación, inyección y extracción de aire | Max Services",
+        "h1": "Ventilación, inyección y extracción de aire en Santiago",
         "descripcion_seo": (
-            "Sistemas de ventilación, inyección y retorno de aire para edificios, "
-            "subterráneos y salas técnicas en Santiago. Diseño de caudales, ductos y montaje."
+            "Sistemas de inyección y extracción de aire para edificios, subterráneos, cocinas "
+            "y salas técnicas en Santiago: caudales, ductos, rejillas y montaje."
         ),
         "resumen": "Sistemas de ventilación e inyección definidos según el proyecto.",
+        "tarjeta": "Renovación de aire en recintos técnicos, edificios y subterráneos.",
+        "servicio_formulario": "ventilacion",
         "imagen": "assets/home/experience-support.webp",
         "imagen_alt": "Instalación de ductos de ventilación en un recinto corporativo.",
         "entrada": [
@@ -146,7 +155,7 @@ SERVICIOS = [
         ],
         "incluye": [
             "Definición del caudal de aire según el uso y la normativa aplicable al recinto",
-            "Diseño del trazado de ductos y de los puntos de inyección",
+            "Diseño del trazado de ductos y de los puntos de inyección y extracción",
             "Suministro y montaje de ventiladores, ductos y rejillas",
             "Coordinación con las otras especialidades de la obra",
             "Pruebas de funcionamiento y entrega",
@@ -159,7 +168,25 @@ SERVICIOS = [
         ],
         "secciones": [
             {
-                "h2": "Inyección y retorno de aire: por qué se diseñan juntos",
+                # "que es la inyeccion de aire", "inyeccion de aire fresco / exterior",
+                # "sistema de inyeccion de aire": autocompletado 03-11-2026.
+                "h2": "Qué es la inyección de aire",
+                "parrafos": [
+                    "La inyección de aire lleva aire exterior al interior de un recinto: un "
+                    "ventilador lo impulsa por una red de ductos y lo reparte con rejillas o "
+                    "difusores en los puntos donde se necesita.",
+                    "Es la mitad de un sistema de ventilación. La otra mitad es la extracción o el "
+                    "retorno, que saca el aire ya usado; por eso se habla de sistemas de inyección "
+                    "y extracción de aire. En una cocina industrial, por ejemplo, la inyección "
+                    "repone el aire que saca la campana.",
+                ],
+                "enlace": {
+                    "slug": "extraccion-cocinas-industriales",
+                    "texto": "Extracción e inyección de aire en cocinas industriales",
+                },
+            },
+            {
+                "h2": "Inyección, extracción y retorno: por qué se diseñan juntos",
                 "parrafos": [
                     "La inyección introduce aire de forma dirigida a un recinto y el retorno o la "
                     "extracción lo saca. Si solo se diseña la mitad, el aire no circula: lo que "
@@ -188,6 +215,12 @@ SERVICIOS = [
                      "lo que entra tiene que poder salir.",
             },
             {
+                "p": "¿Qué es un sistema de inyección y extracción de aire?",
+                "r": "Es un sistema que introduce aire exterior al recinto y saca el aire usado, "
+                     "cada recorrido con sus ductos, rejillas y equipos. Se diseñan juntos para "
+                     "que el aire realmente circule.",
+            },
+            {
                 "p": "¿Qué es el retorno de aire?",
                 "r": "Es el recorrido por el que el aire sale del recinto después de ser inyectado, "
                      "ya sea de vuelta al sistema o hacia el exterior. Se diseña junto con la "
@@ -206,18 +239,25 @@ SERVICIOS = [
         "nombre": "Extracción de aire",
         "nombre_corto": "Extracción",
         "titulo_seo": "Sistemas de extracción de aire en Santiago | Max Services",
-        "h1": "Sistemas de extracción de aire para cocinas, baños y subterráneos",
+        # 03-11-2026: el H1 decia "para cocinas, baños y subterráneos" y competia con
+        # /extraccion-cocinas-industriales/ por la misma busqueda. Las cocinas van en
+        # su pagina; esta toma "extracción de aire en edificios / baños / sótanos /
+        # estacionamientos" (autocompletado) y enlaza a la de cocinas.
+        "h1": "Sistemas de extracción de aire para edificios, baños y subterráneos",
         "descripcion_seo": (
-            "Diseño, montaje y mantención de sistemas de extracción de aire para cocinas, baños, "
-            "subterráneos y zonas de operación exigente en Santiago y regiones."
+            "Diseño, montaje y mantención de sistemas de extracción de aire para edificios, "
+            "baños, subterráneos y estacionamientos en Santiago y regiones."
         ),
         "resumen": "Diseño, suministro y montaje de sistemas de extracción para distintos recintos.",
+        "tarjeta": "Baños, subterráneos, estacionamientos y zonas de operación exigente.",
+        "servicio_formulario": "extraccion",
         "imagen": "assets/home/about-company.webp",
-        "imagen_alt": "Sistema de extracción de aire montado en un recinto industrial.",
+        # La foto muestra al equipo con planos, no un sistema montado.
+        "imagen_alt": "Técnicos de MAX SERVICES revisando planos junto a un tablero eléctrico.",
         "entrada": [
             "La extracción saca del recinto el aire cargado de humedad, olores, humo o calor. En "
-            "cocinas, baños y subterráneos no es un tema de confort: es lo que permite que el "
-            "espacio se pueda usar.",
+            "baños, subterráneos y estacionamientos no es un tema de confort: es lo que permite "
+            "que el espacio se pueda usar.",
             "Cada sistema se dimensiona según lo que hay que extraer y desde dónde, y el montaje "
             "considera el recorrido completo hasta la descarga al exterior.",
         ],
@@ -236,13 +276,19 @@ SERVICIOS = [
         ],
         "secciones": [
             {
-                "h2": "Extracción para cocinas, baños y subterráneos",
+                "h2": "Extracción para baños, subterráneos y estacionamientos",
                 "parrafos": [
-                    "En una cocina industrial o un casino la extracción parte en la campana y "
-                    "termina en la descarga al exterior; en un baño o un subterráneo, lo que manda "
-                    "es la humedad y la renovación del aire. Cada caso se dimensiona según lo que "
+                    "En un baño o un recinto húmedo lo que manda es la humedad. En un subterráneo o "
+                    "un estacionamiento, la renovación de un aire que no tiene salida natural y "
+                    "que acumula los gases de los vehículos. Cada caso se dimensiona según lo que "
                     "hay que sacar y desde dónde.",
+                    "Las cocinas industriales y los casinos tienen su propio recorrido, que parte "
+                    "en la campana y necesita reponer el aire que saca: tienen su página aparte.",
                 ],
+                "enlace": {
+                    "slug": "extraccion-cocinas-industriales",
+                    "texto": "Extracción de aire en cocinas industriales y casinos",
+                },
             },
             {
                 "h2": "Cuando el sistema de extracción quedó corto",
@@ -288,36 +334,44 @@ SERVICIOS = [
         # 16-10-2026: "extracción cocina industrial" es una de las búsquedas que
         # trae al cliente que contrata (salió de una agencia de Ads que le
         # escribió a Max), y el sitio la nombraba UNA vez, dentro de la página
-        # general de extracción. Cada frase sale de lo que ya publicaba esa
-        # página (campana, ductos, extractores, descarga, casinos y
-        # restaurantes, evaluación en terreno, mantención). Nada nuevo.
+        # general de extracción.
+        #
+        # 03-11-2026: la URL Inspection de Search Console la daba "Descubierta:
+        # actualmente sin indexar" (Google nunca la rastreó). El 70 % de su texto
+        # visible ya estaba en /extraccion-de-aire/: mismos párrafos, misma foto,
+        # mismos proyectos, y el H1 de esa página también decía "cocinas". Se
+        # reescribió con lo que busca quien tiene una cocina, según el
+        # autocompletado: campana con salida al exterior, inyección de aire en la
+        # cocina y por qué una campana industrial no funciona. Nada de precios,
+        # normas ni plazos: eso lo confirma Max antes de publicarse.
         "slug": "extraccion-cocinas-industriales",
         "numero": "04",
         "nombre": "Extracción para cocinas industriales",
         "nombre_corto": "Cocinas industriales",
-        "titulo_seo": "Extracción para cocinas industriales | Max Services",
+        "titulo_seo": "Extracción de aire en cocinas industriales | Max Services",
         "h1": "Extracción de aire para cocinas industriales y casinos",
         "descripcion_seo": (
-            "Campanas, ductos y extractores para cocinas industriales, casinos y restaurantes en "
-            "Santiago: diseño, montaje y mantención hasta la descarga al exterior."
+            "Campana, ducto, extractor e inyección de aire para cocinas industriales, casinos y "
+            "restaurantes en Santiago: diseño, montaje y mantención del sistema."
         ),
-        "resumen": "Campana, ductos y extractores, desde la cocina hasta la descarga al exterior.",
-        "imagen": "assets/home/about-company.webp",
-        "imagen_alt": "Sistema de extracción de aire montado en un recinto industrial.",
+        "resumen": "Campana, ducto, extractor e inyección de aire para la cocina.",
+        "tarjeta": "Casinos, restaurantes y cocinas de empresas e instituciones.",
+        "servicio_formulario": "extraccion",
+        "imagen": "assets/home/experience-support.webp",
+        "imagen_alt": "Ductos metálicos de aire montados bajo el cielo de un recinto técnico.",
         "entrada": [
-            "En una cocina industrial o un casino la extracción no es un tema de confort: es lo "
-            "que permite que el espacio se pueda usar. Saca del recinto el humo, el calor, la "
-            "humedad y los olores que genera la cocción.",
-            "El sistema parte en la campana y termina en la descarga al exterior. MAX SERVICES lo "
-            "dimensiona según lo que hay que extraer y desde dónde, y el montaje considera el "
-            "recorrido completo de los ductos.",
+            "Una cocina industrial genera humo, grasa, calor y vapor durante todo el turno. La "
+            "campana lo capta sobre los equipos de cocción, el ducto lo lleva hasta la descarga "
+            "al exterior y la inyección repone el aire que la campana saca.",
+            "MAX SERVICES diseña y monta ese sistema completo para casinos, restaurantes y "
+            "cocinas de empresas e instituciones, y lo mantiene después de entregarlo.",
         ],
         "incluye": [
-            "Evaluación en terreno de la cocina y de la carga que debe extraerse",
-            "Diseño del recorrido desde la campana hasta la descarga al exterior",
-            "Suministro y montaje de campanas, ductos y extractores",
-            "Conexiones eléctricas y de control del sistema",
-            "Pruebas de funcionamiento y entrega",
+            "Evaluación en terreno de los equipos de cocción y de las horas de uso",
+            "Campana sobre los equipos, con su salida al exterior",
+            "Ducto y extractor dimensionados para el recorrido completo",
+            "Inyección de aire de reposición cuando la cocina la necesita",
+            "Conexión eléctrica, control y pruebas antes de entregar",
         ],
         "aplica": [
             "Cocinas industriales",
@@ -326,51 +380,92 @@ SERVICIOS = [
         ],
         "secciones": [
             {
-                "h2": "De la campana a la descarga: el sistema completo",
+                "h2": "Campana, ducto y extractor: un solo recorrido hasta el exterior",
                 "parrafos": [
-                    "La extracción de una cocina se diseña como un recorrido: la campana capta lo "
-                    "que sale de la cocción, los ductos lo conducen y el extractor lo lleva hasta "
-                    "la descarga al exterior. Si una de esas partes queda corta, el resto no "
-                    "alcanza a compensarla.",
-                    "Por eso el proyecto define las tres a la vez, igual que en la ventilación: "
-                    "el aire que se saca de un recinto tiene que tener por dónde reponerse.",
+                    "La campana capta lo que sale de la cocción, el ducto lo conduce y el "
+                    "extractor lo mueve hasta la descarga al exterior, por el techo o por un muro. "
+                    "Las tres partes se dimensionan juntas: una campana grande con un extractor "
+                    "que no alcanza deja la cocina igual que antes.",
+                    "Por eso la evaluación parte por los equipos que quedan bajo la campana y por "
+                    "el camino que puede seguir el ducto dentro del edificio hasta salir.",
                 ],
             },
             {
-                "h2": "Cuando la cocina sigue con humo u olor",
+                "h2": "Inyección de aire: el aire que sale tiene que volver a entrar",
                 "parrafos": [
-                    "Si el recinto sigue con olor, humo o humedad, el problema puede estar en el "
-                    "equipo, en el trazado o en la descarga. Se revisa en terreno qué está "
-                    "limitando el sistema y se propone la corrección concreta.",
+                    "Todo el aire que saca la campana tiene que reponerse. Si la cocina no tiene "
+                    "por dónde tomarlo, el extractor trabaja contra un recinto en depresión: la "
+                    "campana tira menos, las puertas cuestan al abrirse y el humo se queda.",
+                    "La inyección de aire de reposición lo resuelve con aire exterior que entra de "
+                    "forma controlada, en la cantidad que la extracción necesita. Es el mismo "
+                    "principio de los sistemas de ventilación, aplicado a la cocina.",
+                ],
+                "enlace": {
+                    "slug": "ventilacion-inyeccion-de-aire",
+                    "texto": "Cómo funcionan la inyección y la extracción de aire",
+                },
+            },
+            {
+                "h2": "Por qué una campana industrial no saca el humo",
+                "parrafos": [
+                    "Cuando la cocina sigue con humo u olor, se revisa en terreno qué parte del "
+                    "sistema lo está limitando y se propone la corrección para esa parte. Lo que "
+                    "se revisa:",
+                ],
+                "lista": [
+                    "Un extractor que quedó chico para la campana o que perdió rendimiento",
+                    "Un ducto muy largo, con demasiadas curvas o con uniones que pierden aire",
+                    "Una descarga al exterior obstruida o mal ubicada",
+                    "Filtros de la campana saturados de grasa",
+                    "Falta de aire de reposición en la cocina",
                 ],
             },
             {
-                "h2": "Mantención de la extracción de la cocina",
+                "h2": "Qué conviene tener a mano para cotizar",
                 "parrafos": [
-                    "Un extractor que trabaja todos los días necesita revisión programada, igual "
-                    "que un equipo de aire acondicionado. La mantención preventiva y correctiva "
-                    "de MAX SERVICES incluye los sistemas de extracción y ventilación, con un plan "
-                    "que se define según el uso y el estado de la instalación.",
+                    "Con estos datos la primera conversación avanza más rápido y la visita en "
+                    "terreno parte con lo básico resuelto:",
+                ],
+                "lista": [
+                    "Qué equipos de cocción hay (cocina, plancha, freidora, horno) y cuántos",
+                    "Las medidas aproximadas de la cocina y la altura del cielo",
+                    "Cuántas horas al día funciona y en qué horario se puede trabajar",
+                    "Si ya hay una campana o un ducto, y por dónde sale hoy al exterior",
                 ],
             },
         ],
+        # Ningún proyecto del catálogo es una cocina: se muestran las obras de
+        # extracción, y el título lo dice así para no dar a entender otra cosa.
         "etiquetas_proyectos": ["Extracción"],
-        "titulo_proyectos": "Proyectos de extracción ejecutados",
+        "titulo_proyectos": "Otras obras de extracción y ventilación de MAX SERVICES",
         "faq": [
             {
                 "p": "¿Qué incluye un sistema de extracción para una cocina industrial?",
-                "r": "La campana, los ductos y el extractor, con el recorrido completo hasta la "
-                     "descarga al exterior, dimensionados según lo que hay que extraer.",
+                "r": "La campana sobre los equipos de cocción, el ducto y el extractor hasta la "
+                     "descarga al exterior y, cuando la cocina lo necesita, la inyección de aire "
+                     "de reposición.",
             },
             {
-                "p": "¿Pueden mejorar la extracción de una cocina que sigue con humo u olor?",
-                "r": "Sí. Se evalúa en terreno qué está limitando el sistema —equipo, trazado o "
-                     "descarga— y se propone la corrección concreta.",
+                "p": "¿Por qué la campana de la cocina no saca bien el humo?",
+                "r": "Puede ser el extractor, el recorrido del ducto, la descarga, los filtros "
+                     "saturados de grasa o la falta de aire de reposición. Se revisa en terreno "
+                     "cuál es y se propone la corrección para esa parte.",
+            },
+            {
+                "p": "¿Una cocina industrial necesita inyección de aire?",
+                "r": "Si el recinto no tiene por dónde reponer el aire que saca la campana, sí: "
+                     "sin reposición el extractor rinde menos y el humo se queda. Se define en la "
+                     "evaluación.",
+            },
+            {
+                "p": "¿Trabajan en cocinas que ya están funcionando?",
+                "r": "Sí. Se puede mejorar o reemplazar la parte del sistema que lo necesita, "
+                     "coordinando los trabajos con el horario de la cocina.",
             },
             {
                 "p": "¿La extracción de la cocina entra en la mantención?",
-                "r": "Sí. La mantención preventiva y correctiva incluye los sistemas de extracción "
-                     "y ventilación, con un plan según el uso y el estado de la instalación.",
+                "r": "Sí. La mantención preventiva y correctiva de MAX SERVICES cubre los sistemas "
+                     "de extracción, con un plan según el uso y el estado de la instalación.",
             },
         ],
     },
@@ -386,8 +481,11 @@ SERVICIOS = [
             "sistema que mantiene el humo fuera de la vía de evacuación."
         ),
         "resumen": "Diseño y montaje de sistemas para seguridad y control de aire en edificios.",
+        "tarjeta": "Aplicación en circulaciones protegidas y recintos de apoyo.",
+        "servicio_formulario": "presurizacion",
         "imagen": "assets/home/contact-evaluation.webp",
-        "imagen_alt": "Equipo de presurización instalado en la caja de escaleras de un edificio.",
+        # La foto muestra a un técnico con una planilla, no un equipo de presurización.
+        "imagen_alt": "Técnico de MAX SERVICES registrando la revisión de un equipo en terreno.",
         "entrada": [
             "La presurización mantiene la caja de escaleras con mayor presión que el resto del "
             "edificio, para que el humo no entre en la vía de evacuación durante un incendio.",
@@ -419,6 +517,22 @@ SERVICIOS = [
                 ],
             },
             {
+                # 03-11-2026: "sala de presurización" 4 impresiones en posicion 6 y
+                # "escaleras presurizadas" en la 10 (Search Console); en el
+                # autocompletado, "sala de presurización en edificios" y "equipos /
+                # ventiladores para presurización de escaleras".
+                "h2": "El equipo y la sala de presurización",
+                "parrafos": [
+                    "El sistema se arma con un ventilador que toma aire del exterior y lo inyecta "
+                    "a la caja de escaleras por ductos y rejillas. Ese ventilador se instala en un "
+                    "recinto propio, la sala de presurización, o en la ubicación que defina el "
+                    "proyecto del edificio, y queda conectado al control que lo activa.",
+                    "Una escalera presurizada depende de que ese equipo arranque el día que se "
+                    "necesita, por eso el acceso al equipo y su revisión periódica importan tanto "
+                    "como el montaje.",
+                ],
+            },
+            {
                 "h2": "Presurización en obra, coordinada con la constructora",
                 "parrafos": [
                     "Buena parte de estos proyectos se ejecuta directamente con constructoras e "
@@ -434,11 +548,20 @@ SERVICIOS = [
                     "existentes, con presurización, ventilación y mantención para que el sistema "
                     "siga respondiendo con el paso de los años.",
                 ],
+                "enlace": {
+                    "slug": "mantencion-hvac",
+                    "texto": "Mantención de presurización, ventilación y aire acondicionado",
+                },
             },
         ],
         "etiquetas_proyectos": ["Presurización"],
         "titulo_proyectos": "Obras con presurización de escaleras",
         "faq": [
+            {
+                "p": "¿Qué es una escalera presurizada?",
+                "r": "Es una caja de escaleras que un sistema mantiene con más presión que los "
+                     "pisos, para que el humo de un incendio no entre en la vía de evacuación.",
+            },
             {
                 "p": "¿En qué edificios se exige presurización de escaleras?",
                 "r": "Depende de la altura y del tipo de edificio según la normativa vigente y de "
@@ -467,15 +590,25 @@ SERVICIOS = [
         "numero": "06",
         "nombre": "Mantención preventiva y correctiva",
         "nombre_corto": "Mantención",
-        "titulo_seo": "Mantención de aire acondicionado en Santiago | Max Services",
-        "h1": "Mantención de aire acondicionado y sistemas HVAC en Santiago",
+        # 03-11-2026: era la peor pagina (posicion 23,8 en 90 dias). Apuntaba a
+        # "mantención aire acondicionado santiago", que es una busqueda de casas
+        # (Max aparece en la 48-53, contra empresas de hogar con cientos de
+        # resenas). El autocompletado tiene la version de empresa: "mantención aire
+        # acondicionado empresas", "mantenimiento aire acondicionado oficinas",
+        # "mantención extractores de aire", "mantenimiento de presurización de
+        # escaleras". Esa es la que esta pagina puede ganar.
+        "titulo_seo": "Mantención de aire acondicionado a empresas | Max Services",
+        "h1": "Mantención de aire acondicionado y sistemas HVAC para empresas y edificios",
         "descripcion_seo": (
-            "Mantención preventiva y correctiva de aire acondicionado, ventilación y extracción "
-            "para empresas, edificios, comunidades e instituciones en Santiago."
+            "Mantención preventiva y correctiva de aire acondicionado, extractores, ventilación "
+            "y presurización para empresas, oficinas y edificios en Santiago."
         ),
         "resumen": "Mantención de sistemas HVAC según uso, criticidad y estado de la instalación.",
+        "tarjeta": "Revisión programada, ajustes y continuidad de funcionamiento.",
+        "servicio_formulario": "mantenciones",
         "imagen": "assets/home/experience-support.webp",
-        "imagen_alt": "Técnico realizando mantención a un equipo de climatización.",
+        # La foto muestra ductos y un equipo de cielo, sin personas.
+        "imagen_alt": "Ductos de aire y un equipo de climatización de cielo en un recinto técnico.",
         "entrada": [
             "Un equipo de climatización sin mantención consume más, enfría menos y falla cuando "
             "más se ocupa. La mantención preventiva evita esa curva: revisión programada, limpieza "
@@ -515,12 +648,16 @@ SERVICIOS = [
                 ],
             },
             {
-                "h2": "Mantención de sistemas de extracción y ventilación",
+                "h2": "Mantención de extractores, ventilación y presurización",
                 "parrafos": [
-                    "La mantención no se limita al aire acondicionado: también cubre los sistemas "
-                    "de ventilación, extracción y presurización de edificios, que trabajan todo el "
-                    "año y suelen revisarse solo cuando fallan.",
+                    "La mantención no se limita al aire acondicionado: también cubre los "
+                    "extractores, la ventilación y la presurización de escaleras de los edificios, "
+                    "que trabajan todo el año y suelen revisarse solo cuando fallan.",
                 ],
+                "enlace": {
+                    "slug": "presurizacion-de-escaleras",
+                    "texto": "Cómo funciona la presurización de escaleras",
+                },
             },
         ],
         "etiquetas_proyectos": ["Mantención"],
@@ -532,6 +669,12 @@ SERVICIOS = [
                      "instalado. Un recinto con mucho uso o mucho polvo necesita visitas más "
                      "seguidas que una oficina de uso parcial; la frecuencia se define al evaluar "
                      "la instalación.",
+            },
+            {
+                "p": "¿Hacen mantención de aire acondicionado en oficinas?",
+                "r": "Sí. Oficinas y edificios corporativos están entre los recintos que atiende "
+                     "la mantención; el plan se ajusta a los horarios en que se puede intervenir "
+                     "sin detener el trabajo.",
             },
             {
                 "p": "¿Atienden mantención de equipos que instaló otra empresa?",
@@ -562,6 +705,9 @@ SERVICIOS = [
             "para empresas en Santiago, con recomendación escrita de qué conviene."
         ),
         "resumen": "Diagnóstico de fallas, ajustes técnicos y recuperación de operación.",
+        "tarjeta": "Apoyo para restablecer continuidad operativa y ejecutar mejoras puntuales.",
+        # Sin "servicio_formulario": el formulario no tiene una opcion de reparacion
+        # y no se inventa una; la persona elige.
         "imagen": "assets/home/contact-evaluation.webp",
         "imagen_alt": "Técnico diagnosticando la falla de un equipo de climatización en terreno.",
         "entrada": [

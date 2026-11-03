@@ -42,8 +42,22 @@ class StaticViewSitemap(Sitemap):
     # que cambie nada, Google aprende a ignorarlo.
     ULTIMA_REVISION = date(2026, 10, 7)
 
+    # Paginas revisadas despues de esa fecha. 03-11-2026: la de cocinas
+    # industriales se publico el 16-10 y el sitemap la anunciaba con fecha 07-10,
+    # anterior a su propia existencia; Google la dejo "descubierta, sin indexar".
+    # Cuando se edite una pagina, se agrega aca con su fecha.
+    REVISIONES = {
+        "/": date(2026, 11, 3),
+        "/servicios/": date(2026, 11, 3),
+        "/servicios/ventilacion-inyeccion-de-aire/": date(2026, 11, 3),
+        "/servicios/extraccion-de-aire/": date(2026, 11, 3),
+        "/servicios/extraccion-cocinas-industriales/": date(2026, 11, 3),
+        "/servicios/presurizacion-de-escaleras/": date(2026, 11, 3),
+        "/servicios/mantencion-hvac/": date(2026, 11, 3),
+    }
+
     def lastmod(self, item):
-        return self.ULTIMA_REVISION
+        return self.REVISIONES.get(item, self.ULTIMA_REVISION)
 
     def location(self, item):
         return item

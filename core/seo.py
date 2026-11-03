@@ -71,7 +71,7 @@ def schema_servicio(servicio, ruta):
             "@type": "HVACBusiness",
             "@id": ID_EMPRESA,
             "name": NOMBRE_EMPRESA,
-            "url": settings.SITE_URL,
+            "url": f"{settings.SITE_URL}/",
             "telephone": "+56225590108",
             "email": "contacto@maxservicesspa.cl",
             "address": {

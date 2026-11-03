@@ -2614,6 +2614,18 @@ textarea.site-input {
 }
 .servicio-seccion .section-title { font-size: clamp(1.3rem, 2.1vw, 1.6rem); margin-bottom: 0.75rem; }
 .servicio-seccion .section-copy { margin-bottom: 0.75rem; }
+.servicio-seccion-lista { margin: 0.25rem 0 1rem; }
+.servicio-seccion-enlace {
+  display: inline-block; margin-top: 0.25rem;
+  font-weight: 700; color: var(--color-primary-500);
+  text-decoration: underline; text-underline-offset: 3px;
+}
+.servicio-seccion-enlace:hover { color: var(--color-text); }
+
+/* 03-11-2026: fuera de la portada, volver a "#formulario" lo hace el navegador
+   solo, y la cabecera fija (169 px en escritorio, 131 en el telefono) tapaba el
+   aviso de error o de exito. En la portada lo compensa site-navigation.js. */
+#formulario { scroll-margin-top: 190px; }
 
 /* Preguntas frecuentes: abren y cierran sin JavaScript */
 .servicio-faq { display: grid; gap: 0.75rem; margin-top: 1.5rem; }
