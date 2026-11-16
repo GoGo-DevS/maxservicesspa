@@ -22,7 +22,13 @@ from core.seo import (
     schema_servicio,
     schema_sitio,
 )
-from core.servicios import POR_SLUG, SERVICIOS, con_relacionados, proyectos_del_servicio
+from core.servicios import (
+    POR_SLUG,
+    SERVICIOS,
+    con_relacionados,
+    proyectos_del_servicio,
+    secciones_con_obras,
+)
 from core.sitemaps import StaticViewSitemap
 from cotizaciones.sincronizar import registrar_formulario_seguro
 from portfolio.catalog import get_project_catalog
@@ -466,6 +472,7 @@ def servicio_detalle(request, slug):
             "canonical_path": ruta,
             "og_image": absolute_static_url("assets/social/og-default.jpg"),
             "servicio": servicio,
+            "secciones": secciones_con_obras(servicio, get_project_catalog()["projects"]),
             "relacionados": con_relacionados(servicio),
             "proyectos": proyectos,
             "contact_form": contact_form,

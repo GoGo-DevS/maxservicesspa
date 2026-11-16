@@ -137,9 +137,16 @@ SERVICIOS = [
         # ductos, rejillas). El title y el H1 la dicen tal cual.
         "titulo_seo": "Ventilación, inyección y extracción de aire | Max Services",
         "h1": "Ventilación, inyección y extracción de aire en Santiago",
+        # 16-11-2026: el title y el H1 del 03-11 se dejan quietos hasta medirlos (17-11
+        # y 01-12). Search Console 08-14 nov: 27 impresiones, posicion 12, 0 clics; las
+        # consultas visibles que no eran de inyeccion tenian forma de encargo B2B
+        # ("proyectos de ventilación", "desarrollo de proyectos ventilacion y
+        # extraccion"). La description le habla a quien contrata, con los sectores que
+        # el sitio ya respalda con fichas: constructoras (Echeverría Izquierdo, TASCO
+        # Boetsch), retail (Hiper Líder) y salud (Hospital Luis Calvo Mackenna).
         "descripcion_seo": (
-            "Sistemas de inyección y extracción de aire para edificios, subterráneos, cocinas "
-            "y salas técnicas en Santiago: caudales, ductos, rejillas y montaje."
+            "Proyectos de ventilación, inyección y extracción de aire para constructoras, "
+            "edificios, retail y salud en Santiago. Solicita evaluación y cotización."
         ),
         "resumen": "Sistemas de ventilación e inyección definidos según el proyecto.",
         "tarjeta": "Renovación de aire en recintos técnicos, edificios y subterráneos.",
@@ -194,15 +201,60 @@ SERVICIOS = [
                     "Por eso el proyecto define los dos recorridos a la vez, con sus caudales, "
                     "sus ductos y la ubicación de rejillas y equipos.",
                 ],
+                # 16-11-2026: la pagina decia "la otra mitad es la extracción" y no
+                # enlazaba a la pagina de extraccion.
+                "enlace": {
+                    "slug": "extraccion-de-aire",
+                    "texto": "Sistemas de extracción de aire para edificios, baños y subterráneos",
+                },
             },
             {
                 "h2": "Ventilación en obra nueva y en edificios en uso",
+                # 16-11-2026: cada obra nombrada enlaza a su ficha. Lo que se agrega al
+                # texto ya estaba publicado en esas fichas: Echeverría Izquierdo
+                # ("ductos, equipos de ventilación y presurización desde la etapa de obra
+                # gruesa"), TASCO Boetsch ("presurización y ventilación en etapa de
+                # estructura") y el edificio patrimonial ("nuevos sistemas de
+                # ventilación y extracción").
                 "parrafos": [
                     "En obra nueva, el montaje avanza coordinado con la constructora desde las "
-                    "etapas tempranas, como en las obras de Echeverría Izquierdo y TASCO Boetsch. "
+                    "etapas tempranas, como en las obras de Echeverría Izquierdo y TASCO Boetsch, "
+                    "donde la ventilación se ejecuta junto con la presurización de la caja de "
+                    "escaleras.",
                     "En un edificio ya construido, el trazado se adapta al espacio disponible "
-                    "para ductos y equipos, que se revisa en terreno antes de proponer la solución.",
+                    "para ductos y equipos, que se revisa en terreno antes de proponer la "
+                    "solución. Un ejemplo es la renovación de la ventilación en un edificio "
+                    "patrimonial de ladrillo.",
                 ],
+                "obras": [
+                    "obra-echeverria-izquierdo-edificaciones",
+                    "obra-tasco-boetsch-en-ejecucion",
+                    "edificio-patrimonial-ladrillo",
+                ],
+                "enlace": {
+                    "slug": "presurizacion-de-escaleras",
+                    "texto": "Presurización de caja de escaleras para edificios",
+                },
+            },
+            {
+                # 16-11-2026: llamado a cotizar para quien contrata (constructora,
+                # administración, empresa). Cada punto repite algo que la pagina ya
+                # dice: obra nueva o edificio en uso, los recintos de "Dónde se
+                # aplica", la coordinación con la constructora y la revisión en terreno.
+                "h2": "Para cotizar la ventilación de una obra o un edificio",
+                "parrafos": [
+                    "La evaluación parte por el recinto y por la etapa en que está el proyecto. "
+                    "Estos datos ayudan a preparar la visita y la cotización:",
+                ],
+                "lista": [
+                    "Si es una obra nueva o un edificio que ya está en uso",
+                    "Qué recintos hay que ventilar: subterráneos, estacionamientos, salas técnicas, "
+                    "bodegas o espacios interiores",
+                    "En obra nueva, con qué constructora se coordina y en qué etapa va la obra",
+                    "En un edificio en uso, por dónde podrían pasar los ductos: el espacio se "
+                    "revisa en terreno",
+                ],
+                "cta": "Cotizar la ventilación del proyecto",
             },
         ],
         "etiquetas_proyectos": ["Ventilación"],
@@ -300,6 +352,12 @@ SERVICIOS = [
                     "ladrillo se reemplazaron equipos obsoletos por nuevos sistemas de "
                     "ventilación y extracción, con mínima intervención en la estructura.",
                 ],
+                # 16-11-2026: enlace dentro del texto hacia ventilacion (pos 12 en
+                # Search Console 08-14 nov); solo la enlazaban cocinas y las grillas.
+                "enlace": {
+                    "slug": "ventilacion-inyeccion-de-aire",
+                    "texto": "Ventilación, inyección y extracción de aire",
+                },
             },
             {
                 "h2": "Mantención de sistemas de extracción y ventilación",
@@ -476,9 +534,16 @@ SERVICIOS = [
         "nombre_corto": "Presurización",
         "titulo_seo": "Presurización de escaleras en Santiago | Max Services",
         "h1": "Presurización de caja de escaleras para edificios en Santiago",
+        # 16-11-2026: Search Console 08-14 nov, 21 impresiones en posicion 9,3 y 0 clics
+        # ("escalera presurizada" pos 7; a 90 dias "presurización de escaleras" 5,7). El
+        # title y el H1 ya dicen la busqueda y no se tocan. La description le habla a
+        # quien contrata, con lo que la pagina ya respalda: constructoras e
+        # inmobiliarias (TASCO Boetsch, Echeverría Izquierdo, La Fontana), edificios y
+        # la mantención de sistemas instalados. Sin normas ni certificaciones: ninguna
+        # esta confirmada por la empresa.
         "descripcion_seo": (
-            "Presurización de escaleras para edificios en Santiago: diseño, montaje y pruebas del "
-            "sistema que mantiene el humo fuera de la vía de evacuación."
+            "Presurización de escaleras para constructoras, inmobiliarias y edificios en "
+            "Santiago: diseño, montaje, pruebas y mantención. Solicita cotización."
         ),
         "resumen": "Diseño y montaje de sistemas para seguridad y control de aire en edificios.",
         "tarjeta": "Aplicación en circulaciones protegidas y recintos de apoyo.",
@@ -531,14 +596,34 @@ SERVICIOS = [
                     "necesita, por eso el acceso al equipo y su revisión periódica importan tanto "
                     "como el montaje.",
                 ],
+                # 16-11-2026: la presurizacion es inyeccion de aire a la caja de
+                # escaleras; enlaza a la pagina que explica la inyeccion (pos 12).
+                "enlace": {
+                    "slug": "ventilacion-inyeccion-de-aire",
+                    "texto": "Cómo funciona la inyección de aire",
+                },
             },
             {
                 "h2": "Presurización en obra, coordinada con la constructora",
+                # 16-11-2026: las obras nombradas enlazan a su ficha. La lista sale de las
+                # fichas que ya dicen "presurización" en portfolio/catalog.py: Vista
+                # Parque y TASCO Boetsch terminadas; La Fontana (11 pisos), Echeverría
+                # Izquierdo y la segunda de TASCO Boetsch en ejecución.
                 "parrafos": [
                     "Buena parte de estos proyectos se ejecuta directamente con constructoras e "
                     "inmobiliarias: TASCO Boetsch, Echeverría Izquierdo e Inmobiliaria La "
                     "Fontana, entre otras. El montaje avanza con la obra para que ductos, "
                     "rejillas y equipo queden listos cuando el edificio se entrega.",
+                    "Ya entregados: el Edificio Residencial Vista Parque y un edificio residencial "
+                    "de TASCO Boetsch. En ejecución: un edificio de 11 pisos de Inmobiliaria La "
+                    "Fontana y obras de Echeverría Izquierdo y TASCO Boetsch.",
+                ],
+                "obras": [
+                    "edificio-residencial-vista-parque",
+                    "edificio-residencial-tasco-boetsch",
+                    "obra-inmobiliaria-la-fontana-11-pisos",
+                    "obra-echeverria-izquierdo-edificaciones",
+                    "obra-tasco-boetsch-en-ejecucion",
                 ],
             },
             {
@@ -552,6 +637,27 @@ SERVICIOS = [
                     "slug": "mantencion-hvac",
                     "texto": "Mantención de presurización, ventilación y aire acondicionado",
                 },
+            },
+            {
+                # 16-11-2026: llamado a cotizar para constructoras, inmobiliarias y
+                # comunidades. Cada punto repite algo que la pagina ya dice: la revisión
+                # caso a caso sobre los planos, la altura y la geometría de la caja de
+                # escaleras, la coordinación con las especialidades de la obra y el
+                # trabajo sobre sistemas existentes. Sin normas: no estan confirmadas.
+                "h2": "Para cotizar la presurización de una obra o un edificio",
+                "parrafos": [
+                    "Para constructoras, inmobiliarias y comunidades, el sistema se define caso a "
+                    "caso sobre los planos del edificio. Con esto la primera revisión parte con "
+                    "lo necesario:",
+                ],
+                "lista": [
+                    "Los planos de arquitectura del edificio",
+                    "La altura del edificio y la geometría de la caja de escaleras",
+                    "Si es obra nueva, en qué etapa va, para coordinar el montaje con las demás "
+                    "especialidades",
+                    "Si el edificio ya está habitado, dónde está el equipo actual y si funciona",
+                ],
+                "cta": "Cotizar la presurización del edificio",
             },
         ],
         "etiquetas_proyectos": ["Presurización"],
@@ -783,6 +889,44 @@ def proyectos_del_servicio(servicio, proyectos):
     elegidos = [p for p in proyectos if etiquetas & set(p.get("services", []))]
     orden = {"terminado": 0, "en-ejecucion": 1}
     return sorted(elegidos, key=lambda p: orden.get(p.get("category"), 2))
+
+
+def secciones_con_obras(servicio, proyectos):
+    """Las secciones del servicio, con las fichas de proyecto que nombran.
+
+    16-11-2026: el texto nombraba obras reales (Echeverría Izquierdo, TASCO
+    Boetsch, La Fontana) sin enlazarlas; las fichas solo se alcanzaban desde la
+    grilla del final. `obras` lista slugs de portfolio/catalog.py. Un slug que no
+    existe se omite en vez de botar la pagina; la prueba exige que existan todos
+    y que cada ficha tenga la especialidad del servicio.
+    """
+    por_slug = {p["slug"]: p for p in proyectos}
+    salida = []
+    for seccion in servicio["secciones"]:
+        copia = dict(seccion)
+        if seccion.get("obras"):
+            copia["obras_detalle"] = [por_slug[s] for s in seccion["obras"] if s in por_slug]
+        salida.append(copia)
+    return salida
+
+
+def especialidades_del_proyecto(proyecto):
+    """Cada especialidad de la ficha, con la pagina de servicio que la explica.
+
+    16-11-2026: la fila "Especialidades" de cada ficha era texto plano
+    ("Presurización · Ventilación"). Ahora cada una enlaza a su servicio con la
+    palabra exacta como texto del enlace. Se elige el primer servicio que la
+    declara en `etiquetas_proyectos` (Extracción -> extracción de aire, no
+    cocinas; Mantención -> mantención, no reparación). "Proyectos" no es un
+    servicio y queda sin enlace.
+    """
+    salida = []
+    for etiqueta in proyecto.get("services", []):
+        servicio = next(
+            (s for s in SERVICIOS if etiqueta in s.get("etiquetas_proyectos", [])), None
+        )
+        salida.append({"nombre": etiqueta, "slug": servicio["slug"] if servicio else None})
+    return salida
 
 
 def servicios_del_proyecto(proyecto):

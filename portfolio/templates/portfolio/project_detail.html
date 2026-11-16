@@ -43,7 +43,11 @@
           <div class="empresa-dato"><span>Sector</span><strong>{{ proyecto.sector }}</strong></div>
           <div class="empresa-dato"><span>Ubicación</span><strong>{{ proyecto.location }}</strong></div>
           <div class="empresa-dato"><span>Estado</span><strong>{{ proyecto.reference }}</strong></div>
-          <div class="empresa-dato"><span>Especialidades</span><strong>{{ proyecto.services|join:" · " }}</strong></div>
+          {% comment %}
+            16-11-2026: cada especialidad enlaza a la pagina de su servicio, con la
+            palabra exacta como texto del enlace (antes era texto plano).
+          {% endcomment %}
+          <div class="empresa-dato"><span>Especialidades</span><strong class="proyecto-especialidades">{% for e in especialidades %}{% if e.slug %}<a href="{% url 'core:servicio' e.slug %}">{{ e.nombre }}</a>{% else %}{{ e.nombre }}{% endif %}{% if not forloop.last %} · {% endif %}{% endfor %}</strong></div>
         </div>
       </div>
     </section>

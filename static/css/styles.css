@@ -2621,6 +2621,15 @@ textarea.site-input {
   text-decoration: underline; text-underline-offset: 3px;
 }
 .servicio-seccion-enlace:hover { color: var(--color-text); }
+/* 16-11-2026: obras nombradas en el texto, enlazadas a su ficha, y el boton de
+   cotizar dentro de la seccion que explica que datos sirven. */
+.servicio-obras a {
+  font-weight: 600; color: var(--color-primary-600);
+  text-decoration: underline; text-underline-offset: 3px;
+}
+.servicio-obras a:hover { color: var(--color-text); }
+.servicio-obra-estado { color: var(--color-text-muted); font-size: var(--text-sm); }
+.servicio-seccion-cta { margin-top: 0.25rem; }
 
 /* 03-11-2026: fuera de la portada, volver a "#formulario" lo hace el navegador
    solo, y la cabecera fija (169 px en escritorio, 131 en el telefono) tapaba el

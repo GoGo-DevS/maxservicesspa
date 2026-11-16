@@ -64,11 +64,11 @@
       </div>
     </section>
 
-    {% if servicio.secciones %}
+    {% if secciones %}
     <section class="site-section section-alt">
       <div class="container section-shell">
         <div class="servicio-secciones">
-          {% for seccion in servicio.secciones %}
+          {% for seccion in secciones %}
             <div class="servicio-seccion">
               <h2 class="section-title section-title-balanced">{{ seccion.h2 }}</h2>
               {% for parrafo in seccion.parrafos %}<p class="section-copy">{{ parrafo }}</p>{% endfor %}
@@ -76,6 +76,20 @@
                 <ul class="servicio-lista servicio-seccion-lista">
                   {% for punto in seccion.lista %}<li>{{ punto }}</li>{% endfor %}
                 </ul>
+              {% endif %}
+              {% comment %}
+                16-11-2026: las obras que nombra el texto, enlazadas a su ficha. Nombre y
+                estado salen de portfolio/catalog.py, no se escriben aca.
+              {% endcomment %}
+              {% if seccion.obras_detalle %}
+                <ul class="servicio-lista servicio-seccion-lista servicio-obras">
+                  {% for obra in seccion.obras_detalle %}
+                    <li><a href="{% url 'portfolio:project_detail' obra.slug %}">{{ obra.name }}</a>{% if obra.reference|lower not in obra.name|lower %} <span class="servicio-obra-estado">{{ obra.reference }}</span>{% endif %}</li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+              {% if seccion.cta %}
+                <a class="btn btn-brand-primary servicio-seccion-cta" href="#formulario">{{ seccion.cta }}</a>
               {% endif %}
               {% comment %}
                 03-11-2026: enlace dentro del texto hacia el servicio vecino. El pie y

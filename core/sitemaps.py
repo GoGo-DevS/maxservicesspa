@@ -49,10 +49,11 @@ class StaticViewSitemap(Sitemap):
     REVISIONES = {
         "/": date(2026, 11, 3),
         "/servicios/": date(2026, 11, 3),
-        "/servicios/ventilacion-inyeccion-de-aire/": date(2026, 11, 3),
+        # 16-11-2026: secciones nuevas (obras enlazadas y llamado a cotizar).
+        "/servicios/ventilacion-inyeccion-de-aire/": date(2026, 11, 16),
         "/servicios/extraccion-de-aire/": date(2026, 11, 3),
         "/servicios/extraccion-cocinas-industriales/": date(2026, 11, 3),
-        "/servicios/presurizacion-de-escaleras/": date(2026, 11, 3),
+        "/servicios/presurizacion-de-escaleras/": date(2026, 11, 16),
         "/servicios/mantencion-hvac/": date(2026, 11, 3),
     }
 

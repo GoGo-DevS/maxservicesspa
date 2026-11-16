@@ -2,7 +2,7 @@ from django.http import Http404
 from django.shortcuts import render
 
 from core.seo import ID_EMPRESA, absolute_static_url, migas, schema_json, url_absoluta
-from core.servicios import servicios_del_proyecto
+from core.servicios import especialidades_del_proyecto, servicios_del_proyecto
 
 from .catalog import get_project_catalog
 
@@ -62,6 +62,7 @@ def project_detail(request, slug):
             "proyecto": proyecto,
             "otros": _relacionados(proyecto, catalogo["projects"]),
             "servicios": servicios,
+            "especialidades": especialidades_del_proyecto(proyecto),
             "migas_visibles": camino,
             "schema_json": schema_json(ficha, migas(camino)),
         },
