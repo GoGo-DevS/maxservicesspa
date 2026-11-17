@@ -12,6 +12,18 @@
    Quien pidio menos movimiento al sistema (prefers-reduced-motion) no ve
    nieve cayendo; lo fijo (franja, guirnalda, gorro) si lo ve. No quitar ese
    respeto: a algunas personas el movimiento les da mareo o migrana.
+
+   LIVIANA (17-11-2026, Diego la sentia lenta al hacer scroll). Se ve igual,
+   pero cuesta mucho menos:
+   - el canvas va a 1x (antes devicePixelRatio hasta 2: en un celular retina
+     eran 4 veces los pixeles). La nieve es borrosa: no se nota;
+   - hasta 90 copos (antes 130);
+   - 30 cuadros por segundo (antes 60): se ve igual de fluida;
+   - quieta MIENTRAS se hace scroll: no se redibuja hasta 160 ms despues del
+     ultimo evento de scroll. Ahi es donde se notaba la lentitud;
+   - la barra del navegador del celular (aparece y se esconde al hacer scroll
+     y dispara resize) ya no vuelve a crear el canvas;
+   - arranca 1,2 s despues de la carga, sin competir con el primer pintado.
    =========================================================================== */
 (function () {
   "use strict";
@@ -82,24 +94,39 @@
     var ctx = lienzo.getContext("2d");
     if (!ctx) return;
 
+    // Los moldes de los copos son chicos y siguen en alta; el canvas grande va
+    // a 1x (un pixel del canvas por pixel CSS).
     var cristal = moldeCristal();
     var punto = moldePunto();
     var copos = [];
-    var ancho = 0, alto = 0, escala = 1, corriendo = false, ultimo = 0;
+    var ancho = 0, alto = 0, corriendo = false, ultimo = 0, acumulado = 0;
+    var quietoHasta = 0, opacidadPuesta = "", pedido = 0;
+    var CUADRO = 0.028;      // ~30 cuadros por segundo: en una pantalla de 60 Hz, uno si y uno no
+    var PAUSA_SCROLL = 160;  // ms sin redibujar despues del ultimo evento de scroll
 
     function medir() {
-      escala = Math.min(window.devicePixelRatio || 1, 2);
       // clientWidth y no innerWidth: innerWidth incluye la barra de scroll.
-      ancho = document.documentElement.clientWidth || window.innerWidth;
-      alto = window.innerHeight;
-      lienzo.width = Math.round(ancho * escala);
-      lienzo.height = Math.round(alto * escala);
+      var nuevoAncho = document.documentElement.clientWidth || window.innerWidth;
+      var nuevoAlto = window.innerHeight;
+      // En el celular la barra del navegador aparece y se esconde al hacer
+      // scroll y dispara resize. Si el ancho es el mismo y el alto nuevo cabe
+      // en el canvas que ya existe, no se toca: reasignar lienzo.width borra
+      // el canvas y pide memoria nueva en pleno scroll. Solo se agranda si el
+      // alto crece.
+      if (nuevoAncho === ancho && nuevoAlto <= alto) return;
+      ancho = nuevoAncho;
+      alto = nuevoAlto;
+      lienzo.width = ancho;
+      lienzo.height = alto;
       lienzo.style.width = ancho + "px";
       lienzo.style.height = alto + "px";
-      ctx.setTransform(escala, 0, 0, escala, 0, 0);
-      var cuantos = Math.round(Math.min(130, Math.max(34, ancho / 13)));
+      // 1920 -> 90 copos, 1366 -> 76, 390 -> 28.
+      var cuantos = Math.round(Math.min(90, Math.max(28, ancho / 18)));
       while (copos.length < cuantos) copos.push(nuevo(true));
       copos.length = cuantos;
+      // Cambiar el tamano borra el canvas: se repinta altiro donde estaba cada
+      // copo, para que la nieve no desaparezca si esto pasa en pleno scroll.
+      pintar(0);
     }
 
     function nuevo(enCualquierAltura) {
@@ -122,17 +149,43 @@
     // Nieve para la llegada: se desvanece al bajar y se detiene del todo
     // cuando ya no se ve, para no gastar bateria mientras alguien lee.
     function opacidad() {
-      return Math.max(0, 1 - window.scrollY / (alto * 1.1 || 1));
+      return Math.max(0, 1 - window.scrollY / (window.innerHeight * 1.1 || 1));
     }
 
+    // La opacidad depende del scroll: se pone en el evento de scroll, no en
+    // cada cuadro, y solo si cambio.
+    function ponerOpacidad(op) {
+      var texto = op.toFixed(3);
+      if (texto !== opacidadPuesta) {
+        lienzo.style.opacity = texto;
+        opacidadPuesta = texto;
+      }
+    }
+
+    // Un solo ciclo de cuadros a la vez: si se detuvo (corriendo = false) y se
+    // vuelve a arrancar antes de que llegue el cuadro pendiente, ese cuadro
+    // sigue el ciclo en vez de abrir otro en paralelo.
+    function seguir() { pedido = window.requestAnimationFrame(cuadro); }
+
     function cuadro(t) {
+      pedido = 0;
       if (!corriendo) return;
-      var dt = Math.min(0.05, ((t - ultimo) / 1000) || 0);
+      var paso = Math.max(0, (t - ultimo) / 1000) || 0;
       ultimo = t;
-      var op = opacidad();
-      lienzo.style.opacity = op.toFixed(3);
-      if (op <= 0) { corriendo = false; return; }
-      ctx.setTransform(escala, 0, 0, escala, 0, 0);
+      // Mientras se hace scroll la nieve queda quieta: no se redibuja.
+      if (t < quietoHasta) { acumulado = 0; seguir(); return; }
+      // 30 cuadros por segundo: se junta el tiempo y se dibuja cada ~33 ms.
+      acumulado += paso;
+      if (acumulado < CUADRO) { seguir(); return; }
+      var dt = Math.min(0.05, acumulado);
+      acumulado = 0;
+      pintar(dt);
+      seguir();
+    }
+
+    // Mueve los copos dt segundos y los dibuja (con dt = 0 solo los repinta).
+    function pintar(dt) {
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.clearRect(0, 0, ancho, alto);
       for (var i = 0; i < copos.length; i++) {
         var c = copos[i];
@@ -144,35 +197,55 @@
         ctx.globalAlpha = c.a;
         if (c.cristal) {
           var d = c.r * 2.6;
-          ctx.setTransform(escala, 0, 0, escala, x * escala, c.y * escala);
+          ctx.setTransform(1, 0, 0, 1, x, c.y);
           ctx.rotate(c.giro);
           ctx.drawImage(cristal, -d / 2, -d / 2, d, d);
-          ctx.setTransform(escala, 0, 0, escala, 0, 0);
+          ctx.setTransform(1, 0, 0, 1, 0, 0);
         } else {
           var p = c.r * 4;
           ctx.drawImage(punto, x - p / 2, c.y - p / 2, p, p);
         }
       }
       ctx.globalAlpha = 1;
-      window.requestAnimationFrame(cuadro);
     }
 
     function arrancar() {
       if (corriendo || document.hidden || opacidad() <= 0) return;
       corriendo = true;
       ultimo = performance.now();
-      window.requestAnimationFrame(cuadro);
+      acumulado = CUADRO;  // el primer cuadro se dibuja altiro
+      if (!pedido) seguir();
+    }
+
+    // Cada evento de scroll deja la nieve quieta 160 ms mas, actualiza la
+    // opacidad y la detiene si ya no se ve (o la vuelve a arrancar al subir).
+    function alHacerScroll() {
+      quietoHasta = performance.now() + PAUSA_SCROLL;
+      var op = opacidad();
+      ponerOpacidad(op);
+      if (op <= 0) corriendo = false;
+      else arrancar();
     }
 
     medir();
+    ponerOpacidad(opacidad());
     arrancar();
     window.addEventListener("resize", medir, { passive: true });
-    window.addEventListener("scroll", arrancar, { passive: true });
+    window.addEventListener("scroll", alHacerScroll, { passive: true });
     document.addEventListener("visibilitychange", function () {
       if (document.hidden) corriendo = false; else arrancar();
     });
   }
 
-  if (document.body) nevar();
-  else document.addEventListener("DOMContentLoaded", nevar);
+  // Arranca 1,2 s despues de la carga (y cuando el navegador esta libre), para
+  // no competir con el primer pintado ni con la imagen principal (LCP).
+  function despuesDeCargar() {
+    window.setTimeout(function () {
+      if (window.requestIdleCallback) window.requestIdleCallback(nevar, { timeout: 1000 });
+      else nevar();
+    }, 1200);
+  }
+
+  if (document.readyState === "complete") despuesDeCargar();
+  else window.addEventListener("load", despuesDeCargar);
 })();

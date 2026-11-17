@@ -63,6 +63,9 @@ class PaginaConYSinNavidadTests(TestCase):
                     self.assertIn(SALUDO, html)
                     self.assertIn('class="tema-navidad"', html)
                     self.assertIn("navidad-guirnalda", html)
+                    # Las ramas (con su sombra) van en su propia capa quieta:
+                    # sin ella, navidad.css no tiene donde dibujar la guirnalda.
+                    self.assertIn('class="navidad-guirnalda__ramas"', html)
                     self.assertIn("css/navidad", html)
                     self.assertIn("js/navidad", html)
 

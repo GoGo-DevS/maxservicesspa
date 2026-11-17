@@ -83,6 +83,7 @@
   </div>
   {% if navidad_activa %}
   {# Guirnalda de Navidad: decorado puro, fuera del flujo y sin recibir clics. #}
-  <div class="navidad-guirnalda" aria-hidden="true"></div>
+  {# Las ramas van en una capa quieta con sombra; las luces que titilan son los ::before/::after, sin filtro. #}
+  <div class="navidad-guirnalda" aria-hidden="true"><span class="navidad-guirnalda__ramas"></span></div>
   {% endif %}
 </header>
