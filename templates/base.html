@@ -74,6 +74,12 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   <script src="{% static 'js/site-navigation.js' %}"></script>
   <script src="{% static 'js/projects-shared.js' %}"></script>
+  {% comment %}
+    Navidad 2026: decoracion que se enciende el 16-11 y se apaga sola el 26-12
+    a las 23:59. Fuera de fecha o sin JS no se ve nada. Para sacarla antes,
+    borrar esta linea.
+  {% endcomment %}
+  <script src="{% static 'js/navidad.js' %}" defer></script>
   {% block extra_js %}{% endblock %}
 </body>
 </html>
