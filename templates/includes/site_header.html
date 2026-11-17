@@ -5,10 +5,24 @@
 {% url 'core:empresa' as empresa_url %}
 {% url 'core:contacto' as contacto_url %}
 <header class="site-header sticky-top">
-  <div class="site-topbar">
+  <div class="site-topbar{% if navidad_activa %} navidad-franja{% endif %}">
     <div class="container">
       <div class="site-topbar-row d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 py-2 small">
+        {% if navidad_activa %}
+        {% comment %}
+          Navidad 2026: el saludo REEMPLAZA el texto de la franja de arriba (no
+          se apila otra franja). En el celular el saludo toma el lugar del enlace,
+          que lleva al mismo formulario que el boton principal de la portada y el
+          del menu. Lo decide el servidor por fecha: core/navidad.py.
+        {% endcomment %}
+        <p class="mb-0 topbar-copy navidad-saludo">
+          <svg class="navidad-saludo__adorno" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 2v20M3.3 7l17.4 10M3.3 17l17.4-10"/><path d="M9.5 3.8 12 6l2.5-2.2M9.5 20.2 12 18l2.5 2.2M3.6 10.4l3.2-1 .7-3.3M20.4 13.6l-3.2 1-.7 3.3M3.6 13.6l3.2 1 .7 3.3M20.4 10.4l-3.2-1-.7-3.3"/></g></svg>
+          <span><strong>¡Felices Fiestas!</strong> les desea MAX Services</span>
+          <svg class="navidad-saludo__adorno navidad-saludo__adorno--estrella" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2.5l2.7 6.1 6.6.6-5 4.4 1.5 6.5L12 16.7l-5.8 3.4 1.5-6.5-5-4.4 6.6-.6z" fill="currentColor"/></svg>
+        </p>
+        {% else %}
         <p class="mb-0 topbar-copy">{{ topbar_text }}</p>
+        {% endif %}
         <a
           class="topbar-link"
           href="{{ topbar_link_href|default:home_url }}"
@@ -67,4 +81,8 @@
       </nav>
     </div>
   </div>
+  {% if navidad_activa %}
+  {# Guirnalda de Navidad: decorado puro, fuera del flujo y sin recibir clics. #}
+  <div class="navidad-guirnalda" aria-hidden="true"></div>
+  {% endif %}
 </header>

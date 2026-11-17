@@ -1,0 +1,204 @@
+/* ===========================================================================
+   NAVIDAD 2026 -- version 2 (17-11-2026)
+   ---------------------------------------------------------------------------
+   Esta hoja SOLO se carga entre el 16-11-2026 00:00 y el 26-12-2026 23:59:59
+   (hora de Chile): la decide el servidor (core/navidad.py), igual que la clase
+   html.tema-navidad, la franja de saludo y la guirnalda. Fuera de fecha el
+   sitio no descarga nada de esto.
+
+   La v1 (luces de 8 px y puntitos de nieve) no se notaba en un PC grande.
+   Colores: rojo, azul y celeste del simbolo de Max, mas dorado.
+
+   Reglas fijas de todo lo de aca:
+   - pointer-events:none en todo lo decorativo: ningun boton queda tapado.
+   - Lo decorativo no ocupa espacio (absolute/fixed). Lo unico que cambia el
+     layout es la franja y un poco de aire sobre las migas de pan y la portada
+     en pantallas grandes, y eso viene del servidor desde el primer pintado:
+     no hay corrimiento (CLS).
+   - Lo FIJO (franja, guirnalda, esferas, nieve acumulada, gorro, mono) se ve
+     con prefers-reduced-motion. Lo ANIMADO (titileo y nieve que cae) no.
+   =========================================================================== */
+
+/* --- 1. Franja de saludo ---------------------------------------------------
+   Reemplaza la franja gris de arriba durante la ventana; misma altura. */
+html.tema-navidad .site-topbar.navidad-franja {
+  background:
+    radial-gradient(circle, rgba(255, 255, 255, .34) 0 1px, transparent 1.6px) 0 0 / 26px 26px,
+    radial-gradient(circle, rgba(255, 255, 255, .2) 0 1px, transparent 1.6px) 13px 13px / 26px 26px,
+    linear-gradient(90deg, #9e1219 0%, #d91f26 50%, #9e1219 100%);
+  border-bottom: 0;
+}
+html.tema-navidad .navidad-saludo {
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: .98rem;
+  letter-spacing: .01em;
+  white-space: nowrap;
+}
+html.tema-navidad .navidad-saludo strong { color: #ffd27a; font-weight: 800; }
+html.tema-navidad .navidad-saludo__adorno {
+  width: 1.05em;
+  height: 1.05em;
+  flex: 0 0 auto;
+  color: #ffd27a;
+}
+html.tema-navidad .navidad-franja .topbar-link {
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(255, 210, 122, .8);
+}
+html.tema-navidad .navidad-franja .topbar-link:hover,
+html.tema-navidad .navidad-franja .topbar-link:focus { color: #ffd27a; }
+
+@media (max-width: 767px) {
+  /* En el celular cabe UNA linea: el saludo toma el lugar del enlace (que va
+     al mismo formulario que el boton principal de la portada y el del menu). */
+  html.tema-navidad .navidad-franja .topbar-copy {
+    display: flex;
+    justify-content: center;
+    font-size: clamp(.74rem, 3.5vw, .86rem);
+  }
+  html.tema-navidad .navidad-franja .topbar-link { display: none; }
+  html.tema-navidad .navidad-saludo { gap: .4rem; }
+}
+
+/* --- 2. Nieve acumulada colgando del borde de la franja ----------------------
+   Blanca sobre la cabecera blanca: la sombra es lo que la hace leerse. Va en
+   el contenedor del menu (no en la franja) para que el gorro quede encima. */
+html.tema-navidad .site-navbar-wrap { position: relative; }
+html.tema-navidad .site-navbar-wrap::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -1px;
+  height: 13px;
+  z-index: 1;
+  pointer-events: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 140 14' preserveAspectRatio='none'%3E%3Cpath d='M0 0H140V5C134 5 133 11 126 11C119 11 119 6 112 6C106 6 106 9 100 9C94 9 93 4 86 4C79 4 79 12 70 12C61 12 62 5 54 5C47 5 47 9 41 9C35 9 35 6 28 6C21 6 21 11 14 11C7 11 6 5 0 5Z' fill='%23fff'/%3E%3C/svg%3E") repeat-x 0 0 / 140px 13px;
+  filter: drop-shadow(0 2px 1.6px rgba(11, 31, 51, .3));
+}
+
+/* --- 3. Gorro sobre el simbolo del logo --------------------------------------
+   En % del simbolo (84, 74 y 62 px). Queda dentro del ancho del simbolo, asi
+   que no toca el nombre MAX SERVICES SPA. */
+html.tema-navidad .site-navbar .brand-mark-shell { position: relative; }
+html.tema-navidad .site-navbar .brand-mark-shell::before {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  left: 36%;
+  top: -15%;
+  width: 60%;
+  height: 52%;
+  pointer-events: none;
+  transform: rotate(13deg);
+  background: no-repeat center / contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 56'%3E%3Cpath d='M9 41C12 22 26 7 42 7c9 0 15 7 16 19l-8 1c-1-7-4-11-9-11-10 0-17 11-19 25z' fill='%23D91F26'/%3E%3Cpath d='M42 7c9 0 15 7 16 19l-4 0c-1-9-5-15-12-19z' fill='%239E1219' opacity='.6'/%3E%3Cpath d='M20 22c5-8 12-12 20-12' stroke='%23ff6b70' stroke-width='2.4' stroke-linecap='round' fill='none' opacity='.55'/%3E%3Crect x='3' y='36' width='40' height='13' rx='6.5' fill='%23fff' stroke='%23b9cfe0' stroke-width='1.3'/%3E%3Cpath d='M8 40.5h30' stroke='%23e3edf5' stroke-width='2' stroke-linecap='round'/%3E%3Ccircle cx='55' cy='31' r='7' fill='%23fff' stroke='%23b9cfe0' stroke-width='1.3'/%3E%3C/svg%3E");
+  filter: drop-shadow(0 2px 2px rgba(11, 31, 51, .28));
+}
+
+/* --- 4. Guirnalda de pino bajo el menu ---------------------------------------
+   Ramas de pino en SVG con nieve encima y esferas colgando, repetidas a lo
+   ancho; la cuerda queda justo en el borde de abajo de la cabecera. Las
+   medidas van en em: el font-size escala toda la guirnalda. */
+html.tema-navidad .navidad-guirnalda {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% - 1.125em);
+  height: 4em;
+  z-index: 3;
+  pointer-events: none;
+  font-size: 16px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='64' viewBox='0 0 240 64'%3E%3Cdefs%3E%3CradialGradient id='e0' cx='.36' cy='.32' r='.75'%3E%3Cstop offset='0' stop-color='%23ff8a8f'/%3E%3Cstop offset='.45' stop-color='%23d91f26'/%3E%3Cstop offset='1' stop-color='%238e0f15'/%3E%3C/radialGradient%3E%3CradialGradient id='e1' cx='.36' cy='.32' r='.75'%3E%3Cstop offset='0' stop-color='%23ffe7a3'/%3E%3Cstop offset='.45' stop-color='%23f2b632'/%3E%3Cstop offset='1' stop-color='%23a8730c'/%3E%3C/radialGradient%3E%3CradialGradient id='e2' cx='.36' cy='.32' r='.75'%3E%3Cstop offset='0' stop-color='%238fb8ff'/%3E%3Cstop offset='.45' stop-color='%231565c8'/%3E%3Cstop offset='1' stop-color='%230b3a78'/%3E%3C/radialGradient%3E%3CradialGradient id='e3' cx='.36' cy='.32' r='.75'%3E%3Cstop offset='0' stop-color='%23bfe8ff'/%3E%3Cstop offset='.45' stop-color='%233aa7e0'/%3E%3Cstop offset='1' stop-color='%2317689a'/%3E%3C/radialGradient%3E%3C/defs%3E%3Cpolyline points='-6 17.7 0 18 6 18.3 12 18.7 18 19 24 19.3 30 19.6 36 19.8 42 20 48 20.1 54 20.2 60 20.2 66 20.2 72 20.1 78 20 84 19.8 90 19.6 96 19.3 102 19 108 18.7 114 18.3 120 18 126 17.7 132 17.3 138 17 144 16.7 150 16.4 156 16.2 162 16 168 15.9 174 15.8 180 15.8 186 15.8 192 15.9 198 16 204 16.2 210 16.4 216 16.7 222 17 228 17.3 234 17.7 240 18 246 18.3' fill='none' stroke='%230f3521' stroke-width='15' stroke-linecap='round'/%3E%3Cpath d='M1.2 16.1l-5.7 -4.1M241.2 16.1l-5.7 -4.1M3.1 19.3l8.8 -0.1M7.5 16.5l1.1 8.5M10.4 20.7l5.7 5.6M15.8 16.5l12.7 1.4M19.7 17.5l-9.2 3.6M24 21.5l8.6 -3.9M26.7 17.9l-1.4 10.3M26.6 16.6l2 -7.2M30.2 21.1l3.3 11.7M32.2 16.7l-11.9 0.7M34.1 18l6.3 10.2M35.3 17.1l-12.9 1.1M39.1 18.8l7 -2.3M44.3 19.6l8.2 -3.4M48.4 17.1l2.7 9.8M50.8 18.2l10 3.3M53 17.7l3.5 11.2M66.3 23.1l12.1 1.7M67.3 17.7l1.8 -7.1M70.3 20.8l12.3 4.2M70 19.6l-8.9 8.9M71.4 17.8l-2 -6.3M72.5 18.8l-12 6.8M79.4 18.6l9.7 5.2M82.1 20.4l-6.2 6.8M84.9 19.7l10.5 6.3M90.2 18.5l8.7 8.1M94.6 20.3l10 3.2M95.9 20l-10.3 -3.2M97.9 19.5l-8.4 -3.9M102.2 21.8l2.6 -6.7M105.9 21l-1.7 11.6M107 17.2l-10.1 -3.6M109.2 16.2l-6.6 5.4M112.5 20.9l7.1 -1.5M111.4 19l-2.3 8.8M111.9 20.3l7.9 -1.4M115 20.6l-8.7 -0.3M118.1 19.5l4.7 -5.4M118.6 17.7l5.1 11.6M118.6 19.1l0.4 -7.2M118.6 18.1l-3.5 -6.9M118.6 17.8l3.8 -6.2M122.9 19.8l7.3 10.5M129.4 20.2l-6.6 -8M130.9 17.8l3.6 -6M129.8 15l10.7 6.4M136.9 18.8l9.5 -3.5M136.7 17.4l11.7 -0.4M139 17.5l8.8 4.7M141.6 17.7l9.9 5.4M143.9 17.6l-1.5 -9.4M142.9 18.2l-11.3 -0.8M146.1 16.5l-1.2 12.2M144.9 15.6l4.5 6.5M148.6 16.9l3.1 6.8M151 14.6l8.6 -3.4M149.1 16.9l4.2 -6.2M148.9 16.3l-12.6 5.7M150.3 14.9l-8.6 -0.3M153.6 18.6l5.3 10.1M154.2 17.9l-9.6 0.2M159.8 14.5l-3 -7.2M158.8 15.3l7.6 -6.2M166.8 14.8l10.9 7.3M173.8 14.6l9.2 -2.1M177.5 14l9.6 0.2M176.6 16.7l1.9 9.7M186.9 17.9l4.9 5.9M187.3 18.5l-3.7 -5.6M190.6 18.1l10 -2.5M192.1 17l7.1 -5M192.5 18l13 3.5M198.8 13.4l-3.1 -7.4M198.9 16.6l-6.7 8.2M199.4 16.6l9.4 5.4M205.9 17.3l-12.3 0.2M207.7 19.2l-7 9.1M211.8 14.5l-3 -5.8M212.6 16.2l-5 -4.4M221.6 17.4l-6.2 8.1M224.6 19.9l-1 -7.6M227.2 16.4l3.8 -8.6M229 14.9l13.1 2.8M-11 14.9l13.1 2.8M229 15.2l-9.7 0.5M233.3 20.1l-9.6 3.4M235.1 16.7l8.7 -3.3M-4.9 16.7l8.7 -3.3M235.5 17.7l-8 -4M235.8 15.1l4.3 -6.9M-4.2 15.1l4.3 -6.9' fill='none' stroke='%23123f27' stroke-width='2.1' stroke-linecap='round'/%3E%3Cpath d='M-0.9 16.8l10.2 1.3M239.1 16.8l10.2 1.3M0.3 20.8l-4.2 10M240.3 20.8l-4.2 10M5.2 18.2l-10 6.3M245.2 18.2l-10 6.3M7.6 15.8l-2.7 8.5M8.7 18.1l6 -7M14.8 20.1l-6.4 -5.5M23.6 20.8l7.5 4.4M25.4 21.4l8.1 -7.4M26.2 16.7l7.6 9.6M27 19.1l2.6 9.2M30.9 18l-6.8 -7M32.2 19.1l-7.3 10.5M37.9 18.4l12.8 3.8M38.4 18l3.9 -8.2M40.9 18.2l-0.3 -8.6M44.4 22.1l3.4 -6.9M49 18.5l5.2 -6.3M50.7 22.2l-3 -8.3M53.6 19.2l-0.4 7.8M52.9 23.1l-9.5 8.2M54.7 21.2l10 8.8M58.8 17.4l9.3 -4.5M68.2 17.8l-7.6 4.5M66 23.1l8.6 2.2M70.4 19.9l-8.2 -2.4M74 19.1l-9 6.6M72.1 22.4l-0.4 9M74.6 17.8l2.9 -6.8M77 18.5l-6.4 -8.4M84.2 21.4l11.8 4.6M86.3 16.7l-1.5 10.1M88.8 16.8l-5.4 7.2M87.3 19.6l11.4 -2.2M89 20l3.4 -9.7M93.2 17.2l-7.5 -4.7M96.2 19.8l2.7 9.4M101 19.3l-9.4 -4.5M104.9 19.5l-8.9 0.3M105.8 18.2l-5.9 -4.5M116.4 17.2l-6.2 -5.4M120.2 16.1l13.6 2.6M121 17.7l10.8 2.4M122.8 17l-11.3 -1.2M127.3 14.9l-2.3 -9.8M136.8 17.1l10.3 1.5M137.8 19.1l10.4 5.9M140 18.7l0.9 8.8M145.8 14.5l5.6 -5.4M146.2 14.7l-11.3 0.2M156.2 16l-13.8 4.5M157.7 15.1l3.9 8.2M158.6 14.4l-6.2 -8.5M162 16.7l10.7 1M161.3 15.9l8.8 -5.4M168.5 15.5l-5.2 -5.3M171.6 18.3l-6.5 -5.4M175.3 14.6l-6.2 -6.7M175.9 13.5l10 -2M179.9 13.4l6.3 -3M178.3 14.8l3.8 -8.6M181.2 15.4l3.2 -9.4M185.1 17l5.8 -6.9M188.7 16.8l7.9 -0.3M196.5 14.5l-3.2 -5.9M196.3 15.8l-8.4 -3.1M201 18.3l-11.7 -3.5M203.5 16.5l-4 8.3M201.2 17.6l0.9 -8.8M204.4 14.1l-0.9 12M207.9 17l1.3 -7.9M207.8 18.8l-4.3 -5.9M208.4 13.5l4.7 10.2M214.9 16.6l-7.3 -6.5M222.4 16.4l9.5 3.6M223.1 16.1l-8.1 -3.9M226.4 16.6l-13.4 0.5M229 17.4l-2.5 -8.6M231.5 20.2l-5.9 -5.3M233.3 18.5l6 7.3M-6.7 18.5l6 7.3M239.7 17.8l5 -5.7M-0.3 17.8l5 -5.7' fill='none' stroke='%2318552f' stroke-width='2.1' stroke-linecap='round'/%3E%3Cpath d='M0.7 16.8l-8.7 1.5M240.7 16.8l-8.7 1.5M5.6 21.2l-4.4 6.5M4.6 15.9l-5.3 -4.8M244.6 15.9l-5.3 -4.8M6 20.3l8.5 -4.6M7.4 18l4.4 8.6M9.2 20.7l-10.7 0.6M249.2 20.7l-10.7 0.6M9.5 16.8l9.5 -6M13.8 17.8l5.1 7.4M17.3 20.8l12.1 -2.3M18.9 19.1l-1.4 8.7M20.2 19l-8.1 -4.8M21.9 17.9l7.6 -3.8M22 20.5l12 1.5M22.8 21.2l13.7 0.6M24.8 21.8l-7.2 -5.7M29.2 21l-12.5 5M33.4 19.8l-7.5 4.6M35.6 18.8l-7.1 -3.1M35.7 17.1l4.6 -4.5M40.3 21.5l-11.2 4M41 22.5l9.5 8.6M42.2 22.4l10.9 3.6M44.4 17.5l8 -4M45.2 22.5l7.3 -4.8M46.8 20.5l-7.9 7.8M52.7 19.9l-8 -6.4M54 17.4l9.4 -2.7M55.8 22l-6 5.7M56.6 20.8l10.4 6.7M61.2 18.1l5.7 11.1M59.1 23.2l-3.5 -5.2M61.3 18.5l4 10.5M61.1 17.3l-10.5 -2.7M64.7 21.8l-0.3 10.4M65.6 19.7l3.9 9.8M64.9 22.3l-5.7 -6.5M68.4 22.3l5.1 6.6M70.6 21.9l-4.2 -8M73.2 18.8l-1 -6M78.2 18.9l-4.2 7.8M78.4 21l9.7 8.2M82 21.1l7.6 -0.6M82.4 21.5l8.6 -0.2M83.7 18.5l-8.4 8.6M86.4 19.9l-9.7 6.5M84.4 20.7l-1.1 -7.2M89.8 17.6l4.3 -5.2M89.7 21.8l-9.9 5.5M95.2 19.8l-5.3 -4.4M93.8 18.2l11.4 6.4M97 18.1l-8.1 5.4M98.6 17.7l1.2 -8M98.9 20l-10.6 0.2M105.9 18.1l-9 7.9M107.5 17.9l-2.6 -7.5M109.1 20.4l-7.7 -1.6M110.4 18.1l0.9 8.4M125.4 17.4l-9.1 -3M123.3 16.2l8.2 -6.6M125.8 15.6l8.8 4.3M125.5 15.3l9.6 -1.2M128.3 15.2l12.1 4.5M131.5 16.5l9.1 -1.1M134.6 17.4l8.9 2.5M132 14.4l14.6 0.7M137.2 16.8l-8.3 8.3M141.1 17l4.2 11.4M145.7 17.4l-13.3 2.2M156.5 16.8l-2.7 7.1M158.5 15.2l6.4 -6M160.3 18.5l1.5 -7.3M159.9 18.6l3.6 -5.8M163.3 13.1l-8.3 -7.2M163.1 14.2l14.1 1.2M166.1 13l8.8 5.6M164.6 15.4l-5.9 -4.3M168.5 14.2l-1.7 -6M170.7 13l13.2 6M172.1 15.8l-11.7 -2.2M176.1 18.6l-4.3 11.7M182.4 17l-7.2 5.6M181 15.1l-3.3 -7.4M191.6 18.1l1.2 9M191.6 17.1l4.5 -7.3M192.8 17.5l-6.7 -4.8M196.1 14l12.3 4.3M196.4 16.5l8.7 -0.9M199.3 17.8l-9.9 -2.8M204.9 15l-9.3 -1.6M207.9 14l-0 -7.4M213.8 17.8l-7.8 -4.5M214.7 19l8.7 8.7M219.9 15.5l7.2 -3.3M217.2 14.1l-6 -5.2M221.3 16.5l8.4 7.2M225.8 19.7l2.9 -5.5M226.8 17.1l9.5 9.6M228.2 15.4l12 -2.4M-11.8 15.4l12 -2.4M233.4 14.9l-7 -1.5M240.4 20.8l7 -4.3M0.4 20.8l7 -4.3' fill='none' stroke='%231f6a3e' stroke-width='2.1' stroke-linecap='round'/%3E%3Cpath d='M0.7 17.9l-3.3 -9.4M240.7 17.9l-3.3 -9.4M10.1 17.5l-11.4 -2.5M250.1 17.5l-11.4 -2.5M12.5 21.5l-3.9 -9.4M12.3 18.2l5.5 -8.4M14.8 20.4l-7.1 -5.1M17.3 17.8l10.2 -1.6M20.2 18.3l-1.6 12M19.3 18.8l-7 -7.3M27.4 21.1l3.9 -5.7M31.1 17.1l-10.4 5.8M33.5 22l-8.9 6M30.9 19.6l-5.8 -8M33.2 21l-10.4 6.7M43.3 20.6l5.3 7M46.4 21.1l-9.5 -0.9M46.2 18.8l1.2 10.1M49.9 22.3l-4.3 -6.3M51.4 20.7l-0.1 10.1M54.4 20.3l-7.3 -6.5M57.9 22.3l5.7 -3.7M60.6 20.6l14 0.1M59.9 21.7l13.5 3.7M62.3 17.9l-2.2 -5.8M61.6 19.9l-3.5 9.7M75.5 17.3l4.6 -4.6M77.4 22.3l-7 -2.9M75 22.6l-6.7 -2.5M80.9 21.2l5.4 8.7M79.2 19.5l6.4 -6.7M92.9 18l-11.8 7.2M90.9 22.2l7 9.8M99.9 18.1l-1.2 -8.4M99.6 17.3l6.5 8.4M102.1 19.8l3 7.2M104.4 16.4l13.3 4.8M108.6 20l-9 0.3M108.4 17.2l-0.4 -5.9M122.2 20.4l2.3 11.1M122.1 18l-9.6 1.5M126.8 19.7l10.5 0.7M132.5 18.3l-9.8 -3M138.4 19.1l-2.7 -6.7M138.5 14.9l5 -7.2M141.2 17.1l3.2 -7.9M141.8 15.1l0.5 -6.2M148.3 17.8l6.4 -5.2M152.8 14.4l-7.3 -3.7M150.7 19.3l2.6 10.8M154.5 14.3l11.7 -2M156.9 16.5l-0.5 -6M167.3 15.1l8.3 -0.2M167.1 15.9l-2 -7.1M173.2 18.6l1.5 9.3M183.5 18.5l-6.2 -8.7M186.3 14.8l9.3 -5.4M185.7 17.6l-8.9 -2.3M188.5 16.6l5.5 -8.3M191.2 14.9l-11.3 4.6M194.2 17.9l9.1 -3M199.9 18.7l7.3 -7.9M200.9 18.8l-7.9 -6.5M203.6 18.5l4.3 7M211.3 16.4l-11.7 7M212.5 17.1l-3.5 6.7M217.5 18.6l-9.8 -4.6M216.5 14.9l-8.1 9.4M220.4 17.5l-4.3 7.5M232.5 14.6l-7.2 -3.3M234.4 19.5l9.6 -0.2M-5.6 19.5l9.6 -0.2M237.7 18.9l5.9 -7.2M-2.3 18.9l5.9 -7.2M239.1 15.1l9 5.6M-0.9 15.1l9 5.6' fill='none' stroke='%232a7f4c' stroke-width='2.1' stroke-linecap='round'/%3E%3Cpath d='M3.5 18.6l8.9 -4.5M1.4 15.7l-8 -6.1M241.4 15.7l-8 -6.1M6.9 20.1l6 8.9M9.1 16.7l9.8 -0.3M13.2 19.2l-7.8 -0.7M15.4 16.2l8.2 -0.7M17.3 21.4l-8.3 -0.6M17.3 21.4l-7.3 4.4M21.9 21.1l-14.9 0.6M37.2 19.5l5.8 -7.9M40.3 22.2l7.1 4.2M42.6 22.3l-12.5 4.3M46.1 21.6l12.4 1.6M49.2 23.1l6.5 -5.3M58.1 17.3l8.3 -3.5M63.2 19l13.1 3.4M72.6 19.3l-12.4 1.6M72.7 17.3l4.4 9.3M79.6 22.7l-10 5.3M82.6 20.3l-7.2 -1.5M87.7 19.1l9.6 2.5M92.5 20.4l5.2 -8.6M91.1 19.4l-7.2 -4M102.6 20.4l3.3 -8.5M103.3 20.9l7 -3.4M104.8 17.5l-9.2 -5.5M105.4 20.9l-8.8 2M109.2 17.1l1 7.9M112.6 17.2l-1.6 -7.8M114.4 20.4l12.9 4.3M114.1 16.3l12.1 -1.6M116.4 20.3l5.1 6M120.5 15.6l10.1 1.5M120.7 20.1l2.5 10.1M128.2 15.6l5.4 -5.2M130.3 15.7l3.8 7.7M130.4 19.7l-1.7 8.6M133.6 18.2l3.9 6.8M138.8 15.5l8.6 -3.3M146.3 13.8l-9.5 4M148.2 15l-1.4 -5.9M152.9 18l-3.7 8.3M153.4 15.7l9.5 1.4M164.5 18.9l6.4 -3.1M164.4 15.2l-5 8.9M164.1 17.9l-2.3 -9.3M169.7 15.3l5.9 -3.3M170.5 13.1l-9.7 -1.4M170.6 16.7l-6.8 -3.9M173.5 17.6l0.3 -7.8M174.7 15.3l4.5 10.3M175.8 14.1l-12.8 1.1M180.3 12.9l2.2 10.1M179.3 12.9l-7.2 -6.3M181.6 13.1l-8.5 4.4M182.7 16.6l3.3 -7.5M184.2 15.9l-2.6 -7.7M185.6 18.2l8.4 2.2M188.6 15.2l-11.2 3.4M195.6 14.9l-1.4 7.7M198.3 18.7l4.4 -8.5M202 14.2l-1.2 -6.1M206.6 18.6l4 -6.8M208.9 17.7l-9.1 6.4M208.1 13.4l0.1 -9.7M211.7 14.6l-8.8 -3.2M213.2 18.2l-7.6 -5.2M215.1 13.9l9.1 4.4M218.2 19.5l1.7 -7.4M220 17.6l15.1 0.1M220.5 18.7l7 -6.6M223.5 16.6l4.5 -4.9M222.4 18.9l9.6 5.2M226.4 15l10.6 2.8M228.6 16.2l0.2 -7.4M230.1 16.5l6.2 7.5M235.9 17.4l9.3 4.4M-4.1 17.4l9.3 4.4M235.6 17.3l2.8 11.1M240.1 17.8l5.3 8.8M0.1 17.8l5.3 8.8' fill='none' stroke='%2338975d' stroke-width='2.1' stroke-linecap='round'/%3E%3Ccircle cx='6' cy='11.7' r='4.2' fill='%239fbfd6'/%3E%3Ccircle cx='12' cy='11.7' r='5.6' fill='%239fbfd6'/%3E%3Ccircle cx='19' cy='11.7' r='4.8' fill='%239fbfd6'/%3E%3Ccircle cx='24' cy='11.7' r='3.4' fill='%239fbfd6'/%3E%3Ccircle cx='6' cy='10.3' r='4.2' fill='%23fff'/%3E%3Ccircle cx='12' cy='10.3' r='5.6' fill='%23fff'/%3E%3Ccircle cx='19' cy='10.3' r='4.8' fill='%23fff'/%3E%3Ccircle cx='24' cy='10.3' r='3.4' fill='%23fff'/%3E%3Ccircle cx='-234' cy='11.7' r='4.2' fill='%239fbfd6'/%3E%3Ccircle cx='-228' cy='11.7' r='5.6' fill='%239fbfd6'/%3E%3Ccircle cx='-221' cy='11.7' r='4.8' fill='%239fbfd6'/%3E%3Ccircle cx='-216' cy='11.7' r='3.4' fill='%239fbfd6'/%3E%3Ccircle cx='-234' cy='10.3' r='4.2' fill='%23fff'/%3E%3Ccircle cx='-228' cy='10.3' r='5.6' fill='%23fff'/%3E%3Ccircle cx='-221' cy='10.3' r='4.8' fill='%23fff'/%3E%3Ccircle cx='-216' cy='10.3' r='3.4' fill='%23fff'/%3E%3Ccircle cx='246' cy='11.7' r='4.2' fill='%239fbfd6'/%3E%3Ccircle cx='252' cy='11.7' r='5.6' fill='%239fbfd6'/%3E%3Ccircle cx='259' cy='11.7' r='4.8' fill='%239fbfd6'/%3E%3Ccircle cx='264' cy='11.7' r='3.4' fill='%239fbfd6'/%3E%3Ccircle cx='246' cy='10.3' r='4.2' fill='%23fff'/%3E%3Ccircle cx='252' cy='10.3' r='5.6' fill='%23fff'/%3E%3Ccircle cx='259' cy='10.3' r='4.8' fill='%23fff'/%3E%3Ccircle cx='264' cy='10.3' r='3.4' fill='%23fff'/%3E%3Ccircle cx='54' cy='13.1' r='4.2' fill='%239fbfd6'/%3E%3Ccircle cx='60' cy='13.1' r='5.6' fill='%239fbfd6'/%3E%3Ccircle cx='67' cy='13.1' r='4.8' fill='%239fbfd6'/%3E%3Ccircle cx='72' cy='13.1' r='3.4' fill='%239fbfd6'/%3E%3Ccircle cx='54' cy='11.7' r='4.2' fill='%23fff'/%3E%3Ccircle cx='60' cy='11.7' r='5.6' fill='%23fff'/%3E%3Ccircle cx='67' cy='11.7' r='4.8' fill='%23fff'/%3E%3Ccircle cx='72' cy='11.7' r='3.4' fill='%23fff'/%3E%3Ccircle cx='-186' cy='13.1' r='4.2' fill='%239fbfd6'/%3E%3Ccircle cx='-180' cy='13.1' r='5.6' fill='%239fbfd6'/%3E%3Ccircle cx='-173' cy='13.1' r='4.8' fill='%239fbfd6'/%3E%3Ccircle cx='-168' cy='13.1' r='3.4' fill='%239fbfd6'/%3E%3Ccircle cx='-186' cy='11.7' r='4.2' fill='%23fff'/%3E%3Ccircle cx='-180' cy='11.7' r='5.6' fill='%23fff'/%3E%3Ccircle cx='-173' cy='11.7' r='4.8' fill='%23fff'/%3E%3Ccircle cx='-168' cy='11.7' r='3.4' fill='%23fff'/%3E%3Ccircle cx='294' cy='13.1' r='4.2' fill='%239fbfd6'/%3E%3Ccircle cx='300' cy='13.1' r='5.6' fill='%239fbfd6'/%3E%3Ccircle cx='307' cy='13.1' r='4.8' fill='%239fbfd6'/%3E%3Ccircle cx='312' cy='13.1' r='3.4' fill='%239fbfd6'/%3E%3Ccircle cx='294' cy='11.7' r='4.2' fill='%23fff'/%3E%3Ccircle cx='300' cy='11.7' r='5.6' fill='%23fff'/%3E%3Ccircle cx='307' cy='11.7' r='4.8' fill='%23fff'/%3E%3Ccircle cx='312' cy='11.7' r='3.4' fill='%23fff'/%3E%3Ccircle cx='110' cy='11' r='4.2' fill='%239fbfd6'/%3E%3Ccircle cx='116' cy='11' r='5.6' fill='%239fbfd6'/%3E%3Ccircle cx='123' cy='11' r='4.8' fill='%239fbfd6'/%3E%3Ccircle cx='128' cy='11' r='3.4' fill='%239fbfd6'/%3E%3Ccircle cx='110' cy='9.6' r='4.2' fill='%23fff'/%3E%3Ccircle cx='116' cy='9.6' r='5.6' fill='%23fff'/%3E%3Ccircle cx='123' cy='9.6' r='4.8' fill='%23fff'/%3E%3Ccircle cx='128' cy='9.6' r='3.4' fill='%23fff'/%3E%3Ccircle cx='-130' cy='11' r='4.2' fill='%239fbfd6'/%3E%3Ccircle cx='-124' cy='11' r='5.6' fill='%239fbfd6'/%3E%3Ccircle cx='-117' cy='11' r='4.8' fill='%239fbfd6'/%3E%3Ccircle cx='-112' cy='11' r='3.4' fill='%239fbfd6'/%3E%3Ccircle cx='-130' cy='9.6' r='4.2' fill='%23fff'/%3E%3Ccircle cx='-124' cy='9.6' r='5.6' fill='%23fff'/%3E%3Ccircle cx='-117' cy='9.6' r='4.8' fill='%23fff'/%3E%3Ccircle cx='-112' cy='9.6' r='3.4' fill='%23fff'/%3E%3Ccircle cx='350' cy='11' r='4.2' fill='%239fbfd6'/%3E%3Ccircle cx='356' cy='11' r='5.6' fill='%239fbfd6'/%3E%3Ccircle cx='363' cy='11' r='4.8' fill='%239fbfd6'/%3E%3Ccircle cx='368' cy='11' r='3.4' fill='%239fbfd6'/%3E%3Ccircle cx='350' cy='9.6' r='4.2' fill='%23fff'/%3E%3Ccircle cx='356' cy='9.6' r='5.6' fill='%23fff'/%3E%3Ccircle cx='363' cy='9.6' r='4.8' fill='%23fff'/%3E%3Ccircle cx='368' cy='9.6' r='3.4' fill='%23fff'/%3E%3Ccircle cx='164' cy='8.7' r='4.2' fill='%239fbfd6'/%3E%3Ccircle cx='170' cy='8.7' r='5.6' fill='%239fbfd6'/%3E%3Ccircle cx='177' cy='8.7' r='4.8' fill='%239fbfd6'/%3E%3Ccircle cx='182' cy='8.7' r='3.4' fill='%239fbfd6'/%3E%3Ccircle cx='164' cy='7.3' r='4.2' fill='%23fff'/%3E%3Ccircle cx='170' cy='7.3' r='5.6' fill='%23fff'/%3E%3Ccircle cx='177' cy='7.3' r='4.8' fill='%23fff'/%3E%3Ccircle cx='182' cy='7.3' r='3.4' fill='%23fff'/%3E%3Ccircle cx='-76' cy='8.7' r='4.2' fill='%239fbfd6'/%3E%3Ccircle cx='-70' cy='8.7' r='5.6' fill='%239fbfd6'/%3E%3Ccircle cx='-63' cy='8.7' r='4.8' fill='%239fbfd6'/%3E%3Ccircle cx='-58' cy='8.7' r='3.4' fill='%239fbfd6'/%3E%3Ccircle cx='-76' cy='7.3' r='4.2' fill='%23fff'/%3E%3Ccircle cx='-70' cy='7.3' r='5.6' fill='%23fff'/%3E%3Ccircle cx='-63' cy='7.3' r='4.8' fill='%23fff'/%3E%3Ccircle cx='-58' cy='7.3' r='3.4' fill='%23fff'/%3E%3Ccircle cx='404' cy='8.7' r='4.2' fill='%239fbfd6'/%3E%3Ccircle cx='410' cy='8.7' r='5.6' fill='%239fbfd6'/%3E%3Ccircle cx='417' cy='8.7' r='4.8' fill='%239fbfd6'/%3E%3Ccircle cx='422' cy='8.7' r='3.4' fill='%239fbfd6'/%3E%3Ccircle cx='404' cy='7.3' r='4.2' fill='%23fff'/%3E%3Ccircle cx='410' cy='7.3' r='5.6' fill='%23fff'/%3E%3Ccircle cx='417' cy='7.3' r='4.8' fill='%23fff'/%3E%3Ccircle cx='422' cy='7.3' r='3.4' fill='%23fff'/%3E%3Ccircle cx='218' cy='10.1' r='4.2' fill='%239fbfd6'/%3E%3Ccircle cx='224' cy='10.1' r='5.6' fill='%239fbfd6'/%3E%3Ccircle cx='231' cy='10.1' r='4.8' fill='%239fbfd6'/%3E%3Ccircle cx='236' cy='10.1' r='3.4' fill='%239fbfd6'/%3E%3Ccircle cx='218' cy='8.7' r='4.2' fill='%23fff'/%3E%3Ccircle cx='224' cy='8.7' r='5.6' fill='%23fff'/%3E%3Ccircle cx='231' cy='8.7' r='4.8' fill='%23fff'/%3E%3Ccircle cx='236' cy='8.7' r='3.4' fill='%23fff'/%3E%3Ccircle cx='-22' cy='10.1' r='4.2' fill='%239fbfd6'/%3E%3Ccircle cx='-16' cy='10.1' r='5.6' fill='%239fbfd6'/%3E%3Ccircle cx='-9' cy='10.1' r='4.8' fill='%239fbfd6'/%3E%3Ccircle cx='-4' cy='10.1' r='3.4' fill='%239fbfd6'/%3E%3Ccircle cx='-22' cy='8.7' r='4.2' fill='%23fff'/%3E%3Ccircle cx='-16' cy='8.7' r='5.6' fill='%23fff'/%3E%3Ccircle cx='-9' cy='8.7' r='4.8' fill='%23fff'/%3E%3Ccircle cx='-4' cy='8.7' r='3.4' fill='%23fff'/%3E%3Ccircle cx='458' cy='10.1' r='4.2' fill='%239fbfd6'/%3E%3Ccircle cx='464' cy='10.1' r='5.6' fill='%239fbfd6'/%3E%3Ccircle cx='471' cy='10.1' r='4.8' fill='%239fbfd6'/%3E%3Ccircle cx='476' cy='10.1' r='3.4' fill='%239fbfd6'/%3E%3Ccircle cx='458' cy='8.7' r='4.2' fill='%23fff'/%3E%3Ccircle cx='464' cy='8.7' r='5.6' fill='%23fff'/%3E%3Ccircle cx='471' cy='8.7' r='4.8' fill='%23fff'/%3E%3Ccircle cx='476' cy='8.7' r='3.4' fill='%23fff'/%3E%3Cpath d='M30 27.6V34.6' stroke='%23c9a646' stroke-width='.9'/%3E%3Crect x='27.6' y='34.6' width='4.8' height='3.2' rx='.8' fill='%23c9ced6'/%3E%3Ccircle cx='30' cy='45.7' r='8.5' fill='url(%23e0)'/%3E%3Cellipse cx='27' cy='42.1' rx='2.4' ry='1.4' fill='%23fff' opacity='.7' transform='rotate(-30 27 42.1)'/%3E%3Cpath d='M92 27.5V43.5' stroke='%23c9a646' stroke-width='.9'/%3E%3Crect x='89.6' y='43.5' width='4.8' height='3.2' rx='.8' fill='%23c9ced6'/%3E%3Ccircle cx='92' cy='52.1' r='6' fill='url(%23e1)'/%3E%3Cellipse cx='89.9' cy='49.6' rx='1.7' ry='1' fill='%23fff' opacity='.7' transform='rotate(-30 89.9 49.6)'/%3E%3Cpath d='M150 24.4V34.4' stroke='%23c9a646' stroke-width='.9'/%3E%3Crect x='147.6' y='34.4' width='4.8' height='3.2' rx='.8' fill='%23c9ced6'/%3E%3Ccircle cx='150' cy='44.5' r='7.5' fill='url(%23e2)'/%3E%3Cellipse cx='147.4' cy='41.4' rx='2.1' ry='1.3' fill='%23fff' opacity='.7' transform='rotate(-30 147.4 41.4)'/%3E%3Cpath d='M205 24.3V29.3' stroke='%23c9a646' stroke-width='.9'/%3E%3Crect x='202.6' y='29.3' width='4.8' height='3.2' rx='.8' fill='%23c9ced6'/%3E%3Ccircle cx='205' cy='41.4' r='9.5' fill='url(%23e3)'/%3E%3Cellipse cx='201.7' cy='37.4' rx='2.7' ry='1.6' fill='%23fff' opacity='.7' transform='rotate(-30 201.7 37.4)'/%3E%3C/svg%3E") repeat-x 0 0 / 15em 4em;
+  filter: drop-shadow(0 3px 3px rgba(11, 31, 51, .22));
+}
+html.tema-navidad .navidad-guirnalda::before,
+html.tema-navidad .navidad-guirnalda::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-size: 15em 4em;
+  background-repeat: repeat-x;
+  animation: navidad-titila 1.7s ease-in-out infinite alternate;
+}
+html.tema-navidad .navidad-guirnalda::before {
+  background-image:
+    radial-gradient(circle at 6.25% 24.7%, #fffbe8 0 .11em, rgb(255,70,80) .25em, rgba(255,70,80,.62) .4em, rgba(255,70,80,.22) .72em, rgba(255,70,80,0) 1.1em),
+    radial-gradient(circle at 31.25% 26.6%, #fffbe8 0 .11em, rgb(90,200,255) .25em, rgba(90,200,255,.62) .4em, rgba(90,200,255,.22) .72em, rgba(90,200,255,0) 1.1em),
+    radial-gradient(circle at 56.25% 22.1%, #fffbe8 0 .11em, rgb(255,204,70) .25em, rgba(255,204,70,.62) .4em, rgba(255,204,70,.22) .72em, rgba(255,204,70,0) 1.1em),
+    radial-gradient(circle at 81.25% 20.3%, #fffbe8 0 .11em, rgb(80,140,255) .25em, rgba(80,140,255,.62) .4em, rgba(80,140,255,.22) .72em, rgba(80,140,255,0) 1.1em);
+}
+html.tema-navidad .navidad-guirnalda::after {
+  background-image:
+    radial-gradient(circle at 18.75% 36%, #fffbe8 0 .11em, rgb(255,204,70) .25em, rgba(255,204,70,.62) .4em, rgba(255,204,70,.22) .72em, rgba(255,204,70,0) 1.1em),
+    radial-gradient(circle at 43.75% 34.1%, #fffbe8 0 .11em, rgb(255,70,80) .25em, rgba(255,70,80,.62) .4em, rgba(255,70,80,.22) .72em, rgba(255,70,80,0) 1.1em),
+    radial-gradient(circle at 68.75% 29.6%, #fffbe8 0 .11em, rgb(80,140,255) .25em, rgba(80,140,255,.62) .4em, rgba(80,140,255,.22) .72em, rgba(80,140,255,0) 1.1em),
+    radial-gradient(circle at 93.75% 31.5%, #fffbe8 0 .11em, rgb(90,200,255) .25em, rgba(90,200,255,.62) .4em, rgba(90,200,255,.22) .72em, rgba(90,200,255,0) 1.1em);
+  animation-delay: -.85s;
+}
+@keyframes navidad-titila {
+  from { opacity: 1; }
+  to { opacity: .28; }
+}
+
+@media (min-width: 1400px) {
+  html.tema-navidad .navidad-guirnalda { font-size: 19px; }
+}
+@media (max-width: 767px) {
+  html.tema-navidad .navidad-guirnalda { font-size: 12px; }
+}
+
+/* Las migas de pan (Inicio / Servicios) quedan justo bajo la cabecera y las
+   esferas les caian encima. Durante la ventana bajan un poco: viene del
+   servidor desde el primer pintado, asi que no es un corrimiento. */
+@media (min-width: 768px) {
+  html.tema-navidad .site-breadcrumb { padding-top: 1.6rem; }
+}
+@media (min-width: 1400px) {
+  html.tema-navidad .site-breadcrumb { padding-top: 2.4rem; }
+  /* Lo mismo con la etiqueta de arriba de la portada en pantallas grandes. */
+  html.tema-navidad .home-hero { padding-top: 3.4rem; }
+}
+
+/* --- 5. Mono dorado en el boton principal ----------------------------------- */
+html.tema-navidad .site-header-cta,
+html.tema-navidad .hero-actions .btn-brand-primary { position: relative; }
+html.tema-navidad .site-header-cta::after,
+html.tema-navidad .hero-actions .btn-brand-primary::after {
+  content: "";
+  position: absolute;
+  top: -17px;
+  right: -9px;
+  width: 46px;
+  height: 32px;
+  pointer-events: none;
+  transform: rotate(16deg);
+  background: no-repeat center / contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 44'%3E%3Cpath d='M29 23L18 40l6-1 3 5 6-19z' fill='%23C98A12'/%3E%3Cpath d='M35 23l11 17-6-1-3 5-6-19z' fill='%23C98A12'/%3E%3Cpath d='M32 22C23 5 3 3 5 15c2 10 17 11 27 7z' fill='%23F2B632'/%3E%3Cpath d='M32 22C41 5 61 3 59 15c-2 10-17 11-27 7z' fill='%23F2B632'/%3E%3Cpath d='M28 20C21 11 12 10 12 15c0 4 8 6 16 5z' fill='%23D99A17'/%3E%3Cpath d='M36 20c7-9 16-10 16-5 0 4-8 6-16 5z' fill='%23D99A17'/%3E%3Cpath d='M9 12c2-4 8-4 13 0' stroke='%23FFE08A' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3Crect x='27' y='16' width='10' height='11' rx='3.5' fill='%23E0A21A'/%3E%3C/svg%3E");
+  filter: drop-shadow(0 2px 2px rgba(11, 31, 51, .3));
+}
+
+/* --- 6. Nieve que cae (canvas que crea navidad.js) ---------------------------
+   Debajo de la cabecera (z 1020) y del visor de fotos (z 1200). */
+.navidad-nieve { position: fixed; inset: 0; z-index: 15; pointer-events: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html.tema-navidad .navidad-guirnalda::before,
+  html.tema-navidad .navidad-guirnalda::after { animation: none; }
+  .navidad-nieve { display: none; }
+}
+
+@media print {
+  html.tema-navidad .navidad-guirnalda,
+  html.tema-navidad .site-navbar-wrap::before,
+  html.tema-navidad .site-navbar .brand-mark-shell::before,
+  html.tema-navidad .site-header-cta::after,
+  html.tema-navidad .hero-actions .btn-brand-primary::after,
+  .navidad-nieve { display: none; }
+}

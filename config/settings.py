@@ -126,6 +126,9 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'core.context_processors.site_meta',
+                # Navidad 2026 (16-11 al 26-12): franja de saludo y decoracion.
+                # Fuera de fecha no agrega nada. Ver core/navidad.py.
+                'core.navidad.contexto',
             ],
         },
     },
