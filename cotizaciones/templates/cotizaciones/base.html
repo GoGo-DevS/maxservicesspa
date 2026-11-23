@@ -1,0 +1,39 @@
+{% load static %}<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#0b1f33">
+  <title>{% block titulo %}Cotizaciones{% endblock %} · Max Services</title>
+  <link rel="icon" type="image/png" href="{% static 'assets/brand/max-services-symbol-real-v2.png' %}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Sora:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/panel.css' %}">
+</head>
+<body class="panel">
+{% block barra %}
+  <header class="p-barra">
+    <a class="p-marca" href="{% url 'cotizaciones:bandeja' %}">
+      <img src="{% static 'assets/brand/max-services-symbol-real-v2.webp' %}" alt="" width="32" height="32">
+      <span><strong>Max Services</strong><small>Cotizaciones</small></span>
+    </a>
+    <div class="p-barra-der">
+      <span class="p-usuario">{{ user.get_full_name|default:user.get_username }}</span>
+      <form method="post" action="{% url 'cotizaciones:salir' %}">{% csrf_token %}
+        <button class="p-btn p-btn-fantasma" type="submit">Salir</button>
+      </form>
+    </div>
+  </header>
+{% endblock %}
+  <main class="p-main">
+    {% if messages %}
+    <div class="p-avisos">
+      {% for m in messages %}<div class="p-aviso p-aviso-{{ m.tags }}" role="status">{{ m }}</div>{% endfor %}
+    </div>
+    {% endif %}
+    {% block contenido %}{% endblock %}
+  </main>
+</body>
+</html>

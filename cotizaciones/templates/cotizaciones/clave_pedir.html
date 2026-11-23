@@ -1,0 +1,20 @@
+{% extends "cotizaciones/base.html" %}
+{% block titulo %}Recuperar clave{% endblock %}
+{% block barra %}{% endblock %}
+{% block contenido %}
+<div class="p-entrar">
+  <div class="p-entrar-caja">
+    {% include "cotizaciones/_caja_inicio.html" %}
+    <h1>Recuperar clave</h1>
+    <p>Escribe tu correo y te mandamos un enlace para elegir una clave nueva.</p>
+    <form method="post">{% csrf_token %}
+      <div class="p-campo">
+        <label for="id_email">Correo</label>
+        <input id="id_email" name="email" type="email" autocomplete="email" required>
+      </div>
+      <button class="p-btn p-btn-primario" type="submit">Mandar enlace</button>
+    </form>
+    <a class="p-enlace-sec" href="{% url 'cotizaciones:entrar' %}">Volver a entrar</a>
+  </div>
+</div>
+{% endblock %}

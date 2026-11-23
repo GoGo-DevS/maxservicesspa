@@ -1,0 +1,28 @@
+# Panel de cotizaciones: lee contacto@ y manda el aviso de demoras.
+# Cada hora habil llama a /panel/tareas/correo/. El aviso solo sale a las 9 y
+# a las 15 (hora de Chile); el resto de las horas solo se lee el correo.
+# Sin el secret PANEL_CRON_TOKEN no hace nada (y no falla), para no llenar de
+# correos de error mientras el panel no esta configurado.
+name: Panel de cotizaciones
+
+on:
+  schedule:
+    - cron: "5 11-23 * * 1-5"   # UTC. Chile: 8:05 a 20:05 en verano, 7:05 a 19:05 en invierno.
+  workflow_dispatch:
+
+jobs:
+  correo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Leer correo y mandar avisos
+        env:
+          TOKEN: ${{ secrets.PANEL_CRON_TOKEN }}
+        run: |
+          if [ -z "$TOKEN" ]; then
+            echo "PANEL_CRON_TOKEN no esta configurado: el panel queda sin cron."
+            exit 0
+          fi
+          curl --fail-with-body -sS -X POST --max-time 120 \
+            -H "X-Panel-Token: $TOKEN" \
+            https://maxservicesspa.cl/panel/tareas/correo/

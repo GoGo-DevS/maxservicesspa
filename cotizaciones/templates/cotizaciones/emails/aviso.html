@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="es">
+  <body style="margin:0; padding:12px; background:#eef3f7; font-family:Arial, Helvetica, sans-serif; color:#163042;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="100%" style="max-width:620px; background:#ffffff; border:1px solid #d6e0e8; border-radius:16px; overflow:hidden;">
+            <tr>
+              <td style="padding:20px 22px; background:#0b1f33; color:#ffffff;">
+                <div style="font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:#9fc4e6;">Max Services · Cotizaciones</div>
+                <h1 style="margin:10px 0 0; font-size:21px; line-height:1.25;">{% if cantidad == 1 %}1 cotización espera respuesta{% else %}{{ cantidad }} cotizaciones esperan respuesta{% endif %} hace más de un día hábil</h1>
+              </td>
+            </tr>
+            {% for f in filas %}
+            <tr>
+              <td style="padding:14px 22px; border-bottom:1px solid #e3eaf0;">
+                <div style="font-size:16px; font-weight:700; color:#0b1f33;">{{ f.solicitud.titulo }}</div>
+                <div style="margin-top:2px; font-size:14px; color:#5e6a75;">{{ f.solicitud.asunto|default:"(sin asunto)" }}</div>
+                <div style="margin-top:8px; font-size:13px;">
+                  <span style="display:inline-block; padding:3px 10px; border-radius:999px; background:#fdecec; color:#d91f26; font-weight:700;">Espera hace {{ f.dias|floatformat:1 }} días hábiles</span>
+                  &nbsp;<a href="{{ f.url }}" style="color:#1567b3; font-weight:700;">Abrir en el panel</a>
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+            <tr>
+              <td style="padding:18px 22px;">
+                <a href="{{ panel_url }}" style="display:inline-block; padding:12px 18px; border-radius:10px; background:#1567b3; color:#ffffff; font-weight:700; text-decoration:none;">Ir al panel</a>
+                <p style="margin:14px 0 0; font-size:13px; color:#5e6a75;">Si ya la respondiste por teléfono, márcala como Respondida en el panel y deja de aparecer aquí.</p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

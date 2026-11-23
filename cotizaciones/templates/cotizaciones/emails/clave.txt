@@ -1,0 +1,7 @@
+{% autoescape off %}Hola{% if user.first_name %} {{ user.first_name }}{% endif %}:
+
+Para elegir una clave nueva del panel de cotizaciones de Max Services, abre este enlace:
+{{ protocol }}://{{ domain }}{% url 'cotizaciones:clave_nueva' uidb64=uid token=token %}
+
+Si no lo pediste tú, ignora este correo: tu clave actual sigue igual.
+{% endautoescape %}

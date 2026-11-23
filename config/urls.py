@@ -26,6 +26,7 @@ urlpatterns = [
     path('index.rdf', recurso_retirado, name='retirado_index_rdf'),
     path('rss.xml', recurso_retirado, name='retirado_rss_xml'),
     path('admin/', admin.site.urls),
+    path('panel/', include('cotizaciones.urls')),
     path('', include('core.urls')),
     path('proyectos/', include('portfolio.urls')),
 ]

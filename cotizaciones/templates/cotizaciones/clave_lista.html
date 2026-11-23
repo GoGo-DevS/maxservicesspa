@@ -1,0 +1,13 @@
+{% extends "cotizaciones/base.html" %}
+{% block titulo %}Clave guardada{% endblock %}
+{% block barra %}{% endblock %}
+{% block contenido %}
+<div class="p-entrar">
+  <div class="p-entrar-caja">
+    {% include "cotizaciones/_caja_inicio.html" %}
+    <h1>Listo, clave guardada</h1>
+    <p>Ya puedes entrar al panel con tu correo y la clave nueva.</p>
+    <a class="p-btn p-btn-primario" href="{% url 'cotizaciones:entrar' %}">Entrar</a>
+  </div>
+</div>
+{% endblock %}

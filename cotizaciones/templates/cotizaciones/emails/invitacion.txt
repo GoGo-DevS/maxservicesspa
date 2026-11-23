@@ -1,0 +1,9 @@
+{% autoescape off %}Hola {{ nombre }}:
+
+Ya tienes acceso al panel de cotizaciones de Max Services. Ahí aparecen las solicitudes que llegan a contacto@maxservicesspa.cl, las de la web y las de correo.
+
+Para elegir tu clave, abre este enlace (sirve una sola vez):
+{{ enlace }}
+
+Después entras siempre por aquí: {{ panel_url }}
+{% endautoescape %}

@@ -1,0 +1,94 @@
+{% extends "cotizaciones/base.html" %}
+{% block contenido %}
+<section class="p-cabecera">
+  <div>
+    <h1>Cotizaciones</h1>
+    <p class="p-sub">
+      {% if sync_hace %}Correo leído {{ sync_hace }}{% else %}El correo todavía no se lee{% endif %}
+      {% if sync.ultimo_error %} · <span class="p-error-txt">el último intento falló</span>{% endif %}
+    </p>
+  </div>
+  <form method="post" action="{% url 'cotizaciones:sincronizar' %}">{% csrf_token %}
+    <button class="p-btn p-btn-claro" type="submit"{% if not hay_credencial %} disabled title="Falta la clave del correo de contacto@"{% endif %}>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
+      Actualizar
+    </button>
+  </form>
+</section>
+
+<section class="p-stats" aria-label="Resumen">
+  <div class="p-stat">
+    <span class="p-stat-num">{{ stats.por_responder }}</span>
+    <span class="p-stat-txt">Por responder</span>
+  </div>
+  <div class="p-stat{% if stats.vencidas %} p-stat-alerta{% endif %}">
+    <span class="p-stat-num">{{ stats.vencidas }}</span>
+    <span class="p-stat-txt">Más de 1 día hábil</span>
+  </div>
+  <div class="p-stat">
+    <span class="p-stat-num">{{ stats.respondidas_7 }}</span>
+    <span class="p-stat-txt">Respondidas en 7 días</span>
+  </div>
+  <div class="p-stat">
+    <span class="p-stat-num">{{ stats.mediana|default:"–" }}</span>
+    <span class="p-stat-txt">Respuesta típica</span>
+  </div>
+</section>
+
+<nav class="p-pestanas" aria-label="Filtrar solicitudes">
+  {% for clave, nombre, n in pestanas %}
+  <a class="p-pestana{% if clave == ver %} activa{% endif %}" href="?ver={{ clave }}{% if q %}&amp;q={{ q|urlencode }}{% endif %}"{% if clave == ver %} aria-current="page"{% endif %}>
+    {{ nombre }}{% if n is not None %}<span class="p-cuenta">{{ n }}</span>{% endif %}
+  </a>
+  {% endfor %}
+</nav>
+
+<form class="p-buscar" method="get" role="search">
+  <input type="hidden" name="ver" value="{{ ver }}">
+  <input type="search" name="q" value="{{ q }}" placeholder="Buscar cliente, empresa, correo o asunto" aria-label="Buscar">
+</form>
+
+{% if filas %}
+<ul class="p-lista">
+  {% for f in filas %}
+  <li>
+    <a class="p-fila nivel-{{ f.nivel }}" href="{% url 'cotizaciones:detalle' f.s.pk %}">
+      <div class="p-fila-top">
+        <strong class="p-fila-titulo">{{ f.s.titulo }}</strong>
+        <span class="p-fila-hace">{{ f.hace }}</span>
+      </div>
+      <p class="p-fila-asunto">{{ f.s.asunto|default:"(sin asunto)" }}</p>
+      <div class="p-chips">
+        <span class="p-estado estado-{{ f.s.estado }}">{{ f.s.get_estado_display }}</span>
+        <span class="p-chip">{{ f.s.get_origen_display }}</span>
+        {% if f.s.servicio %}<span class="p-chip">{{ f.s.servicio }}</span>{% endif %}
+        {% if f.s.categoria == "dudoso" %}<span class="p-chip p-chip-dudoso">¿Es cotización?</span>{% endif %}
+        {% if f.s.vista_por %}<span class="p-chip p-chip-vista">Vista por {{ f.s.vista_por.first_name|default:f.s.vista_por.username }}</span>{% elif f.s.categoria != "otro" and not f.s.cerrada %}<span class="p-chip p-chip-sinver">Sin ver</span>{% endif %}
+        {% if f.s.num_mensajes > 1 %}<span class="p-chip">{{ f.s.num_mensajes }} correos</span>{% endif %}
+      </div>
+      {% if f.dias_txt %}<span class="p-espera">Espera respuesta hace {{ f.dias_txt }}</span>{% endif %}
+    </a>
+  </li>
+  {% endfor %}
+</ul>
+{% if pagina.has_other_pages %}
+<nav class="p-paginas" aria-label="Páginas">
+  {% if pagina.has_previous %}<a class="p-btn p-btn-claro" href="?ver={{ ver }}&amp;pagina={{ pagina.previous_page_number }}{% if q %}&amp;q={{ q|urlencode }}{% endif %}">Anterior</a>{% endif %}
+  <span>{{ pagina.number }} de {{ pagina.paginator.num_pages }}</span>
+  {% if pagina.has_next %}<a class="p-btn p-btn-claro" href="?ver={{ ver }}&amp;pagina={{ pagina.next_page_number }}{% if q %}&amp;q={{ q|urlencode }}{% endif %}">Siguiente</a>{% endif %}
+</nav>
+{% endif %}
+{% else %}
+<div class="p-vacio">
+  {% if q %}
+    <strong>Nada coincide con “{{ q }}”</strong>
+    Prueba con otra palabra o revisa la pestaña Todas.
+  {% elif ver == "por_responder" %}
+    <strong>No hay nada pendiente</strong>
+    Todas las cotizaciones tienen respuesta.
+  {% else %}
+    <strong>No hay solicitudes aquí</strong>
+  {% endif %}
+</div>
+{% endif %}
+{% endblock %}

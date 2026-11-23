@@ -98,6 +98,7 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',
     'core',
     'portfolio',
+    'cotizaciones',
 ]
 
 MIDDLEWARE = [
@@ -143,7 +144,11 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        # SQLITE_PATH permite poner la base en un disco persistente de Render
+        # (por ejemplo /var/data/db.sqlite3). Sin disco, Render borra el archivo
+        # en cada deploy: el panel de cotizaciones se rearma desde el correo,
+        # pero las cuentas y las etapas marcadas a mano se pierden.
+        'NAME': os.getenv('SQLITE_PATH', '').strip() or BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -242,3 +247,27 @@ EMAIL_BRAND_LOGO_FALLBACK_URL = (
     "https://raw.githubusercontent.com/GoGo-DevS/maxservicesspa/main/"
     "static/assets/brand/max-services-symbol-real-v2.png"
 )
+
+
+# ---------------------------------------------------------------- panel de cotizaciones
+# /panel/ (app cotizaciones, 23-11-2026). Lee contacto@ por IMAP con la misma
+# clave de aplicacion que ya usa el SMTP, salvo que se defina una propia.
+LOGIN_URL = "/panel/entrar/"
+
+
+def env_lista(name, default=""):
+    return [v.strip() for v in os.getenv(name, default).split(",") if v.strip()]
+
+
+PANEL_IMAP_HOST = os.getenv("PANEL_IMAP_HOST", "imap.gmail.com")
+PANEL_IMAP_USER = os.getenv("PANEL_IMAP_USER", "").strip() or (EMAIL_HOST_USER or "")
+PANEL_IMAP_PASSWORD = os.getenv("PANEL_IMAP_PASSWORD", "").strip() or (EMAIL_HOST_PASSWORD or "")
+# Token que manda el cron de GitHub Actions. Vacio = la tarea queda apagada.
+PANEL_CRON_TOKEN = os.getenv("PANEL_CRON_TOKEN", "").strip()
+PANEL_AVISO_PARA = env_lista("PANEL_AVISO_PARA", "fda@maxservicesspa.cl")
+PANEL_AVISO_CC = env_lista("PANEL_AVISO_CC")
+PANEL_AVISO_HORAS = [int(h) for h in env_lista("PANEL_AVISO_HORAS", "9,15")]
+PANEL_AVISO_DIAS_HABILES = float(os.getenv("PANEL_AVISO_DIAS_HABILES", "1"))
+PANEL_DIAS_INICIALES = int(os.getenv("PANEL_DIAS_INICIALES", "45"))
+PANEL_SINCRONIZAR_AL_ABRIR = env_bool("PANEL_SINCRONIZAR_AL_ABRIR", True)
+PANEL_SINCRONIZAR_CADA_MIN = int(os.getenv("PANEL_SINCRONIZAR_CADA_MIN", "5"))

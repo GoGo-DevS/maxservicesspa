@@ -1,0 +1,13 @@
+{% extends "cotizaciones/base.html" %}
+{% block titulo %}Revisa tu correo{% endblock %}
+{% block barra %}{% endblock %}
+{% block contenido %}
+<div class="p-entrar">
+  <div class="p-entrar-caja">
+    {% include "cotizaciones/_caja_inicio.html" %}
+    <h1>Revisa tu correo</h1>
+    <p>Si el correo tiene una cuenta en el panel, en unos minutos te llega el enlace. Revisa también la carpeta de spam.</p>
+    <a class="p-btn p-btn-claro" href="{% url 'cotizaciones:entrar' %}">Volver a entrar</a>
+  </div>
+</div>
+{% endblock %}

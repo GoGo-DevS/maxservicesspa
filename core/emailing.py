@@ -1,4 +1,5 @@
 import logging
+from email.utils import make_msgid
 
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
@@ -39,7 +40,7 @@ def _build_contact_context(contact_request):
     }
 
 
-def _send_html_email(*, subject, to, html_template, text_template, context, reply_to=None):
+def _send_html_email(*, subject, to, html_template, text_template, context, reply_to=None, message_id=None):
     text_body = render_to_string(text_template, context)
     html_body = render_to_string(html_template, context)
     print(f"EMAIL BRAND LOGO URL={context.get('brand_logo_url')}", flush=True)
@@ -49,6 +50,7 @@ def _send_html_email(*, subject, to, html_template, text_template, context, repl
         settings.DEFAULT_FROM_EMAIL,
         to,
         reply_to=reply_to or [],
+        headers={"Message-ID": message_id} if message_id else None,
     )
     message.attach_alternative(html_body, "text/html")
     try:
@@ -77,8 +79,14 @@ def _send_html_email(*, subject, to, html_template, text_template, context, repl
         raise
 
 
-def send_contact_request_notification(contact_request):
+def send_contact_request_notification(contact_request, ids=None):
+    """Manda el aviso interno y la autorespuesta. Si recibe `ids` (un dict), deja
+    ahi los Message-ID usados ('aviso' y 'confirmacion') a medida que cada correo
+    sale: el panel de cotizaciones los usa para no duplicar la solicitud."""
     context = _build_contact_context(contact_request)
+    ids = ids if ids is not None else {}
+    id_aviso = make_msgid(domain="maxservicesspa.cl")
+    id_confirmacion = make_msgid(domain="maxservicesspa.cl")
 
     _send_html_email(
         subject="Nueva consulta desde la web MAX SERVICES SPA",
@@ -87,7 +95,9 @@ def send_contact_request_notification(contact_request):
         text_template="emails/contact_internal.txt",
         context=context,
         reply_to=[contact_request.email],
+        message_id=id_aviso,
     )
+    ids["aviso"] = id_aviso
 
     _send_html_email(
         subject="Hemos recibido tu solicitud | MAX SERVICES SPA",
@@ -95,4 +105,7 @@ def send_contact_request_notification(contact_request):
         html_template="emails/contact_customer_confirmation.html",
         text_template="emails/contact_customer_confirmation.txt",
         context=context,
+        message_id=id_confirmacion,
     )
+    ids["confirmacion"] = id_confirmacion
+    return ids

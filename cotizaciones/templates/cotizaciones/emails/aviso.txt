@@ -1,0 +1,10 @@
+{% autoescape off %}{% if cantidad == 1 %}Hay 1 cotización que espera respuesta hace más de un día hábil.{% else %}Hay {{ cantidad }} cotizaciones que esperan respuesta hace más de un día hábil.{% endif %}
+{% for f in filas %}
+- {{ f.solicitud.titulo }} ({{ f.solicitud.cliente_email }})
+  {{ f.solicitud.asunto|default:"(sin asunto)" }}
+  Espera hace {{ f.dias|floatformat:1 }} días hábiles · {{ f.url }}
+{% endfor %}
+Panel completo: {{ panel_url }}
+
+Si ya la respondiste por teléfono, márcala como Respondida en el panel y deja de aparecer aquí.
+{% endautoescape %}

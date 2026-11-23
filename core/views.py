@@ -24,6 +24,7 @@ from core.seo import (
 )
 from core.servicios import POR_SLUG, SERVICIOS, con_relacionados, proyectos_del_servicio
 from core.sitemaps import StaticViewSitemap
+from cotizaciones.sincronizar import registrar_formulario_seguro
 from portfolio.catalog import get_project_catalog
 
 
@@ -57,8 +58,11 @@ def _procesar_contacto(request, ruta_de_vuelta, servicio_inicial=None):
         return contact_form, None
 
     contact_request = contact_form.save()
+    # Los Message-ID con que salen los correos: el panel de cotizaciones los usa
+    # para reconocerlos despues al leer contacto@ y no duplicar la solicitud.
+    ids_correo = {}
     try:
-        send_contact_request_notification(contact_request)
+        send_contact_request_notification(contact_request, ids=ids_correo)
         messages.success(
             request,
             "Solicitud enviada correctamente. El equipo revisará los antecedentes y responderá a la brevedad.",
@@ -74,6 +78,7 @@ def _procesar_contacto(request, ruta_de_vuelta, servicio_inicial=None):
             request,
             "La solicitud fue registrada correctamente, pero el aviso por correo no pudo enviarse en este momento.",
         )
+    registrar_formulario_seguro(contact_request, ids_correo)
     # El "#formulario" hace que el navegador baje solo hasta el mensaje de exito:
     # fuera de la portada no hay JavaScript que lea ?focus=formulario.
     return contact_form, redirect(f"{ruta_de_vuelta}?focus=formulario#formulario")
@@ -548,6 +553,7 @@ def robots_txt(request):
         [
             "User-agent: *",
             "Disallow: /admin/",
+            "Disallow: /panel/",
             f"Sitemap: {settings.SITE_URL}/sitemap.xml",
             "",
         ]

@@ -1,0 +1,138 @@
+{% extends "cotizaciones/base.html" %}
+{% block titulo %}{{ s.titulo }}{% endblock %}
+{% block contenido %}
+<a class="p-volver" href="{% url 'cotizaciones:bandeja' %}">
+  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+  Bandeja
+</a>
+
+<div class="p-grilla">
+  <div class="p-col-izq">
+    <section class="p-tarjeta p-ficha-cab nivel-{{ nivel }}">
+      <div class="p-chips">
+        <span class="p-estado estado-{{ s.estado }}">{{ s.get_estado_display }}</span>
+        <span class="p-chip">{{ s.get_origen_display }}</span>
+        {% if s.servicio %}<span class="p-chip">{{ s.servicio }}</span>{% endif %}
+        {% if s.categoria == "dudoso" %}<span class="p-chip p-chip-dudoso">¿Es cotización?</span>{% elif s.categoria == "otro" %}<span class="p-chip">No es cotización</span>{% endif %}
+      </div>
+      <h1>{{ s.titulo }}</h1>
+      <p class="p-ficha-asunto">{{ s.asunto|default:"(sin asunto)" }}</p>
+      <p class="p-ficha-meta">Llegó {{ hace }} · {{ s.recibida_en|date:"D d-m-Y H:i" }}</p>
+      <p class="p-ficha-meta">
+        {% if dias_txt %}<strong class="txt-{{ nivel }}">Espera respuesta hace {{ dias_txt }} (hábiles)</strong>
+        {% elif s.respondida_en %}Respondida el {{ s.respondida_en|date:"d-m H:i" }}{% if s.respondida_por %} ({{ s.respondida_por }}){% endif %}
+        {% endif %}
+      </p>
+      <p class="p-ficha-meta">
+        {% if s.vista_por %}Vista por {{ s.vista_por.get_full_name|default:s.vista_por.username }} el {{ s.vista_en|date:"d-m H:i" }}{% else %}Todavía nadie del equipo la abre{% endif %}
+      </p>
+      <div class="p-acciones">
+        {% if gmail_url %}
+        <a class="p-btn p-btn-primario" href="{{ gmail_url }}" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16v16H4z"/><path d="M4 6l8 7 8-7"/></svg>
+          Responder en Gmail
+        </a>
+        {% endif %}
+        {% if whatsapp_url %}
+        <a class="p-btn p-btn-verde" href="{{ whatsapp_url }}" target="_blank" rel="noopener">WhatsApp</a>
+        {% endif %}
+        {% if s.cliente_telefono %}
+        <a class="p-btn p-btn-claro" href="tel:{{ s.cliente_telefono }}">Llamar</a>
+        {% endif %}
+      </div>
+    </section>
+
+    {% if s.detalle and s.origen == "web" %}
+    <section class="p-tarjeta">
+      <h2>Lo que pidió</h2>
+      <p class="p-msj-cuerpo">{{ s.detalle|linebreaksbr }}</p>
+    </section>
+    {% endif %}
+
+    <section class="p-tarjeta">
+      <h2>Conversación</h2>
+      <div class="p-conversacion">
+        {% for m in mensajes %}
+        <article class="p-msj p-msj-{{ m.sentido }}{% if m.automatico %} p-msj-auto{% endif %}">
+          <div class="p-msj-cab">
+            <span class="p-msj-de">{{ m.de_nombre|default:m.de }}</span>
+            <time datetime="{{ m.fecha|date:'c' }}">{{ m.fecha|date:"D d-m H:i" }}</time>
+          </div>
+          <div class="p-msj-cab">
+            <span>{% if m.automatico %}Automático{% else %}{{ m.get_sentido_display }}{% endif %}{% if m.para %} · para {{ m.para }}{% endif %}</span>
+          </div>
+          {% if m.asunto %}<p class="p-msj-asunto">{{ m.asunto }}</p>{% endif %}
+          {% if m.extracto|length > 700 %}
+            <p class="p-msj-cuerpo">{{ m.extracto|truncatechars:700|linebreaksbr }}</p>
+            <details><summary>Ver correo completo</summary><p class="p-msj-cuerpo">{{ m.extracto|linebreaksbr }}</p></details>
+          {% else %}
+            <p class="p-msj-cuerpo">{{ m.extracto|linebreaksbr }}</p>
+          {% endif %}
+          {% if m.adjuntos %}
+          <div class="p-adjuntos">{% for a in m.adjuntos %}<span class="p-chip">📎 {{ a }}</span>{% endfor %}</div>
+          {% endif %}
+        </article>
+        {% empty %}
+        <p class="p-nota-ayuda">Sin correos guardados para esta solicitud.</p>
+        {% endfor %}
+      </div>
+    </section>
+  </div>
+
+  <aside class="p-col-der">
+    <section class="p-tarjeta">
+      <h2>Cliente</h2>
+      <dl class="p-datos">
+        {% if s.cliente_nombre %}<dt>Nombre</dt><dd>{{ s.cliente_nombre }}</dd>{% endif %}
+        {% if s.cliente_empresa %}<dt>Empresa</dt><dd>{{ s.cliente_empresa }}</dd>{% endif %}
+        <dt>Correo</dt><dd>{{ s.cliente_email }}</dd>
+        {% if s.cliente_telefono %}<dt>Teléfono</dt><dd>{{ s.cliente_telefono }}</dd>{% endif %}
+        {% if s.ubicacion %}<dt>Ubicación</dt><dd>{{ s.ubicacion }}</dd>{% endif %}
+      </dl>
+    </section>
+
+    <section class="p-tarjeta">
+      <h2>Etapa</h2>
+      <form class="p-etapas" method="post" action="{% url 'cotizaciones:accion' s.pk %}">{% csrf_token %}
+        <input type="hidden" name="accion" value="estado">
+        {% for valor, nombre in etapas %}
+        <button type="submit" name="valor" value="{{ valor }}"{% if s.estado == valor %} class="activa" aria-pressed="true"{% endif %}>{{ nombre }}</button>
+        {% endfor %}
+      </form>
+      <p class="p-nota-ayuda">Si respondes por teléfono o desde fda@ sin copia a contacto@, márcala como Respondida.</p>
+    </section>
+
+    <section class="p-tarjeta">
+      <h2>¿Es una cotización?</h2>
+      <form class="p-etapas" method="post" action="{% url 'cotizaciones:accion' s.pk %}">{% csrf_token %}
+        <input type="hidden" name="accion" value="categoria">
+        {% for valor, nombre in categorias %}
+        <button type="submit" name="valor" value="{{ valor }}"{% if s.categoria == valor %} class="activa" aria-pressed="true"{% endif %}>{{ nombre }}</button>
+        {% endfor %}
+      </form>
+    </section>
+
+    <section class="p-tarjeta">
+      <h2>Nota interna</h2>
+      <form class="p-form-nota" method="post" action="{% url 'cotizaciones:accion' s.pk %}">{% csrf_token %}
+        <input type="hidden" name="accion" value="nota">
+        <label class="visually-hidden" for="nota-texto">Nota</label>
+        <textarea id="nota-texto" name="texto" maxlength="300" placeholder="Ej.: visita agendada el jueves 10:00"></textarea>
+        <button class="p-btn p-btn-claro" type="submit">Guardar nota</button>
+      </form>
+    </section>
+
+    <section class="p-tarjeta">
+      <h2>Historial</h2>
+      <ul class="p-historial">
+        {% for e in eventos %}
+        <li>
+          <time datetime="{{ e.creado_en|date:'c' }}">{{ e.creado_en|date:"d-m H:i" }}</time>
+          <span><strong>{{ e.get_tipo_display }}</strong>{% if e.detalle %} · {{ e.detalle }}{% endif %}{% if e.usuario and e.tipo != "vista" %} <small>({{ e.usuario.get_full_name|default:e.usuario.username }})</small>{% endif %}</span>
+        </li>
+        {% endfor %}
+      </ul>
+    </section>
+  </aside>
+</div>
+{% endblock %}

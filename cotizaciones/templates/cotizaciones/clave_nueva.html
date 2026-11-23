@@ -1,0 +1,33 @@
+{% extends "cotizaciones/base.html" %}
+{% block titulo %}Elegir clave{% endblock %}
+{% block barra %}{% endblock %}
+{% block contenido %}
+<div class="p-entrar">
+  <div class="p-entrar-caja">
+    {% include "cotizaciones/_caja_inicio.html" %}
+    {% if validlink %}
+      <h1>Elige tu clave</h1>
+      <p>Mínimo 8 caracteres, que no sea solo números ni se parezca a tu correo.</p>
+      {% if form.errors %}
+      <div class="p-errores" role="alert"><ul>{% for campo in form %}{% for e in campo.errors %}<li>{{ e }}</li>{% endfor %}{% endfor %}{% for e in form.non_field_errors %}<li>{{ e }}</li>{% endfor %}</ul></div>
+      {% endif %}
+      <form method="post">{% csrf_token %}
+        <input type="text" name="username" value="{{ form.user.get_username }}" autocomplete="username" hidden>
+        <div class="p-campo">
+          <label for="id_new_password1">Clave nueva</label>
+          <input id="id_new_password1" name="new_password1" type="password" autocomplete="new-password" required>
+        </div>
+        <div class="p-campo">
+          <label for="id_new_password2">Repítela</label>
+          <input id="id_new_password2" name="new_password2" type="password" autocomplete="new-password" required>
+        </div>
+        <button class="p-btn p-btn-primario" type="submit">Guardar clave</button>
+      </form>
+    {% else %}
+      <h1>El enlace ya no sirve</h1>
+      <p>Puede que ya lo hayas usado o que haya vencido. Pide uno nuevo.</p>
+      <a class="p-btn p-btn-primario" href="{% url 'cotizaciones:clave_pedir' %}">Pedir otro enlace</a>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

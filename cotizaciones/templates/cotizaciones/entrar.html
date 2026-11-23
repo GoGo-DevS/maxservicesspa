@@ -1,0 +1,30 @@
+{% extends "cotizaciones/base.html" %}
+{% block titulo %}Entrar{% endblock %}
+{% block barra %}{% endblock %}
+{% block contenido %}
+<div class="p-entrar">
+  <div class="p-entrar-caja">
+    {% include "cotizaciones/_caja_inicio.html" %}
+    <h1>Entrar</h1>
+    <p>Con tu correo y la clave que elegiste.</p>
+    {% if bloqueado %}
+      <div class="p-errores" role="alert">Demasiados intentos. Espera 15 minutos y vuelve a probar.</div>
+    {% elif form.errors %}
+      <div class="p-errores" role="alert">El correo o la clave no coinciden.</div>
+    {% endif %}
+    <form method="post">{% csrf_token %}
+      <input type="hidden" name="next" value="{{ next }}">
+      <div class="p-campo">
+        <label for="id_username">Correo</label>
+        <input id="id_username" name="username" type="text" autocomplete="username" autocapitalize="none" required value="{{ form.username.value|default:'' }}">
+      </div>
+      <div class="p-campo">
+        <label for="id_password">Clave</label>
+        <input id="id_password" name="password" type="password" autocomplete="current-password" required>
+      </div>
+      <button class="p-btn p-btn-primario" type="submit">Entrar</button>
+    </form>
+    <a class="p-enlace-sec" href="{% url 'cotizaciones:clave_pedir' %}">Olvidé mi clave</a>
+  </div>
+</div>
+{% endblock %}
