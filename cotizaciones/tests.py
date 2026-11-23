@@ -736,3 +736,118 @@ class InvitarTests(TestCase):
         self.assertRedirects(resp, reverse("cotizaciones:clave_lista"), fetch_redirect_response=False)
         user.refresh_from_db()
         self.assertTrue(user.check_password("Climatiza-2026!"))
+
+
+# ---------------------------------------------------------------- adjuntos
+
+PNG = b"\x89PNG\r\n\x1a\n" + b"0" * 32
+
+
+def correo_con_adjuntos(message_id="<planos@cliente>"):
+    msg = EmailMessage()
+    msg["From"] = CLIENTE
+    msg["To"] = "contacto@maxservicesspa.cl"
+    msg["Subject"] = "Cotización con planos"
+    msg["Message-ID"] = message_id
+    msg.set_content(PEDIDO)
+    msg.add_attachment(PNG, maintype="image", subtype="png", filename="FIRMANEW.png")
+    msg.add_attachment(b"%PDF-1.4 planos", maintype="application", subtype="pdf", filename="planta.pdf")
+    msg.add_attachment(b"<script>alert(1)</script>", maintype="text", subtype="html", filename="raro.html")
+    return msg.as_bytes()
+
+
+class LectorDeAdjuntos:
+    llamadas = 0
+    crudo = None
+
+    def __init__(self, *a, **kw):
+        pass
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *exc):
+        return False
+
+    def buscar_por_message_id(self, message_id):
+        LectorDeAdjuntos.llamadas += 1
+        return LectorDeAdjuntos.crudo
+
+
+@HASH_RAPIDO
+class AdjuntosTests(TestCase):
+    def setUp(self):
+        cache.clear()
+        LectorDeAdjuntos.llamadas = 0
+        LectorDeAdjuntos.crudo = correo_con_adjuntos()
+        User = get_user_model()
+        self.diego = User.objects.create_user("diego@ejemplo.cl", "diego@ejemplo.cl", "clave-larga-diego")
+        self.diego.groups.add(Group.objects.get(name=GRUPO_PANEL))
+        self.ajeno = User.objects.create_user("otro@ejemplo.cl", "otro@ejemplo.cl", "clave-larga-otro")
+        procesar_lote([correo.parsear(LectorDeAdjuntos.crudo, uid=1)])
+        self.msj = Mensaje.objects.get()
+        self.lector = mock.patch("cotizaciones.views.correo.LectorImap", LectorDeAdjuntos)
+        self.lector.start()
+        self.addCleanup(self.lector.stop)
+
+    def url(self, n):
+        return reverse("cotizaciones:adjunto", args=[self.msj.pk, n])
+
+    def test_la_sincronizacion_guarda_los_nombres(self):
+        self.assertEqual(self.msj.adjuntos, ["FIRMANEW.png", "planta.pdf", "raro.html"])
+
+    def test_la_ficha_muestra_miniatura_de_imagen_y_enlace_al_pdf(self):
+        self.client.force_login(self.diego)
+        html = self.client.get(f"/panel/{self.msj.solicitud_id}/").content.decode()
+        self.assertIn(f'<img src="{self.url(0)}"', html)
+        self.assertIn(f'href="{self.url(1)}"', html)
+        self.assertNotIn(f'<img src="{self.url(1)}"', html)
+
+    def test_imagen_y_pdf_se_ven_en_el_navegador(self):
+        self.client.force_login(self.diego)
+        img = self.client.get(self.url(0))
+        self.assertEqual(img.status_code, 200)
+        self.assertEqual(img["Content-Type"], "image/png")
+        self.assertTrue(img["Content-Disposition"].startswith("inline"))
+        self.assertEqual(img.content, PNG)
+        self.assertIn("sandbox", img["Content-Security-Policy"])
+        pdf = self.client.get(self.url(1))
+        self.assertEqual(pdf["Content-Type"], "application/pdf")
+        self.assertTrue(pdf["Content-Disposition"].startswith("inline"))
+
+    def test_un_html_adjunto_se_descarga_y_nunca_se_abre_como_pagina(self):
+        self.client.force_login(self.diego)
+        resp = self.client.get(self.url(2))
+        self.assertEqual(resp["Content-Type"], "application/octet-stream")
+        self.assertTrue(resp["Content-Disposition"].startswith("attachment"))
+        self.assertEqual(resp["X-Content-Type-Options"], "nosniff")
+
+    def test_varias_miniaturas_del_mismo_correo_leen_gmail_una_vez(self):
+        self.client.force_login(self.diego)
+        self.client.get(self.url(0))
+        self.client.get(self.url(1))
+        self.assertEqual(LectorDeAdjuntos.llamadas, 1)
+
+    def test_solo_el_equipo_ve_los_adjuntos(self):
+        resp = self.client.get(self.url(0))
+        self.assertEqual(resp.status_code, 302)
+        self.client.force_login(self.ajeno)
+        self.assertEqual(self.client.get(self.url(0)).status_code, 403)
+        self.assertEqual(LectorDeAdjuntos.llamadas, 0)
+
+    def test_indice_inexistente_404(self):
+        self.client.force_login(self.diego)
+        self.assertEqual(self.client.get(self.url(9)).status_code, 404)
+
+    def test_si_el_correo_ya_no_esta_404_con_aviso(self):
+        LectorDeAdjuntos.crudo = None
+        self.client.force_login(self.diego)
+        resp = self.client.get(self.url(0))
+        self.assertEqual(resp.status_code, 404)
+        self.assertIn("ya no está", resp.content.decode())
+
+    def test_si_gmail_falla_502_sin_romper(self):
+        self.client.force_login(self.diego)
+        with mock.patch.object(LectorDeAdjuntos, "buscar_por_message_id", side_effect=OSError("sin red")):
+            resp = self.client.get(self.url(0))
+        self.assertEqual(resp.status_code, 502)

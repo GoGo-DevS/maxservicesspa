@@ -270,3 +270,16 @@ button, input, textarea { font: inherit; }
   .p-fila:hover { transform: none; }
 }
 .visually-hidden { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+/* Adjuntos: las imagenes en miniatura, el resto como enlace. */
+.p-adjuntos { align-items: flex-start; }
+.p-adj-img {
+  display: flex; flex-direction: column; gap: 4px; width: 132px;
+  padding: 6px; border: 1px solid var(--borde); border-radius: 10px; background: var(--superficie);
+  color: var(--texto-suave); font-size: 11px; font-weight: 700; text-decoration: none;
+}
+.p-adj-img img { width: 100%; height: 92px; object-fit: cover; border-radius: 6px; background: var(--fondo); }
+.p-adj-img span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.p-adj-img:hover { border-color: var(--azul-500); }
+.p-adj-archivo { text-decoration: none; }
+.p-adj-archivo:hover { border-color: var(--azul-500); color: var(--azul-700); }

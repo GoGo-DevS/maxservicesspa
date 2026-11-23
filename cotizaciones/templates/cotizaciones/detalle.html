@@ -68,8 +68,19 @@
           {% else %}
             <p class="p-msj-cuerpo">{{ m.extracto|linebreaksbr }}</p>
           {% endif %}
-          {% if m.adjuntos %}
-          <div class="p-adjuntos">{% for a in m.adjuntos %}<span class="p-chip">📎 {{ a }}</span>{% endfor %}</div>
+          {% if m.lista_adjuntos %}
+          <div class="p-adjuntos">
+            {% for a in m.lista_adjuntos %}
+              {% if a.imagen %}
+              <a class="p-adj-img" href="{{ a.url }}" target="_blank" rel="noopener" title="{{ a.nombre }}">
+                <img src="{{ a.url }}" alt="{{ a.nombre }}" loading="lazy">
+                <span>{{ a.nombre }}</span>
+              </a>
+              {% else %}
+              <a class="p-chip p-adj-archivo" href="{{ a.url }}" target="_blank" rel="noopener">📎 {{ a.nombre }}</a>
+              {% endif %}
+            {% endfor %}
+          </div>
           {% endif %}
         </article>
         {% empty %}

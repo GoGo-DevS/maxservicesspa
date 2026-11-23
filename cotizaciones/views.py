@@ -1,5 +1,8 @@
+import email
+import hashlib
 import logging
 import re
+from urllib.parse import quote
 from datetime import timedelta
 from statistics import median
 
@@ -9,7 +12,7 @@ from django.contrib.auth import views as auth_views
 from django.core.cache import cache
 from django.core.paginator import Paginator
 from django.db.models import Count, Q
-from django.http import JsonResponse
+from django.http import Http404, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
@@ -18,7 +21,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
 from . import avisos, correo
-from .models import Evento, Sincronizacion, Solicitud
+from .models import Evento, Mensaje, Sincronizacion, Solicitud
 from .permisos import panel_requerido, responde, sin_indexar
 from .sincronizar import sincronizar
 
@@ -213,12 +216,23 @@ def detalle(request, pk):
         s.save(update_fields=campos)
         s.registrar(Evento.Tipo.VISTA, f"La abrió {_nombre(request.user)}", request.user)
     dias = avisos.dias_habiles(s.esperando_desde, ahora) if s.esperando_desde else None
+    mensajes = []
+    for m in s.mensajes.all():
+        m.lista_adjuntos = [
+            {
+                "nombre": nombre,
+                "imagen": nombre.lower().endswith(correo.EXT_IMAGEN),
+                "url": reverse("cotizaciones:adjunto", args=[m.pk, i]),
+            }
+            for i, nombre in enumerate(m.adjuntos or [])
+        ]
+        mensajes.append(m)
     return render(
         request,
         "cotizaciones/detalle.html",
         {
             "s": s,
-            "mensajes": s.mensajes.all(),
+            "mensajes": mensajes,
             "eventos": s.eventos.select_related("usuario").order_by("-creado_en", "-pk"),
             "dias": dias,
             "dias_txt": _dias_txt(dias),
@@ -232,6 +246,65 @@ def detalle(request, pk):
             "categorias": Solicitud.Categoria.choices,
         },
     )
+
+
+TOPE_CACHE_ADJUNTOS = 15 * 1024 * 1024
+
+
+def _adjuntos_del_correo(message_id):
+    """Trae el correo completo desde Gmail y devuelve sus adjuntos. Queda 10
+    minutos en memoria para que las miniaturas de un mismo correo no abran una
+    conexion cada una."""
+    clave = "panel-adj:" + hashlib.sha1(message_id.encode()).hexdigest()
+    partes = cache.get(clave)
+    if partes is not None:
+        return partes
+    with correo.LectorImap(timeout=30) as lector:
+        crudo = lector.buscar_por_message_id(message_id)
+    if crudo is None:
+        raise LookupError("El correo ya no está en la casilla.")
+    partes = correo.adjuntos_de(email.message_from_bytes(crudo))
+    if sum(len(p["datos"]) for p in partes) <= TOPE_CACHE_ADJUNTOS:
+        cache.set(clave, partes, 600)
+    return partes
+
+
+def _texto(contenido, estado):
+    return HttpResponse(contenido, status=estado, content_type="text/plain; charset=utf-8")
+
+
+@panel_requerido
+def adjunto(request, pk, n):
+    """Muestra (imagen o PDF) o descarga (todo lo demas) un adjunto. El archivo
+    no se guarda en el sitio: se lee de Gmail cada vez, que es donde vive."""
+    msj = get_object_or_404(Mensaje, pk=pk)
+    nombres = msj.adjuntos or []
+    if n >= len(nombres):
+        raise Http404("Ese adjunto no existe.")
+    nombre = nombres[n]
+    try:
+        partes = _adjuntos_del_correo(msj.message_id)
+    except correo.FaltaCredencial:
+        return _texto("Falta la clave del correo de contacto@.", 503)
+    except LookupError as exc:
+        return _texto(str(exc), 404)
+    except Exception:
+        logger.exception("Panel: no se pudo traer el adjunto %s de %s", n, msj.message_id)
+        return _texto("No se pudo traer el archivo desde el correo. Prueba de nuevo en un rato.", 502)
+    parte = partes[n] if n < len(partes) and partes[n]["nombre"] == nombre else None
+    parte = parte or next((p for p in partes if p["nombre"] == nombre), None)
+    if parte is None:
+        raise Http404("El adjunto no aparece en el correo.")
+    en_linea = parte["tipo"] in correo.TIPOS_EN_LINEA
+    respuesta = HttpResponse(
+        parte["datos"], content_type=parte["tipo"] if en_linea else "application/octet-stream"
+    )
+    modo = "inline" if en_linea else "attachment"
+    respuesta["Content-Disposition"] = modo + "; filename*=UTF-8''" + quote(nombre)
+    respuesta["X-Content-Type-Options"] = "nosniff"
+    if parte["tipo"].startswith("image/"):
+        respuesta["Content-Security-Policy"] = "sandbox; default-src 'none'"
+    return respuesta
 
 
 def _nombre(user):

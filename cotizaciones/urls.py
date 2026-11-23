@@ -8,6 +8,7 @@ urlpatterns = [
     path("", views.bandeja, name="bandeja"),
     path("<int:pk>/", views.detalle, name="detalle"),
     path("<int:pk>/accion/", views.accion, name="accion"),
+    path("adjunto/<int:pk>/<int:n>/", views.adjunto, name="adjunto"),
     path("sincronizar/", views.sincronizar_ahora, name="sincronizar"),
     path("tareas/correo/", views.tarea, name="tarea"),
     path("entrar/", views.Entrar.as_view(), name="entrar"),

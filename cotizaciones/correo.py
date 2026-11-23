@@ -123,6 +123,28 @@ def cuerpo_y_adjuntos(msg) -> tuple[str, list[str]]:
     return (plano.strip() or _html_a_texto(htm)), adjuntos
 
 
+# Lo que el navegador puede mostrar sin riesgo. Todo lo demas (HTML, SVG,
+# planos, Office) se descarga: un adjunto nunca se abre como pagina del sitio.
+TIPOS_EN_LINEA = {"image/png", "image/jpeg", "image/gif", "image/webp", "application/pdf"}
+EXT_IMAGEN = (".png", ".jpg", ".jpeg", ".gif", ".webp")
+
+
+def adjuntos_de(msg) -> list[dict]:
+    """Los adjuntos de un correo completo, en el mismo orden en que
+    `cuerpo_y_adjuntos` guarda sus nombres."""
+    partes = []
+    for parte in msg.walk() if msg.is_multipart() else [msg]:
+        nombre = parte.get_filename()
+        if not nombre:
+            continue
+        partes.append({
+            "nombre": texto_cabecera(nombre)[:160],
+            "tipo": parte.get_content_type(),
+            "datos": parte.get_payload(decode=True) or b"",
+        })
+    return partes
+
+
 def _fecha(msg):
     try:
         d = parsedate_to_datetime(msg.get("Date"))
@@ -301,6 +323,32 @@ class LectorImap:
         uids = sorted(int(u) for u in (datos[0] or b"").split())
         # "UID n:*" siempre devuelve al menos el ultimo, aunque sea menor que n.
         return [u for u in uids if u >= desde_uid]
+
+    def buscar_por_message_id(self, message_id: str):
+        """El correo completo (con adjuntos) que tiene ese Message-ID, o None."""
+        limpio = message_id.strip().strip("<>").replace('"', "")
+        if not limpio:
+            return None
+        uids = []
+        for criterio in (("X-GM-RAW", f'"rfc822msgid:{limpio}"'),
+                         ("HEADER", "Message-ID", f'"<{limpio}>"')):
+            try:
+                ok, datos = self.M.uid("SEARCH", None, *criterio)
+            except imaplib.IMAP4.error:
+                continue
+            if ok == "OK" and datos and datos[0]:
+                uids = datos[0].split()
+                break
+        if not uids:
+            return None
+        ultimo = uids[-1].decode() if isinstance(uids[-1], bytes) else str(uids[-1])
+        ok, datos = self.M.uid("FETCH", ultimo, "(BODY.PEEK[])")
+        if ok != "OK":
+            return None
+        for parte in datos or []:
+            if isinstance(parte, tuple) and len(parte) == 2:
+                return parte[1]
+        return None
 
     def traer(self, uid: int):
         ok, datos = self.M.uid(
