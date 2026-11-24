@@ -1,72 +1,74 @@
 {% extends "cotizaciones/base.html" %}
 {% block contenido %}
-<section class="p-cabecera">
+<header class="b-cabecera">
   <div>
     <h1>Cotizaciones</h1>
-    <p class="p-sub">
-      {% if sync_hace %}Correo leído {{ sync_hace }}{% else %}El correo todavía no se lee{% endif %}
-      {% if sync.ultimo_error %} · <span class="p-error-txt">el último intento falló</span>{% endif %}
+    <p class="b-sub">
+      Todo lo que llega a contacto@: formularios de la web y correos{% if desde %}, desde el {{ desde|date:"l j \d\e F" }}{% endif %}.
+      {% if sync_hace %}<span class="b-sync">Leído {{ sync_hace }}{% if sync.ultimo_error %} · <span class="b-error">falló el último intento</span>{% endif %}</span>{% endif %}
     </p>
   </div>
   <form method="post" action="{% url 'cotizaciones:sincronizar' %}">{% csrf_token %}
-    <button class="p-btn p-btn-claro" type="submit"{% if not hay_credencial %} disabled title="Falta la clave del correo de contacto@"{% endif %}>
+    <button class="p-btn p-btn-claro b-actualizar" type="submit"{% if not hay_credencial %} disabled title="Falta la clave del correo de contacto@"{% endif %}>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
-      Actualizar
+      <span>Actualizar</span>
     </button>
   </form>
-</section>
+</header>
 
-<section class="p-stats" aria-label="Resumen">
-  <div class="p-stat">
-    <span class="p-stat-num">{{ stats.por_responder }}</span>
-    <span class="p-stat-txt">Por responder</span>
-  </div>
-  <div class="p-stat{% if stats.vencidas %} p-stat-alerta{% endif %}">
-    <span class="p-stat-num">{{ stats.vencidas }}</span>
-    <span class="p-stat-txt">Más de 1 día hábil</span>
-  </div>
-  <div class="p-stat">
-    <span class="p-stat-num">{{ stats.respondidas_7 }}</span>
-    <span class="p-stat-txt">Respondidas en 7 días</span>
-  </div>
-  <div class="p-stat">
-    <span class="p-stat-num">{{ stats.mediana|default:"–" }}</span>
-    <span class="p-stat-txt">Respuesta típica</span>
-  </div>
-</section>
+{% if vencidas and not q %}
+<a class="b-alerta" href="?ver=por_responder">
+  <span class="b-punto nivel-rojo" aria-hidden="true"></span>
+  {% if vencidas == 1 %}1 cotización lleva más de un día hábil sin respuesta{% else %}{{ vencidas }} cotizaciones llevan más de un día hábil sin respuesta{% endif %}
+</a>
+{% endif %}
 
-<nav class="p-pestanas" aria-label="Filtrar solicitudes">
+<nav class="b-pestanas" aria-label="Pestañas">
   {% for clave, nombre, n in pestanas %}
-  <a class="p-pestana{% if clave == ver %} activa{% endif %}" href="?ver={{ clave }}{% if q %}&amp;q={{ q|urlencode }}{% endif %}"{% if clave == ver %} aria-current="page"{% endif %}>
-    {{ nombre }}{% if n is not None %}<span class="p-cuenta">{{ n }}</span>{% endif %}
+  <a class="b-pestana{% if clave == ver %} activa{% endif %}" href="?ver={{ clave }}"{% if clave == ver %} aria-current="page"{% endif %}>
+    {{ nombre }}<span class="b-cuenta">{{ n }}</span>
   </a>
   {% endfor %}
 </nav>
 
-<form class="p-buscar" method="get" role="search">
-  <input type="hidden" name="ver" value="{{ ver }}">
-  <input type="search" name="q" value="{{ q }}" placeholder="Buscar cliente, empresa, correo o asunto" aria-label="Buscar">
+<form class="b-buscar" method="get" role="search">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+  <input type="search" name="q" value="{{ q }}" placeholder="Buscar en todo: cliente, empresa, correo o asunto" aria-label="Buscar en todas las pestañas">
 </form>
 
+{% if q %}
+<p class="b-resultados">
+  {{ pagina.paginator.count }} resultado{{ pagina.paginator.count|pluralize }} para “{{ q }}” en todas las pestañas ·
+  <a href="?ver=por_responder">Borrar búsqueda</a>
+</p>
+{% endif %}
+
 {% if filas %}
-<ul class="p-lista">
+<ul class="b-lista">
   {% for f in filas %}
   <li>
-    <a class="p-fila nivel-{{ f.nivel }}" href="{% url 'cotizaciones:detalle' f.s.pk %}">
-      <div class="p-fila-top">
-        <strong class="p-fila-titulo">{{ f.s.titulo }}</strong>
-        <span class="p-fila-hace">{{ f.hace }}</span>
-      </div>
-      <p class="p-fila-asunto">{{ f.s.asunto|default:"(sin asunto)" }}</p>
-      <div class="p-chips">
-        <span class="p-estado estado-{{ f.s.estado }}">{{ f.s.get_estado_display }}</span>
-        <span class="p-chip">{{ f.s.get_origen_display }}</span>
-        {% if f.s.servicio %}<span class="p-chip">{{ f.s.servicio }}</span>{% endif %}
-        {% if f.s.categoria == "dudoso" %}<span class="p-chip p-chip-dudoso">¿Es cotización?</span>{% endif %}
-        {% if f.s.vista_por %}<span class="p-chip p-chip-vista">Vista por {{ f.s.vista_por.first_name|default:f.s.vista_por.username }}</span>{% elif f.s.categoria != "otro" and not f.s.cerrada %}<span class="p-chip p-chip-sinver">Sin ver</span>{% endif %}
-        {% if f.s.num_mensajes > 1 %}<span class="p-chip">{{ f.s.num_mensajes }} correos</span>{% endif %}
-      </div>
-      {% if f.dias_txt %}<span class="p-espera">Espera respuesta hace {{ f.dias_txt }}</span>{% endif %}
+    <a class="b-fila" href="{% url 'cotizaciones:detalle' f.s.pk %}">
+      <span class="b-punto nivel-{{ f.nivel }}" aria-hidden="true"></span>
+      <span class="b-cuerpo">
+        <span class="b-linea1">
+          <strong class="b-titulo">{{ f.s.titulo }}</strong>
+          <span class="b-hace">{{ f.hace }}</span>
+        </span>
+        <span class="b-asunto">{{ f.s.asunto|default:"(sin asunto)" }}</span>
+        <span class="b-meta">
+          {% if f.dias_txt %}<span class="b-espera nivel-{{ f.nivel }}" title="Cuenta solo días hábiles">Espera {{ f.dias_txt }}</span>{% endif %}
+          <span>{% if f.s.origen == "web" %}Web{% else %}Correo{% endif %}</span>
+          {% if f.s.servicio %}<span>{{ f.s.servicio }}</span>{% endif %}
+          {% if f.adjuntos %}<span>📎 {{ f.adjuntos }}</span>{% endif %}
+          {% if f.correos > 1 %}<span>{{ f.correos }} correos</span>{% endif %}
+          {% if q %}<span class="b-etiqueta">{{ f.pestana_txt }}</span>{% endif %}
+          {% if f.s.categoria == "dudoso" %}<span class="b-etiqueta b-dudoso">¿Es cotización?</span>{% endif %}
+          {% if f.pestana == "respondidas" %}<span class="b-etiqueta estado-{{ f.s.estado }}">{{ f.s.get_estado_display }}</span>{% endif %}
+          {% if f.pestana == "por_responder" %}
+            {% if f.s.vista_por %}<span class="b-visto">Vista por {{ f.s.vista_por.first_name|default:f.s.vista_por.username }}</span>{% else %}<span class="b-sinver">Sin ver</span>{% endif %}
+          {% endif %}
+        </span>
+      </span>
     </a>
   </li>
   {% endfor %}
@@ -79,16 +81,24 @@
 </nav>
 {% endif %}
 {% else %}
-<div class="p-vacio">
+<div class="b-vacio">
   {% if q %}
     <strong>Nada coincide con “{{ q }}”</strong>
-    Prueba con otra palabra o revisa la pestaña Todas.
+    Prueba con el nombre de la empresa o una palabra del asunto.
   {% elif ver == "por_responder" %}
-    <strong>No hay nada pendiente</strong>
-    Todas las cotizaciones tienen respuesta.
+    <strong>No hay nada por responder</strong>
+    Todo lo que llegó tiene respuesta.
+  {% elif ver == "respondidas" %}
+    <strong>Todavía no hay respondidas</strong>
+    Aparecen aquí cuando sale una respuesta con copia a contacto@ o cuando marcas “Ya la respondí”.
   {% else %}
-    <strong>No hay solicitudes aquí</strong>
+    <strong>No hay otros correos</strong>
+    Aquí quedan las agencias, los proveedores y los avisos.
   {% endif %}
 </div>
+{% endif %}
+
+{% if ver == "otros" and filas %}
+<p class="b-ayuda">Agencias, proveedores y avisos que no piden una cotización. Si alguno es un cliente, ábrelo y pulsa “Es una cotización”.</p>
 {% endif %}
 {% endblock %}

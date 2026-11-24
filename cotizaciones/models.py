@@ -85,6 +85,10 @@ class Solicitud(models.Model):
     respondida_en = models.DateTimeField(null=True, blank=True)
     respondida_por = models.CharField(max_length=254, blank=True)
     ultimo_aviso_en = models.DateTimeField(null=True, blank=True)
+    # Ultima vez que el cliente escribio. Decide que solicitudes se muestran
+    # (PANEL_DESDE) y ordena las respondidas: un hilo viejo que el cliente
+    # reactiva esta semana tiene que aparecer.
+    actividad_en = models.DateTimeField(null=True, blank=True, db_index=True)
 
     creada_en = models.DateTimeField(auto_now_add=True)
     actualizada_en = models.DateTimeField(auto_now=True)

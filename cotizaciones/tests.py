@@ -851,3 +851,98 @@ class AdjuntosTests(TestCase):
         with mock.patch.object(LectorDeAdjuntos, "buscar_por_message_id", side_effect=OSError("sin red")):
             resp = self.client.get(self.url(0))
         self.assertEqual(resp.status_code, 502)
+
+
+# ---------------------------------------------------------------- rediseño 24-11
+
+@HASH_RAPIDO
+@override_settings(PANEL_IMAP_PASSWORD="", PANEL_IMAP_USER="")
+class BandejaSimpleTests(TestCase):
+    def setUp(self):
+        cache.clear()
+        self.diego = get_user_model().objects.create_user("diego@ejemplo.cl", "diego@ejemplo.cl", "x-larga-123")
+        self.diego.groups.add(Group.objects.get(name=GRUPO_PANEL))
+        self.client.force_login(self.diego)
+        ahora = timezone.now()
+        self.pendiente = solicitud(cliente_empresa="Pendiente SA", esperando_desde=ahora, actividad_en=ahora)
+        self.respondida = solicitud(cliente_empresa="Respondida SA", esperando_desde=None,
+                                    estado=Solicitud.Estado.COTIZADA, actividad_en=ahora)
+        self.agencia = solicitud(cliente_empresa="InsureNet", asunto="Revisión gratuita de Responsabilidad Civil",
+                                 categoria=Solicitud.Categoria.OTRO, esperando_desde=None, actividad_en=ahora)
+
+    def test_tres_pestanas_con_su_cuenta(self):
+        html = self.client.get("/panel/").content.decode()
+        for nombre in ("Por responder", "Respondidas", "Otros"):
+            self.assertIn(nombre, html)
+        self.assertIn("Pendiente SA", html)
+        self.assertNotIn("Respondida SA", html)
+        self.assertNotIn("InsureNet", html)
+        self.assertIn("Respondida SA", self.client.get("/panel/?ver=respondidas").content.decode())
+        self.assertIn("InsureNet", self.client.get("/panel/?ver=otros").content.decode())
+
+    def test_la_busqueda_mira_todas_las_pestanas(self):
+        """El 24-11 Diego busco GONZALO en Por responder y no aparecia: estaba en Otros."""
+        resp = self.client.get("/panel/?ver=por_responder&q=insurenet")
+        self.assertContains(resp, "InsureNet")
+        self.assertContains(resp, "en todas las pestañas")
+        self.assertContains(resp, '<span class="b-etiqueta">Otros</span>', html=False)
+
+    def test_direcciones_viejas_siguen_sirviendo(self):
+        self.assertContains(self.client.get("/panel/?ver=cerradas"), "Respondida SA")
+        self.assertEqual(self.client.get("/panel/?ver=todas").status_code, 200)
+
+    def test_volver_a_por_responder(self):
+        self.client.post(f"/panel/{self.respondida.pk}/accion/", {"accion": "pendiente"})
+        self.respondida.refresh_from_db()
+        self.assertIsNotNone(self.respondida.esperando_desde)
+        self.assertIn("Respondida SA", self.client.get("/panel/").content.decode())
+
+    def test_ficha_por_responder_tiene_el_boton_ya_la_respondi(self):
+        html = self.client.get(f"/panel/{self.pendiente.pk}/").content.decode()
+        self.assertIn("Ya la respondí", html)
+        html = self.client.get(f"/panel/{self.respondida.pk}/").content.decode()
+        self.assertNotIn("Ya la respondí", html)
+        self.assertIn("Volver a Por responder", html)
+
+
+@HASH_RAPIDO
+@override_settings(PANEL_DESDE="2026-11-23", PANEL_IMAP_PASSWORD="", PANEL_IMAP_USER="")
+class FechaDeCorteTests(TestCase):
+    """24-11: "los antiguos ya fue, solo cárgame los de esta semana"."""
+
+    def test_la_sincronizacion_no_abre_solicitudes_anteriores_al_corte(self):
+        viejo = parseado(CLIENTE, "contacto@maxservicesspa.cl", "Solicitud de cotización", PEDIDO,
+                         fecha=hora(2026, 11, 20, 10))
+        nuevo = parseado("jaime@obra.cl", "contacto@maxservicesspa.cl", "Proyecto Amunátegui 253",
+                         "Invitamos a presupuestar la instalación de extracción.", fecha=hora(2026, 11, 24, 9, 13))
+        r = procesar_lote([viejo, nuevo])
+        self.assertEqual(r["omitidos"], 1)
+        self.assertEqual(list(Solicitud.objects.values_list("cliente_email", flat=True)), ["jaime@obra.cl"])
+
+    def test_un_hilo_viejo_que_el_cliente_reactiva_esta_semana_se_ve(self):
+        """GITPRO pidió el 18-11 y reclamó URGENTE el 23-11."""
+        s = solicitud(cliente_empresa="GITPRO", recibida_en=hora(2026, 11, 18), esperando_desde=hora(2026, 11, 18),
+                      actividad_en=hora(2026, 11, 18))
+        Mensaje.objects.create(solicitud=s, message_id="<rfq@gitpro>", sentido="entrante", de=CLIENTE,
+                               fecha=hora(2026, 11, 18))
+        solicitud(cliente_empresa="Viejo Ltda", recibida_en=hora(2026, 11, 10), esperando_desde=hora(2026, 11, 10),
+                  actividad_en=hora(2026, 11, 10), cliente_email="viejo@x.cl")
+        urgente = parseado(CLIENTE, "contacto@maxservicesspa.cl", "URGENTE | Cotizar 14 partidas", "Seguimiento.",
+                           en_respuesta_a="<rfq@gitpro>", fecha=hora(2026, 11, 23, 17, 38))
+        procesar_lote([urgente])
+        s.refresh_from_db()
+        self.assertEqual(s.actividad_en, hora(2026, 11, 23, 17, 38))
+
+        user = get_user_model().objects.create_user("d@e.cl", "d@e.cl", "x-larga-123")
+        user.groups.add(Group.objects.get(name=GRUPO_PANEL))
+        self.client.force_login(user)
+        html = self.client.get("/panel/").content.decode()
+        self.assertIn("GITPRO", html)
+        self.assertNotIn("Viejo Ltda", html)
+        self.assertNotIn("Viejo Ltda", self.client.get("/panel/?q=viejo").content.decode())
+
+    @override_settings(PANEL_AVISO_PARA=["fda@maxservicesspa.cl"], PANEL_AVISO_HORAS=[9, 15])
+    def test_el_aviso_no_trae_lo_anterior_al_corte(self):
+        solicitud(cliente_empresa="Viejo Ltda", recibida_en=hora(2026, 11, 10), esperando_desde=hora(2026, 11, 10),
+                  actividad_en=hora(2026, 11, 10))
+        self.assertEqual(avisos.vencidas(hora(2026, 11, 25, 9, 5)), [])

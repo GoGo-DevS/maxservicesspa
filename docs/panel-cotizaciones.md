@@ -59,6 +59,7 @@ lo marcado a mano: etapas, notas y cuentas.
 | `PANEL_AVISO_HORAS` | `9,15` | Horas de aviso (Chile) |
 | `PANEL_AVISO_DIAS_HABILES` | `1` | Desde cuántos días hábiles se avisa |
 | `PANEL_DIAS_INICIALES` | `45` | Días hacia atrás en la primera lectura |
+| `PANEL_DESDE` | vacío (sin corte) | Fecha AAAA-MM-DD: solo se muestran solicitudes con actividad del cliente desde ese día. En producción: `2026-11-23` (pedido de Diego el 24-11) |
 | `PANEL_SINCRONIZAR_AL_ABRIR` | `1` | Leer el correo al abrir la bandeja (cada 5 min como máximo) |
 
 ## Pendiente (siguiente etapa)

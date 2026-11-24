@@ -20,6 +20,7 @@ from django.urls import reverse
 from django.utils import timezone
 
 from .models import Evento, Sincronizacion, Solicitud
+from .vigencia import vigentes
 
 
 def _chile():
@@ -56,7 +57,7 @@ def vencidas(ahora=None):
     ahora = ahora or timezone.now()
     limite = umbral()
     qs = (
-        Solicitud.objects.filter(
+        vigentes(Solicitud.objects.all()).filter(
             esperando_desde__isnull=False,
             categoria=Solicitud.Categoria.COTIZACION,
         )

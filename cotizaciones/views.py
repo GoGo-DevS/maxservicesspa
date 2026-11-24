@@ -4,14 +4,13 @@ import logging
 import re
 from urllib.parse import quote
 from datetime import timedelta
-from statistics import median
 
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import views as auth_views
 from django.core.cache import cache
 from django.core.paginator import Paginator
-from django.db.models import Count, Q
+from django.db.models import Prefetch, Q
 from django.http import Http404, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
@@ -24,35 +23,48 @@ from . import avisos, correo
 from .models import Evento, Mensaje, Sincronizacion, Solicitud
 from .permisos import panel_requerido, responde, sin_indexar
 from .sincronizar import sincronizar
+from .vigencia import desde as desde_corte, vigentes
 
 logger = logging.getLogger(__name__)
 
 PESTANAS = [
     ("por_responder", "Por responder"),
-    ("en_curso", "En curso"),
-    ("cerradas", "Cerradas"),
-    ("otros", "Otros correos"),
-    ("todas", "Todas"),
+    ("respondidas", "Respondidas"),
+    ("otros", "Otros"),
 ]
+# Direcciones de la primera version (marcadores guardados) siguen sirviendo.
+ALIAS = {"en_curso": "respondidas", "cerradas": "respondidas", "todas": "por_responder"}
+NOMBRE_PESTANA = dict(PESTANAS)
+CERRADOS = Solicitud.ESTADOS_CERRADOS
+OTRO = Solicitud.Categoria.OTRO
 
 
 # ---------------------------------------------------------------- utilidades
 
 def _filtro(ver):
-    base = Solicitud.objects.all()
-    no_otro = ~Q(categoria=Solicitud.Categoria.OTRO)
-    abiertas = ~Q(estado__in=Solicitud.ESTADOS_CERRADOS)
+    base = vigentes(Solicitud.objects.all())
+    no_otro = ~Q(categoria=OTRO)
     if ver == "por_responder":
-        return base.filter(no_otro, abiertas, esperando_desde__isnull=False).order_by(
-            "esperando_desde"
+        return (
+            base.filter(no_otro, esperando_desde__isnull=False)
+            .exclude(estado__in=CERRADOS)
+            .order_by("esperando_desde")
         )
-    if ver == "en_curso":
-        return base.filter(no_otro, abiertas, esperando_desde__isnull=True)
-    if ver == "cerradas":
-        return base.filter(estado__in=Solicitud.ESTADOS_CERRADOS)
+    if ver == "respondidas":
+        return base.filter(no_otro).filter(
+            Q(esperando_desde__isnull=True) | Q(estado__in=CERRADOS)
+        ).order_by("-actividad_en", "-pk")
     if ver == "otros":
-        return base.filter(categoria=Solicitud.Categoria.OTRO)
-    return base
+        return base.filter(categoria=OTRO).order_by("-actividad_en", "-pk")
+    return base.order_by("-actividad_en", "-pk")
+
+
+def _pestana_de(s):
+    if s.categoria == OTRO:
+        return "otros"
+    if s.esperando_desde and not s.cerrada:
+        return "por_responder"
+    return "respondidas"
 
 
 def _hace(fecha, ahora):
@@ -130,53 +142,50 @@ def _sincronizar_si_corresponde(request):
 def bandeja(request):
     _sincronizar_si_corresponde(request)
     ahora = timezone.now()
-    ver = request.GET.get("ver", "por_responder")
-    if ver not in dict(PESTANAS):
+    ver = ALIAS.get(request.GET.get("ver", ""), request.GET.get("ver", "por_responder"))
+    if ver not in NOMBRE_PESTANA:
         ver = "por_responder"
     q = (request.GET.get("q") or "").strip()[:80]
 
-    qs = _filtro(ver).select_related("vista_por").annotate(num_mensajes=Count("mensajes"))
     if q:
-        qs = qs.filter(
+        # La busqueda mira todo, no solo la pestana abierta.
+        qs = _filtro("todas").filter(
             Q(cliente_nombre__icontains=q)
             | Q(cliente_email__icontains=q)
             | Q(cliente_empresa__icontains=q)
             | Q(asunto__icontains=q)
         )
+    else:
+        qs = _filtro(ver)
+    qs = qs.select_related("vista_por").prefetch_related(
+        Prefetch("mensajes", queryset=Mensaje.objects.only("id", "solicitud_id", "adjuntos"))
+    )
     pagina = Paginator(qs, 40).get_page(request.GET.get("pagina"))
     filas = []
     for s in pagina.object_list:
         dias = avisos.dias_habiles(s.esperando_desde, ahora) if s.esperando_desde else None
+        mensajes = list(s.mensajes.all())
+        pestana = _pestana_de(s)
         filas.append(
             {
                 "s": s,
-                "hace": _hace(s.recibida_en, ahora),
-                "dias": dias,
-                "dias_txt": _dias_txt(dias),
-                "nivel": _nivel(dias) if s.categoria != Solicitud.Categoria.OTRO else "ok",
+                "hace": _hace(s.actividad_en or s.recibida_en, ahora),
+                "dias_txt": _dias_txt(dias) if pestana == "por_responder" else "",
+                "nivel": _nivel(dias) if pestana == "por_responder" else "ok",
+                "adjuntos": sum(len(m.adjuntos or []) for m in mensajes),
+                "correos": len(mensajes),
+                "pestana": pestana,
+                "pestana_txt": NOMBRE_PESTANA[pestana],
             }
         )
 
-    pendientes = list(
-        _filtro("por_responder").values_list("esperando_desde", "categoria")
-    )
+    conteos = {clave: _filtro(clave).count() for clave in NOMBRE_PESTANA}
     vencidas = sum(
         1
-        for desde, cat in pendientes
+        for desde, cat in _filtro("por_responder").values_list("esperando_desde", "categoria")
         if cat == Solicitud.Categoria.COTIZACION
         and avisos.dias_habiles(desde, ahora) >= avisos.umbral()
     )
-    respondidas = list(
-        Solicitud.objects.filter(
-            respondida_en__gte=ahora - timedelta(days=30),
-        )
-        .exclude(categoria=Solicitud.Categoria.OTRO)
-        .values_list("recibida_en", "respondida_en")
-    )
-    tiempos = [avisos.dias_habiles(a, b) for a, b in respondidas if a and b]
-    conteos = {
-        clave: _filtro(clave).count() for clave in ("por_responder", "en_curso", "otros")
-    }
     estado = Sincronizacion.actual()
     return render(
         request,
@@ -184,17 +193,11 @@ def bandeja(request):
         {
             "filas": filas,
             "pagina": pagina,
-            "ver": ver,
+            "ver": "" if q else ver,
             "q": q,
-            "pestanas": [(k, v, conteos.get(k)) for k, v in PESTANAS],
-            "stats": {
-                "por_responder": conteos["por_responder"],
-                "vencidas": vencidas,
-                "respondidas_7": sum(
-                    1 for _, b in respondidas if b and b >= ahora - timedelta(days=7)
-                ),
-                "mediana": _dias_txt(median(tiempos)) if tiempos else "",
-            },
+            "pestanas": [(k, v, conteos[k]) for k, v in PESTANAS],
+            "vencidas": vencidas,
+            "desde": desde_corte(),
             "sync": estado,
             "sync_hace": _hace(estado.ultima_corrida, ahora) if estado.ultima_corrida else "",
             "hay_credencial": correo.hay_credencial(),
@@ -241,9 +244,12 @@ def detalle(request, pk):
             "gmail_url": _gmail_url(s),
             "whatsapp_url": _whatsapp(s.cliente_telefono),
             "etapas": [
-                (v, l) for v, l in Solicitud.Estado.choices if v != Solicitud.Estado.NUEVA
+                (v, l)
+                for v, l in Solicitud.Estado.choices
+                if v not in (Solicitud.Estado.NUEVA, Solicitud.Estado.VISTA)
             ],
-            "categorias": Solicitud.Categoria.choices,
+            "pestana": _pestana_de(s),
+            "hace_actividad": _hace(s.actividad_en, ahora) if s.actividad_en else "",
         },
     )
 
@@ -352,6 +358,13 @@ def accion(request, pk):
         s.save(update_fields=campos)
         s.registrar(Evento.Tipo.CATEGORIA, s.get_categoria_display(), request.user)
         messages.success(request, f"Marcada como: {s.get_categoria_display()}.")
+    elif tipo == "pendiente":
+        # Para corregir un "Ya la respondi" marcado por error.
+        s.esperando_desde = s.actividad_en or s.recibida_en
+        s.estado = Solicitud.Estado.VISTA if s.vista_en else Solicitud.Estado.NUEVA
+        s.save(update_fields=["esperando_desde", "estado", "actualizada_en"])
+        s.registrar(Evento.Tipo.ESTADO, "Volvió a Por responder", request.user)
+        messages.success(request, "Volvió a Por responder.")
     elif tipo == "nota":
         texto = (request.POST.get("texto") or "").strip()
         if texto:

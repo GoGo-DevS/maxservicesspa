@@ -269,5 +269,9 @@ PANEL_AVISO_CC = env_lista("PANEL_AVISO_CC")
 PANEL_AVISO_HORAS = [int(h) for h in env_lista("PANEL_AVISO_HORAS", "9,15")]
 PANEL_AVISO_DIAS_HABILES = float(os.getenv("PANEL_AVISO_DIAS_HABILES", "1"))
 PANEL_DIAS_INICIALES = int(os.getenv("PANEL_DIAS_INICIALES", "45"))
+# Fecha de corte (AAAA-MM-DD). El panel solo muestra solicitudes con actividad
+# del cliente desde ese dia, y no crea solicitudes con correos anteriores.
+# 24-11-2026: Diego pidio partir limpio desde el lunes 23-11 ("los antiguos ya fue").
+PANEL_DESDE = os.getenv("PANEL_DESDE", "").strip()
 PANEL_SINCRONIZAR_AL_ABRIR = env_bool("PANEL_SINCRONIZAR_AL_ABRIR", True)
 PANEL_SINCRONIZAR_CADA_MIN = int(os.getenv("PANEL_SINCRONIZAR_CADA_MIN", "5"))

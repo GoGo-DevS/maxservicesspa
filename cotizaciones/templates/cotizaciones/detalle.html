@@ -1,45 +1,81 @@
 {% extends "cotizaciones/base.html" %}
 {% block titulo %}{{ s.titulo }}{% endblock %}
 {% block contenido %}
-<a class="p-volver" href="{% url 'cotizaciones:bandeja' %}">
+<a class="p-volver" href="{% url 'cotizaciones:bandeja' %}?ver={{ pestana }}">
   <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
-  Bandeja
+  Volver
 </a>
 
-<div class="p-grilla">
-  <div class="p-col-izq">
-    <section class="p-tarjeta p-ficha-cab nivel-{{ nivel }}">
-      <div class="p-chips">
-        <span class="p-estado estado-{{ s.estado }}">{{ s.get_estado_display }}</span>
-        <span class="p-chip">{{ s.get_origen_display }}</span>
-        {% if s.servicio %}<span class="p-chip">{{ s.servicio }}</span>{% endif %}
-        {% if s.categoria == "dudoso" %}<span class="p-chip p-chip-dudoso">¿Es cotización?</span>{% elif s.categoria == "otro" %}<span class="p-chip">No es cotización</span>{% endif %}
-      </div>
+<div class="d-grilla">
+  <div class="d-col">
+    <section class="p-tarjeta d-cabecera nivel-{{ nivel }}">
+      <p class="d-origen">
+        {% if s.origen == "web" %}Formulario web{% else %}Correo{% endif %}{% if s.servicio %} · {{ s.servicio }}{% endif %}
+        · llegó {{ hace }}{% if hace_actividad and s.actividad_en != s.recibida_en %} · escribió por última vez {{ hace_actividad }}{% endif %}
+      </p>
       <h1>{{ s.titulo }}</h1>
-      <p class="p-ficha-asunto">{{ s.asunto|default:"(sin asunto)" }}</p>
-      <p class="p-ficha-meta">Llegó {{ hace }} · {{ s.recibida_en|date:"D d-m-Y H:i" }}</p>
-      <p class="p-ficha-meta">
-        {% if dias_txt %}<strong class="txt-{{ nivel }}">Espera respuesta hace {{ dias_txt }} (hábiles)</strong>
-        {% elif s.respondida_en %}Respondida el {{ s.respondida_en|date:"d-m H:i" }}{% if s.respondida_por %} ({{ s.respondida_por }}){% endif %}
-        {% endif %}
-      </p>
-      <p class="p-ficha-meta">
-        {% if s.vista_por %}Vista por {{ s.vista_por.get_full_name|default:s.vista_por.username }} el {{ s.vista_en|date:"d-m H:i" }}{% else %}Todavía nadie del equipo la abre{% endif %}
-      </p>
-      <div class="p-acciones">
+      <p class="d-asunto">{{ s.asunto|default:"(sin asunto)" }}</p>
+
+      {% if pestana == "por_responder" %}
+        <p class="d-estado txt-{{ nivel }}"><span title="Cuenta solo días hábiles">Espera respuesta hace {{ dias_txt }}</span></p>
+      {% elif pestana == "respondidas" %}
+        <p class="d-estado"><span class="b-etiqueta estado-{{ s.estado }}">{{ s.get_estado_display }}</span>{% if s.respondida_en %} Respondida el {{ s.respondida_en|date:"d-m H:i" }}{% if s.respondida_por %} ({{ s.respondida_por }}){% endif %}{% endif %}</p>
+      {% else %}
+        <p class="d-estado">Está en Otros: no parece una cotización.</p>
+      {% endif %}
+      <p class="d-visto">{% if s.vista_por %}Vista por {{ s.vista_por.get_full_name|default:s.vista_por.username }} el {{ s.vista_en|date:"d-m H:i" }}{% else %}Felipe todavía no la abre{% endif %}</p>
+
+      <div class="d-acciones">
         {% if gmail_url %}
         <a class="p-btn p-btn-primario" href="{{ gmail_url }}" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16v16H4z"/><path d="M4 6l8 7 8-7"/></svg>
           Responder en Gmail
         </a>
         {% endif %}
-        {% if whatsapp_url %}
-        <a class="p-btn p-btn-verde" href="{{ whatsapp_url }}" target="_blank" rel="noopener">WhatsApp</a>
-        {% endif %}
-        {% if s.cliente_telefono %}
-        <a class="p-btn p-btn-claro" href="tel:{{ s.cliente_telefono }}">Llamar</a>
-        {% endif %}
+        {% if whatsapp_url %}<a class="p-btn p-btn-verde" href="{{ whatsapp_url }}" target="_blank" rel="noopener">WhatsApp</a>{% endif %}
+        {% if s.cliente_telefono %}<a class="p-btn p-btn-claro" href="tel:{{ s.cliente_telefono }}">Llamar</a>{% endif %}
       </div>
+    </section>
+
+    <section class="p-tarjeta d-paso">
+      {% if pestana == "por_responder" %}
+        <form method="post" action="{% url 'cotizaciones:accion' s.pk %}">{% csrf_token %}
+          <input type="hidden" name="accion" value="estado">
+          <button class="p-btn p-btn-verde d-listo" type="submit" name="valor" value="respondida">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
+            Ya la respondí
+          </button>
+        </form>
+        <p class="d-ayuda">Si respondes desde Gmail con copia a contacto@, se marca sola. Si respondiste por teléfono o desde fda@ sin copia, pulsa el botón.</p>
+      {% elif pestana == "respondidas" %}
+        <form class="d-etapa" method="post" action="{% url 'cotizaciones:accion' s.pk %}">{% csrf_token %}
+          <input type="hidden" name="accion" value="estado">
+          <label for="etapa">Etapa</label>
+          <select id="etapa" name="valor">
+            {% for valor, nombre in etapas %}<option value="{{ valor }}"{% if s.estado == valor %} selected{% endif %}>{{ nombre }}</option>{% endfor %}
+          </select>
+          <button class="p-btn p-btn-claro" type="submit">Guardar</button>
+        </form>
+        <form method="post" action="{% url 'cotizaciones:accion' s.pk %}">{% csrf_token %}
+          <input type="hidden" name="accion" value="pendiente">
+          <button class="d-enlace" type="submit">Volver a Por responder</button>
+        </form>
+      {% endif %}
+
+      <form class="d-categoria" method="post" action="{% url 'cotizaciones:accion' s.pk %}">{% csrf_token %}
+        <input type="hidden" name="accion" value="categoria">
+        {% if s.categoria == "cotizacion" %}
+          <span>¿No es una cotización?</span>
+          <button class="d-enlace" type="submit" name="valor" value="otro">Mover a Otros</button>
+        {% elif s.categoria == "dudoso" %}
+          <span>¿Es una cotización?</span>
+          <button class="p-btn p-btn-claro" type="submit" name="valor" value="cotizacion">Sí</button>
+          <button class="p-btn p-btn-claro" type="submit" name="valor" value="otro">No, mover a Otros</button>
+        {% else %}
+          <span>¿Es un cliente?</span>
+          <button class="p-btn p-btn-claro" type="submit" name="valor" value="cotizacion">Es una cotización</button>
+        {% endif %}
+      </form>
     </section>
 
     {% if s.detalle and s.origen == "web" %}
@@ -84,13 +120,13 @@
           {% endif %}
         </article>
         {% empty %}
-        <p class="p-nota-ayuda">Sin correos guardados para esta solicitud.</p>
+        <p class="d-ayuda">Sin correos guardados para esta solicitud.</p>
         {% endfor %}
       </div>
     </section>
   </div>
 
-  <aside class="p-col-der">
+  <aside class="d-col d-lateral">
     <section class="p-tarjeta">
       <h2>Cliente</h2>
       <dl class="p-datos">
@@ -103,27 +139,6 @@
     </section>
 
     <section class="p-tarjeta">
-      <h2>Etapa</h2>
-      <form class="p-etapas" method="post" action="{% url 'cotizaciones:accion' s.pk %}">{% csrf_token %}
-        <input type="hidden" name="accion" value="estado">
-        {% for valor, nombre in etapas %}
-        <button type="submit" name="valor" value="{{ valor }}"{% if s.estado == valor %} class="activa" aria-pressed="true"{% endif %}>{{ nombre }}</button>
-        {% endfor %}
-      </form>
-      <p class="p-nota-ayuda">Si respondes por teléfono o desde fda@ sin copia a contacto@, márcala como Respondida.</p>
-    </section>
-
-    <section class="p-tarjeta">
-      <h2>¿Es una cotización?</h2>
-      <form class="p-etapas" method="post" action="{% url 'cotizaciones:accion' s.pk %}">{% csrf_token %}
-        <input type="hidden" name="accion" value="categoria">
-        {% for valor, nombre in categorias %}
-        <button type="submit" name="valor" value="{{ valor }}"{% if s.categoria == valor %} class="activa" aria-pressed="true"{% endif %}>{{ nombre }}</button>
-        {% endfor %}
-      </form>
-    </section>
-
-    <section class="p-tarjeta">
       <h2>Nota interna</h2>
       <form class="p-form-nota" method="post" action="{% url 'cotizaciones:accion' s.pk %}">{% csrf_token %}
         <input type="hidden" name="accion" value="nota">
@@ -133,8 +148,8 @@
       </form>
     </section>
 
-    <section class="p-tarjeta">
-      <h2>Historial</h2>
+    <details class="p-tarjeta d-historial">
+      <summary><h2>Historial</h2><span>{{ eventos|length }}</span></summary>
       <ul class="p-historial">
         {% for e in eventos %}
         <li>
@@ -143,7 +158,7 @@
         </li>
         {% endfor %}
       </ul>
-    </section>
+    </details>
   </aside>
 </div>
 {% endblock %}

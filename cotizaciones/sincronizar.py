@@ -24,6 +24,7 @@ from django.db import transaction
 from django.utils import timezone
 
 from . import correo
+from .vigencia import antes_del_corte
 from .models import Evento, Mensaje, Sincronizacion, Solicitud
 
 logger = logging.getLogger(__name__)
@@ -106,9 +107,17 @@ def _guardar(solicitud, m, sentido, automatico=False, **cambios):
         fecha=datos["fecha"],
         gmail_hilo=datos.get("hilo") or "",
     )
+    campos = []
     if not solicitud.gmail_hilo and msj.gmail_hilo:
         solicitud.gmail_hilo = msj.gmail_hilo
-        solicitud.save(update_fields=["gmail_hilo", "actualizada_en"])
+        campos.append("gmail_hilo")
+    if sentido == Mensaje.Sentido.ENTRANTE and (
+        solicitud.actividad_en is None or msj.fecha > solicitud.actividad_en
+    ):
+        solicitud.actividad_en = msj.fecha
+        campos.append("actividad_en")
+    if campos:
+        solicitud.save(update_fields=campos + ["actualizada_en"])
     return msj
 
 
@@ -121,6 +130,9 @@ def _aviso_formulario(m, r):
         return
     s = _web_cercana(cliente, m["fecha"])
     cuerpo = m["cuerpo"]
+    if s is None and antes_del_corte(m["fecha"]):
+        r["omitidos"] += 1
+        return
     if s is None:
         servicio = correo.campo_formulario(cuerpo, "Servicio requerido")
         s = Solicitud.objects.create(
@@ -136,6 +148,7 @@ def _aviso_formulario(m, r):
             detalle=correo.mensaje_formulario(cuerpo),
             recibida_en=m["fecha"],
             esperando_desde=m["fecha"],
+            actividad_en=m["fecha"],
             gmail_hilo=m.get("hilo") or "",
         )
         s.registrar(Evento.Tipo.CREADA, "Llegó por el formulario de la web")
@@ -201,6 +214,9 @@ def _entrante(m, r):
         s.registrar(Evento.Tipo.CLIENTE, f"Escribió {m['de']}")
         r["adjuntados"] += 1
         return
+    if antes_del_corte(m["fecha"]):
+        r["omitidos"] += 1
+        return
     categoria = correo.clasificar(m["asunto"], m["cuerpo"], m.get("masivo", False))
     s = Solicitud.objects.create(
         origen=Solicitud.Origen.CORREO,
@@ -211,6 +227,7 @@ def _entrante(m, r):
         detalle=m["cuerpo"],
         recibida_en=m["fecha"],
         esperando_desde=None if categoria == Solicitud.Categoria.OTRO else m["fecha"],
+        actividad_en=m["fecha"],
         gmail_hilo=m.get("hilo") or "",
     )
     _guardar(s, m, Mensaje.Sentido.ENTRANTE)
@@ -289,6 +306,7 @@ def registrar_formulario(contact_request, ids=None):
         detalle=contact_request.message,
         recibida_en=contact_request.created_at,
         esperando_desde=contact_request.created_at,
+        actividad_en=contact_request.created_at,
     )
     s.registrar(Evento.Tipo.CREADA, "Llegó por el formulario de la web")
     Mensaje.objects.create(
@@ -334,6 +352,10 @@ def importar_formularios_pendientes(dias=None):
 
     dias = dias or getattr(settings, "PANEL_DIAS_INICIALES", 45)
     desde = timezone.now() - timedelta(days=dias)
+    from .vigencia import desde as corte
+
+    if corte() and corte() > desde:
+        desde = corte()
     nuevos = 0
     for cr in ContactRequest.objects.filter(
         created_at__gte=desde, solicitud_panel__isnull=True
